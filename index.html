@@ -90,7 +90,7 @@
 </head>
 <body class="min-h-screen">
 
-    <!-- AUTH MODAL (LOGIN / REGISTER AKUN LOKAL RESELLER) -->
+    <!-- AUTH MODAL (LOGIN / REGISTER) -->
     <div id="auth-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
         <div class="fy-card max-w-sm w-full p-6 space-y-5 text-center bg-white dark:bg-zinc-900 border-black">
             <div class="w-16 h-16 bg-amber-500 border-2 border-black rounded-2xl mx-auto flex items-center justify-center shadow-[3px_3px_0px_#000]">
@@ -98,13 +98,13 @@
             </div>
             <div class="space-y-1">
                 <h2 class="text-xl font-black uppercase tracking-tight" style="color: var(--text-main);">Panel Reseller Masuk</h2>
-                <p class="text-xs font-semibold" style="color: var(--text-sub);">Buat akun atau masuk untuk mengelola saldo dan transaksi pribadi Anda.</p>
+                <p class="text-xs font-semibold" style="color: var(--text-sub);">Masuk dengan akun reseller atau akun admin Anda.</p>
             </div>
 
             <div class="space-y-3 text-left">
                 <div>
-                    <label class="block text-[10px] font-black uppercase mb-1" style="color: var(--text-main);">Username Reseller</label>
-                    <input type="text" id="auth-username" class="fy-input w-full p-3 text-xs uppercase" placeholder="Contoh: RAFFSTORE">
+                    <label class="block text-[10px] font-black uppercase mb-1" style="color: var(--text-main);">Username</label>
+                    <input type="text" id="auth-username" class="fy-input w-full p-3 text-xs uppercase" placeholder="Contoh: FYDZ atau RAFFSTORE">
                 </div>
                 <div>
                     <label class="block text-[10px] font-black uppercase mb-1" style="color: var(--text-main);">PIN / Kata Sandi</label>
@@ -128,10 +128,10 @@
             <div class="space-y-5">
                 <div class="flex justify-between items-center border-b-2 border-zinc-200 dark:border-zinc-800 pb-4">
                     <div class="flex items-center gap-2.5">
-                        <div class="w-8 h-8 rounded-lg flex items-center justify-center font-black text-white text-sm border-2 border-black" style="background-color: var(--accent);">F</div>
+                        <div id="sidebar-badge-icon" class="w-8 h-8 rounded-lg flex items-center justify-center font-black text-white text-sm border-2 border-black" style="background-color: var(--accent);">F</div>
                         <div>
                             <h2 id="sidebar-username" class="font-black text-xs uppercase tracking-wider" style="color: var(--text-main);">Reseller</h2>
-                            <span class="text-[9px] font-bold text-emerald-500">Aktif & Terisolasi</span>
+                            <span id="sidebar-role-text" class="text-[9px] font-bold text-emerald-500">Reseller Aktif</span>
                         </div>
                     </div>
                     <button onclick="toggleSidebar()" class="fy-btn px-2.5 py-1 text-xs">✕</button>
@@ -158,18 +158,24 @@
                         <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
                         Deposit Saldo QRIS
                     </button>
-                    <button onclick="toggleSidebar(); resetLocalDataAccount();" class="w-full text-left p-3 rounded-xl border-2 border-amber-500 text-amber-500 hover:bg-amber-500/10 flex items-center gap-3 font-black">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
-                        Reset Akun (Bersihkan Saldo)
-                    </button>
-                    <button onclick="toggleSidebar(); logoutUser();" class="w-full text-left p-3 rounded-xl border-2 border-red-500 text-red-500 hover:bg-red-500/10 flex items-center gap-3 font-black">
+
+                    <!-- MENU KHUSUS ADMIN (HANYA MUNCUL JIKA LOGIN SEBAGAI FYDZ) -->
+                    <div id="admin-only-menu" class="hidden pt-2 border-t-2 border-dashed border-zinc-300 dark:border-zinc-800 space-y-2">
+                        <p class="text-[9px] font-black uppercase text-amber-500 px-1">🔒 Panel Kontrol Admin</p>
+                        <button onclick="toggleSidebar(); resetLocalDataAccount();" class="w-full text-left p-3 rounded-xl border-2 border-amber-500 text-amber-500 hover:bg-amber-500/10 flex items-center gap-3 font-black">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                            Reset Seluruh Database Sistem
+                        </button>
+                    </div>
+
+                    <button onclick="toggleSidebar(); logoutUser();" class="w-full text-left p-3 rounded-xl border-2 border-red-500 text-red-500 hover:bg-red-500/10 flex items-center gap-3 font-black mt-3">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
                         Keluar Akun
                     </button>
                 </div>
             </div>
             <div class="text-[10px] font-bold text-center pt-4 border-t border-zinc-200 dark:border-zinc-800" style="color: var(--text-sub);">
-                FydzOTP Reseller v16.5 — Proxy Vercel Ready
+                FydzOTP Reseller v16.6 — Secure Role
             </div>
         </div>
     </div>
@@ -247,7 +253,7 @@
 
         </div>
 
-        <!-- TAB 2: KATALOG & ORDER NOKOS (STRICT BALANCE LOCK) -->
+        <!-- TAB 2: KATALOG & ORDER NOKOS -->
         <div id="tab-content-2" class="space-y-4 hidden anim-fade">
             <div class="fy-card p-4 space-y-3.5">
                 <div class="flex justify-between items-center border-b-2 border-zinc-200 dark:border-zinc-800 pb-2.5">
@@ -348,7 +354,7 @@
             <div id="history-result-container" class="space-y-2.5"></div>
         </div>
 
-        <!-- TAB 5: DEPOSIT SALDO QRIS (OTOMATIS VIA PROXY VERCEL) -->
+        <!-- TAB 5: DEPOSIT SALDO QRIS -->
         <div id="tab-content-5" class="space-y-4 hidden anim-fade">
             <div class="fy-card p-5 space-y-4">
                 <div class="border-b-2 border-zinc-200 dark:border-zinc-800 pb-3">
@@ -407,11 +413,15 @@
 
     </main>
 
-    <!-- SCRIPT ENGINE (PRODUKSI BEBAS CORS & STRICT LOCK) -->
+    <!-- SCRIPT ENGINE (ROLE-BASED ADMIN PROTECTION) -->
     <script>
         const _PROXY_URL = "/api/proxy";
         const _SECRET_KEY = "otp_90b2ec4b500a5c63f0523d119a0673b2814f5a29";
         
+        // KREDENSIAL AKUN ADMIN UTAMA
+        const ADMIN_USER = "FYDZ";
+        const ADMIN_PIN = "FydzBL01";
+
         let currentUser = null;
         let globalServicesCache = [];
         let pollingTimer = null;
@@ -424,6 +434,13 @@
 
             if(!username || !pin) {
                 return showNotif("Masukkan username dan PIN terlebih dahulu!", "error");
+            }
+
+            // Validasi Khusus Akun Admin Utama
+            if(username === ADMIN_USER) {
+                if(pin !== ADMIN_PIN) {
+                    return showNotif("PIN Admin salah!", "error");
+                }
             }
 
             let usersDB = JSON.parse(localStorage.getItem('fydz_reseller_db') || '{}');
@@ -447,12 +464,33 @@
             currentUser = username;
 
             document.getElementById('auth-modal').classList.add('hidden');
-            document.getElementById('sidebar-username').innerText = username;
-            document.getElementById('header-user-tag').innerText = `Reseller: ${username}`;
-
+            applyUserRoleUI(username);
             syncUserDataUI();
             showNotif(`Selamat datang, ${username}!`, "success");
             loadCatalogData();
+        }
+
+        function applyUserRoleUI(username) {
+            document.getElementById('sidebar-username').innerText = username;
+            document.getElementById('header-user-tag').innerText = `Reseller: ${username}`;
+
+            const adminMenu = document.getElementById('admin-only-menu');
+            const roleText = document.getElementById('sidebar-role-text');
+            const badgeIcon = document.getElementById('sidebar-badge-icon');
+
+            if(username === ADMIN_USER) {
+                // Munculkan menu admin jika login sebagai FYDZ
+                adminMenu.classList.remove('hidden');
+                roleText.innerText = "👑 Administrator Utama";
+                roleText.className = "text-[9px] font-bold text-amber-400";
+                badgeIcon.style.backgroundColor = "#ff5722";
+            } else {
+                // Sembunyikan untuk user biasa
+                adminMenu.classList.add('hidden');
+                roleText.innerText = "Reseller Aktif";
+                roleText.className = "text-[9px] font-bold text-emerald-500";
+                badgeIcon.style.backgroundColor = "var(--accent)";
+            }
         }
 
         function logoutUser() {
@@ -461,7 +499,11 @@
         }
 
         function resetLocalDataAccount() {
-            if(confirm("Apakah Anda ingin mereset data akun dan membersihkan saldo lokal menjadi Rp 0?")) {
+            // Pengaman ganda: Hanya bisa dieksekusi jika yang aktif benar-benar admin FYDZ
+            if(currentUser !== ADMIN_USER) {
+                return showNotif("Akses ditolak! Fitur ini khusus Admin.", "error");
+            }
+            if(confirm("PERINGATAN ADMIN: Apakah Anda ingin mereset seluruh database sistem?")) {
                 localStorage.removeItem('fydz_reseller_db');
                 localStorage.removeItem('fydz_active_user');
                 location.reload();
@@ -473,8 +515,7 @@
             if(active) {
                 currentUser = active;
                 document.getElementById('auth-modal').classList.add('hidden');
-                document.getElementById('sidebar-username').innerText = active;
-                document.getElementById('header-user-tag').innerText = `Reseller: ${active}`;
+                applyUserRoleUI(active);
                 syncUserDataUI();
             }
         })();
@@ -556,7 +597,6 @@
             navigator.clipboard.writeText(text).then(() => showNotif("Berhasil disalin", "success"));
         }
 
-        // FUNGSI REQUEST MENGGUNAKAN PROXY VERCEL BEBAS CORS
         async function requestFydz(endpoint, params = {}, silent = false) {
             const cleanEndpoint = endpoint.startsWith('/') ? endpoint.slice(1) : endpoint;
             const url = new URL(`${window.location.origin}${_PROXY_URL}/${cleanEndpoint}`);
