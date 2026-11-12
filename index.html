@@ -115,7 +115,7 @@
             <button onclick="handleUserLogin()" class="fy-btn w-full py-3.5 text-xs uppercase tracking-wider text-white font-black shadow-[3px_3px_0px_#000]" style="background-color: var(--accent); border-color: var(--border-col);">
                 Masuk / Buat Akun Otomatis →
             </button>
-            <p class="text-[10px] font-bold text-zinc-400">Akun baru akan otomatis mendapatkan saldo awal Rp 0.</p>
+            <p class="text-[10px] font-bold text-zinc-400">Akun baru otomatis mendapatkan saldo awal Rp 0.</p>
         </div>
     </div>
 
@@ -158,6 +158,10 @@
                         <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
                         Deposit Saldo QRIS
                     </button>
+                    <button onclick="toggleSidebar(); resetLocalDataAccount();" class="w-full text-left p-3 rounded-xl border-2 border-amber-500 text-amber-500 hover:bg-amber-500/10 flex items-center gap-3 font-black">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                        Reset Akun (Bersihkan Saldo)
+                    </button>
                     <button onclick="toggleSidebar(); logoutUser();" class="w-full text-left p-3 rounded-xl border-2 border-red-500 text-red-500 hover:bg-red-500/10 flex items-center gap-3 font-black">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
                         Keluar Akun
@@ -165,7 +169,7 @@
                 </div>
             </div>
             <div class="text-[10px] font-bold text-center pt-4 border-t border-zinc-200 dark:border-zinc-800" style="color: var(--text-sub);">
-                FydzOTP Reseller v16.4 — Auto Deposit & Strict Secure
+                FydzOTP Reseller v16.5 — Proxy Vercel Ready
             </div>
         </div>
     </div>
@@ -201,7 +205,6 @@
         <!-- TAB 1: DASHBOARD UTAMA -->
         <div id="tab-content-1" class="space-y-4 anim-fade">
             
-            <!-- BANNER UTAMA -->
             <div class="fy-card p-5 space-y-3 text-white border-black" style="background-color: #0284c7;">
                 <div class="space-y-1">
                     <h2 class="text-xl font-black tracking-tight">Panel Reseller FydzOTP.</h2>
@@ -213,7 +216,6 @@
                 </button>
             </div>
 
-            <!-- KARTU STATISTIK SALDO PRIBADI -->
             <div class="grid grid-cols-2 gap-3">
                 <div class="fy-card p-4 space-y-1">
                     <p class="text-[10px] font-black uppercase tracking-wider flex items-center gap-1.5" style="color: var(--text-sub);">
@@ -231,13 +233,11 @@
                 </div>
             </div>
 
-            <!-- TOP USER AKTIF PANEL -->
             <div class="fy-card p-4 space-y-3 border-amber-500/40">
                 <div class="flex items-center gap-2 border-b-2 border-zinc-200 dark:border-zinc-800 pb-2.5">
                     <svg class="w-4 h-4 text-amber-500" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
                     <h3 class="text-xs font-black uppercase tracking-wider text-amber-500">Leaderboard Reseller</h3>
                 </div>
-                
                 <div id="top-user-list" class="space-y-2">
                     <div class="p-4 rounded-2xl border-2 border-dashed border-zinc-300 dark:border-zinc-800 text-center space-y-1">
                         <p class="text-xs font-bold" style="color: var(--text-sub);">Belum ada data reseller.</p>
@@ -348,7 +348,7 @@
             <div id="history-result-container" class="space-y-2.5"></div>
         </div>
 
-        <!-- TAB 5: DEPOSIT SALDO QRIS (OTOMATIS VIA API DITZNESIA) -->
+        <!-- TAB 5: DEPOSIT SALDO QRIS (OTOMATIS VIA PROXY VERCEL) -->
         <div id="tab-content-5" class="space-y-4 hidden anim-fade">
             <div class="fy-card p-5 space-y-4">
                 <div class="border-b-2 border-zinc-200 dark:border-zinc-800 pb-3">
@@ -370,7 +370,6 @@
                         <input type="number" id="dep-nominal" value="20000" class="fy-input w-full p-3.5 text-xs" placeholder="20000">
                     </div>
 
-                    <!-- Quick Amount Chips -->
                     <div class="grid grid-cols-3 gap-2">
                         <button onclick="setNominal(10000)" class="fy-btn py-2.5 text-[11px] font-black">Rp 10.000</button>
                         <button onclick="setNominal(20000)" class="fy-btn py-2.5 text-[11px] font-black">Rp 20.000</button>
@@ -408,9 +407,9 @@
 
     </main>
 
-    <!-- SCRIPT ENGINE (STRICT BALANCE LOCK & AUTO DEPOSIT) -->
+    <!-- SCRIPT ENGINE (PRODUKSI BEBAS CORS & STRICT LOCK) -->
     <script>
-        const _PROXY_URL = "https://www.ditznesia.com/api/dev";
+        const _PROXY_URL = "/api/proxy";
         const _SECRET_KEY = "otp_90b2ec4b500a5c63f0523d119a0673b2814f5a29";
         
         let currentUser = null;
@@ -461,6 +460,14 @@
             location.reload();
         }
 
+        function resetLocalDataAccount() {
+            if(confirm("Apakah Anda ingin mereset data akun dan membersihkan saldo lokal menjadi Rp 0?")) {
+                localStorage.removeItem('fydz_reseller_db');
+                localStorage.removeItem('fydz_active_user');
+                location.reload();
+            }
+        }
+
         (function() {
             const active = localStorage.getItem('fydz_active_user');
             if(active) {
@@ -476,14 +483,6 @@
             if(!currentUser) return null;
             let usersDB = JSON.parse(localStorage.getItem('fydz_reseller_db') || '{}');
             return usersDB[currentUser] || null;
-        }
-
-        function saveActiveUserData(data) {
-            if(!currentUser) return;
-            let usersDB = JSON.parse(localStorage.getItem('fydz_reseller_db') || '{}');
-            usersDB[currentUser] = data;
-            localStorage.setItem('fydz_reseller_db', JSON.stringify(usersDB));
-            syncUserDataUI();
         }
 
         function syncUserDataUI() {
@@ -557,8 +556,11 @@
             navigator.clipboard.writeText(text).then(() => showNotif("Berhasil disalin", "success"));
         }
 
+        // FUNGSI REQUEST MENGGUNAKAN PROXY VERCEL BEBAS CORS
         async function requestFydz(endpoint, params = {}, silent = false) {
-            const url = new URL(`${_PROXY_URL}${endpoint}`);
+            const cleanEndpoint = endpoint.startsWith('/') ? endpoint.slice(1) : endpoint;
+            const url = new URL(`${window.location.origin}${_PROXY_URL}/${cleanEndpoint}`);
+            
             url.searchParams.append('apikey', _SECRET_KEY);
             for (const [k, v] of Object.entries(params)) {
                 if (v !== undefined && v !== "") url.searchParams.append(k, v);
@@ -596,12 +598,12 @@
         async function loadCatalogData() {
             const server = document.getElementById('sel-server').value;
             try {
-                const countries = await requestFydz('/countries', { server }, true);
+                const countries = await requestFydz('countries', { server }, true);
                 const countrySel = document.getElementById('sel-country');
                 countrySel.innerHTML = countries.map(c => `<option value="${c.code}">${c.flag || ''} ${c.name} (${c.code})</option>`).join('');
                 if(['1', '6', '7'].includes(server)) {
                     const countryCode = countrySel.value;
-                    const opRes = await requestFydz('/operators', { server, country: countryCode }, true);
+                    const opRes = await requestFydz('operators', { server, country: countryCode }, true);
                     const ops = opRes.operators || ['any'];
                     document.getElementById('sel-operator').innerHTML = ops.map(op => `<option value="${op}">${op.toUpperCase()}</option>`).join('');
                 }
@@ -615,7 +617,7 @@
             const grid = document.getElementById('catalog-grid');
             grid.innerHTML = `<div class="fy-card p-4 text-center text-xs font-bold" style="color: var(--text-sub);">Memuat layanan reseller...</div>`;
             try {
-                const list = await requestFydz('/services', { server, country }, true);
+                const list = await requestFydz('services', { server, country }, true);
                 globalServicesCache = Array.isArray(list) ? list : [];
                 renderCatalogGrid();
             } catch(e) {
@@ -656,7 +658,7 @@
             }).join('');
         }
 
-        // 1. STRICT BALANCE LOCK: CEK MUTLAK SALDO PRIBADI SEBELUM TEMBAK API
+        // STRICT BALANCE LOCK: CEK MUTLAK SALDO SEBELUM EKSEKUSI API
         async function buyNokosItem(produk, provider, total, totalPrice, serviceName) {
             let usersDB = JSON.parse(localStorage.getItem('fydz_reseller_db') || '{}');
             let activeUserKey = localStorage.getItem('fydz_active_user');
@@ -684,7 +686,7 @@
             try {
                 showNotif("Memproses pesanan ke server...", "info");
                 
-                const data = await requestFydz('/order', params);
+                const data = await requestFydz('order', params);
                 
                 userData.balance -= totalPrice;
                 userData.totalOrder = (userData.totalOrder || 0) + 1;
@@ -718,14 +720,14 @@
             }
         }
 
-        // 2. FITUR DEPOSIT OTOMATIS VIA API DITZNESIA
+        // DEPOSIT OTOMATIS VIA PROXY DITZNESIA
         async function createDepositQr() {
             const nominal = Number(document.getElementById('dep-nominal').value);
             if(!nominal || nominal < 1000) return showNotif("Minimal deposit Rp 1.000", "error");
 
             try {
                 showNotif("Membuat QRIS deposit otomatis...", "info");
-                const res = await requestFydz('/deposit/create', { nominal });
+                const res = await requestFydz('deposit/create', { nominal });
                 
                 if(res && res.id) {
                     activeDepositId = res.id;
@@ -758,12 +760,11 @@
 
             try {
                 showNotif("Mengecek status pembayaran...", "info");
-                const res = await requestFydz('/deposit/status', { id: activeDepositId });
+                const res = await requestFydz('deposit/status', { id: activeDepositId });
 
                 if(res && res.status === 'berhasil') {
                     let userData = usersDB[activeUserKey];
                     
-                    // Tambah saldo ke akun user secara otomatis
                     userData.balance = (userData.balance || 0) + Number(activeDepositNominal);
                     if(!userData.deposits) userData.deposits = [];
                     userData.deposits.unshift({
@@ -791,7 +792,7 @@
         async function cancelActiveDeposit() {
             if(!activeDepositId) return;
             try {
-                await requestFydz('/deposit/cancel', { id: activeDepositId });
+                await requestFydz('deposit/cancel', { id: activeDepositId });
                 showNotif("Deposit dibatalkan", "success");
                 document.getElementById('modal-qris-box').classList.add('hidden');
                 activeDepositId = null;
@@ -813,7 +814,7 @@
             if(pollingTimer) clearInterval(pollingTimer);
             pollingTimer = setInterval(async () => {
                 try {
-                    const st = await requestFydz('/status', { id: orderId }, true);
+                    const st = await requestFydz('status', { id: orderId }, true);
                     renderActiveMonitor(st);
                     if(st.otp && st.otp !== 'Waiting') {
                         clearInterval(pollingTimer);
@@ -827,7 +828,7 @@
             const id = document.getElementById('man-order-id').value.trim();
             if(!id) return showNotif("Masukkan Order ID", "error");
             try {
-                const st = await requestFydz('/status', { id }, !notify);
+                const st = await requestFydz('status', { id }, !notify);
                 renderActiveMonitor(st);
                 if(notify) showNotif(`Status: ${st.status}`, "info");
             } catch(e) {}
@@ -836,13 +837,13 @@
         async function resendSmsOtp() {
             const id = document.getElementById('man-order-id').value.trim();
             if(!id) return showNotif("Masukkan Order ID", "error");
-            try { await requestFydz('/resend', { id }); showNotif("SMS dikirim ulang", "success"); } catch(e) {}
+            try { await requestFydz('resend', { id }); showNotif("SMS dikirim ulang", "success"); } catch(e) {}
         }
 
         async function reactivateOrderNum() {
             const id = document.getElementById('man-order-id').value.trim();
             if(!id) return showNotif("Masukkan Order ID", "error");
-            try { await requestFydz('/reactivate', { id }); showNotif("Nomor diperpanjang", "success"); } catch(e) {}
+            try { await requestFydz('reactivate', { id }); showNotif("Nomor diperpanjang", "success"); } catch(e) {}
         }
 
         async function cancelActiveOrder() {
@@ -851,7 +852,7 @@
             
             try {
                 showNotif("Memproses pembatalan & refund...", "info");
-                await requestFydz('/cancel', { id }); 
+                await requestFydz('cancel', { id }); 
                 if(pollingTimer) clearInterval(pollingTimer);
                 
                 let usersDB = JSON.parse(localStorage.getItem('fydz_reseller_db') || '{}');
