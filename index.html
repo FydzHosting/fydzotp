@@ -118,7 +118,7 @@
     <!-- TOAST NOTIFICATION UTAMA -->
     <div id="toast-container" class="fixed top-3 left-0 right-0 z-50 flex flex-col items-center gap-2 px-4 pointer-events-none"></div>
 
-    <!-- SIDEBAR DRAWER (SEMUA NAVIGASI PINDAH KE SINI) -->
+    <!-- SIDEBAR DRAWER (SEMUA NAVIGASI) -->
     <div id="sidebar-drawer" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm hidden transition-opacity" onclick="toggleSidebar()">
         <div class="absolute left-0 top-0 bottom-0 w-72 p-5 space-y-6 flex flex-col justify-between" style="background-color: var(--card-bg); border-right: 3px solid var(--border-col);" onclick="event.stopPropagation()">
             <div class="space-y-5">
@@ -162,7 +162,7 @@
                 </div>
             </div>
             <div class="text-[10px] font-bold text-center pt-4 border-t border-zinc-200 dark:border-zinc-800" style="color: var(--text-sub);">
-                FydzOTP Enterprise v12.0 — Secure Gateway
+                FydzOTP Enterprise v13.0 — Secure Gateway
             </div>
         </div>
     </div>
@@ -171,7 +171,6 @@
     <header class="backdrop-blur-md border-b-2.5 px-4 py-3.5 sticky top-0 z-40" style="background-color: var(--bg-main); border-color: var(--border-col); opacity: 0.95;">
         <div class="max-w-md mx-auto flex justify-between items-center">
             <div class="flex items-center gap-3">
-                <!-- Tombol Garis 3 Utama -->
                 <button onclick="toggleSidebar()" class="fy-btn p-2 flex items-center justify-center" title="Menu Sidebar">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
                 </button>
@@ -268,25 +267,16 @@
                 </div>
             </div>
 
-            <!-- TOP USER REALTIME MANDIRI (MASUK AKAL UNTUK DEVELOPER PEMULA) -->
+            <!-- TOP USER AKTIF (KOSONG / ORGANIK SESUAI PERMINTAAN) -->
             <div class="fy-card p-4 space-y-3 border-amber-500/40">
                 <div class="flex items-center gap-2 border-b-2 border-zinc-200 dark:border-zinc-800 pb-2.5">
                     <svg class="w-4 h-4 text-amber-500" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
                     <h3 class="text-xs font-black uppercase tracking-wider text-amber-500">Top User Aktif</h3>
                 </div>
                 
-                <div class="p-3.5 rounded-2xl border-2 border-amber-400 bg-amber-500/10 flex items-center justify-between">
-                    <div class="space-y-1">
-                        <div class="flex items-center gap-2">
-                            <span class="text-xs font-black" style="color: var(--text-main);">FydzOfficial</span>
-                            <span class="bg-amber-400 text-black px-2 py-0.5 rounded text-[9px] font-black uppercase border border-black">PRO</span>
-                        </div>
-                        <p class="text-[10px] font-bold" style="color: var(--text-sub);">admin@xtmione.web.id</p>
-                    </div>
-                    <div class="text-right">
-                        <p class="text-xs font-black text-amber-600">142 order</p>
-                        <p class="text-[10px] font-bold text-emerald-500">Rp 355.000</p>
-                    </div>
+                <div id="top-user-container" class="p-4 rounded-2xl border-2 border-dashed border-zinc-300 dark:border-zinc-800 text-center space-y-1">
+                    <p class="text-xs font-bold" style="color: var(--text-sub);">Belum ada data top user.</p>
+                    <p class="text-[10px]" style="color: var(--text-sub);">Akan terisi otomatis saat ada transaksi berhasil.</p>
                 </div>
             </div>
 
@@ -392,7 +382,7 @@
             <div id="history-result-container" class="space-y-2.5"></div>
         </div>
 
-        <!-- TAB 5: DEPOSIT SALDO QRIS (NORMAL KEMBALI) -->
+        <!-- TAB 5: DEPOSIT SALDO QRIS -->
         <div id="tab-content-5" class="space-y-4 hidden anim-fade">
             <div class="fy-card p-5 space-y-4">
                 <div class="border-b-2 border-zinc-200 dark:border-zinc-800 pb-3">
@@ -401,7 +391,6 @@
                     </h3>
                 </div>
 
-                <!-- Banner Normal Sesuai Info Saluran Resmi -->
                 <div class="p-4 rounded-xl border-2 border-emerald-500 bg-emerald-500/10 space-y-1">
                     <div class="flex items-center gap-2 font-black text-emerald-600 text-xs">
                         ✓ Info Deposit QRIS Kembali Normal
@@ -426,7 +415,7 @@
                         <button onclick="setNominal(200000)" class="fy-btn py-2.5 text-[11px] font-black">Rp 200.000</button>
                     </div>
 
-                    <!-- Kode Cashback / Redeem (Bonus: BONUS97823) -->
+                    <!-- Kode Redeem Resmi (BONUS97823) -->
                     <div class="space-y-1.5 pt-1">
                         <label class="block text-[10px] font-black uppercase" style="color: var(--text-main);">Kode Cashback / Redeem (opsional)</label>
                         <div class="flex gap-2">
@@ -495,17 +484,17 @@
                 <button onclick="closeGuideModal()" class="font-black text-sm" style="color: var(--text-main);">✕</button>
             </div>
             <div class="space-y-3 text-xs font-medium leading-relaxed" style="color: var(--text-sub);">
-                <p><b>1. Pilih Layanan (Katalog):</b> Buka menu dari garis 3 di pojok kiri atas, lalu pilih Katalog untuk melihat daftar nomor virtual aktif (WhatsApp, Telegram, dll).</p>
+                <p><b>1. Pilih Layanan (Katalog):</b> Buka menu dari garis 3 di pojok kiri atas, lalu pilih Katalog untuk melihat daftar nomor virtual aktif.</p>
                 <p><b>2. Pembelian Nomor:</b> Klik tombol beli pada layanan yang diinginkan. Sistem otomatis memesan nomor dan mengarahkannya ke menu Kelola Pesanan.</p>
-                <p><b>3. Menerima SMS OTP:</b> Pantau nomor aktif di menu Kelola atau tunggu notifikasi live feed masuk. Kode OTP akan muncul otomatis.</p>
-                <p><b>4. Top-up Saldo QRIS:</b> Saldo deposit QRIS sudah kembali normal. Masukkan nominal atau gunakan kode redeem resmi untuk bonus saldo.</p>
+                <p><b>3. Menerima SMS OTP:</b> Pantau nomor aktif di menu Kelola Pesanan. Kode OTP akan muncul otomatis saat SMS masuk dari operator.</p>
+                <p><b>4. Top-up Saldo QRIS:</b> Saldo deposit QRIS sudah normal. Masukkan nominal atau gunakan kode redeem resmi untuk bonus saldo.</p>
                 <p><b>5. Kendala & Bantuan:</b> Hubungi admin resmi melalui tombol WhatsApp bantuan (`+6283120264665`) di pojok kanan bawah.</p>
             </div>
             <button onclick="closeGuideModal()" class="fy-btn w-full py-3 text-xs uppercase font-black bg-sky-500 text-white border-black">Mengerti</button>
         </div>
     </div>
 
-    <!-- REAL-TIME LIVE NOTIF PEMBELI (POSISI AMAN DI KIRI ATAS / TENGAH ATAS, TIDAK MENABRAK BUTTON) -->
+    <!-- REAL-TIME LIVE NOTIF PEMBELI (HANYA MUNCUL JIKA ADA TRANSAKSI RIIL) -->
     <div id="live-buyer-toast" class="fixed top-16 left-4 z-40 hidden fy-card p-3 max-w-xs shadow-[4px_4px_0px_#000] anim-fade border-black bg-white dark:bg-zinc-900 pointer-events-none">
         <div class="flex items-start gap-2.5">
             <div class="w-7 h-7 rounded-xl bg-emerald-500 text-white flex items-center justify-center font-black text-xs shrink-0 border border-black">✓</div>
@@ -574,21 +563,15 @@
             const savedTheme = localStorage.getItem('fydz_theme') || 'light';
             document.documentElement.classList.remove('light', 'dark');
             document.documentElement.classList.add(savedTheme);
-            
-            // Live Buyer Notification Mandiri (Aman di posisi atas)
-            setInterval(() => {
-                const services = ["WhatsApp", "Telegram", "Shopee", "DANA", "Instagram", "Google"];
-                const randServ = services[Math.floor(Math.random() * services.length)];
-                const randPhone = "628" + Math.floor(100 + Math.random() * 900) + "••••" + Math.floor(100 + Math.random() * 900);
-                
-                document.getElementById('toast-service').innerText = randServ;
-                document.getElementById('toast-detail').innerText = `${randPhone} • Server 1`;
-                
-                const toast = document.getElementById('live-buyer-toast');
-                toast.classList.remove('hidden');
-                setTimeout(() => toast.classList.add('hidden'), 4000);
-            }, 14000);
         })();
+
+        function triggerLiveOrderNotification(serviceName, phoneNumber) {
+            document.getElementById('toast-service').innerText = serviceName;
+            document.getElementById('toast-detail').innerText = `${phoneNumber} • Server 1`;
+            const toast = document.getElementById('live-buyer-toast');
+            toast.classList.remove('hidden');
+            setTimeout(() => toast.classList.add('hidden'), 4000);
+        }
 
         function startAppLoading() {
             document.getElementById('splash-action-box').classList.add('hidden');
@@ -798,6 +781,9 @@
                     renderActiveMonitor(orderObj);
                     startAutoPolling(orderObj.id);
                     switchMainTab(3);
+                    
+                    // Memicu notif real-time saat user berhasil order
+                    triggerLiveOrderNotification(orderObj.service_name || "Nomor Virtual", orderObj.number || "628xxx");
                 }
             } catch(e) {}
         }
