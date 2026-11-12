@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>FydzOTP — Enterprise SMS Gateway & Virtual Number</title>
+    <title>FydzOTP — Enterprise SMS & Number Gateway</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap');
@@ -99,7 +99,9 @@
     <!-- SPLASH SCREEN -->
     <div id="splash-screen" class="fixed inset-0 z-50 flex items-center justify-center p-4 backdrop-blur-sm" style="background-color: var(--bg-main);">
         <div class="fy-card max-w-sm w-full p-7 text-center space-y-6">
-            <div class="w-20 h-20 bg-amber-500 border-3 border-black rounded-2xl mx-auto flex items-center justify-center text-3xl shadow-[3px_3px_0px_#000] font-black text-white">⚡</div>
+            <div class="w-20 h-20 bg-amber-500 border-3 border-black rounded-2xl mx-auto flex items-center justify-center shadow-[3px_3px_0px_#000]">
+                <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            </div>
             <div class="space-y-1.5">
                 <h1 class="text-2xl font-black uppercase tracking-tight" style="color: var(--text-main);">FYDZOTP SUITE</h1>
                 <p class="text-xs font-semibold" style="color: var(--text-sub);">Enterprise SMS & Number Gateway</p>
@@ -123,20 +125,68 @@
     <!-- TOAST NOTIFICATION -->
     <div id="toast-container" class="fixed top-3 left-0 right-0 z-50 flex flex-col items-center gap-2 px-4 pointer-events-none"></div>
 
-    <!-- HEADER UTAMA -->
+    <!-- SIDEBAR DRAWER (GARIS 3 DI POJOK KIRI ATAS) -->
+    <div id="sidebar-drawer" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm hidden transition-opacity" onclick="toggleSidebar()">
+        <div class="absolute left-0 top-0 bottom-0 w-72 p-5 space-y-6 flex flex-col justify-between" style="background-color: var(--card-bg); border-right: 3px solid var(--border-col);" onclick="event.stopPropagation()">
+            <div class="space-y-5">
+                <div class="flex justify-between items-center border-b-2 border-zinc-200 dark:border-zinc-800 pb-4">
+                    <div class="flex items-center gap-2.5">
+                        <div class="w-8 h-8 rounded-lg flex items-center justify-center font-black text-white text-sm border-2 border-black" style="background-color: var(--accent);">F</div>
+                        <h2 class="font-black text-sm uppercase tracking-wider" style="color: var(--text-main);">FydzOTP Menu</h2>
+                    </div>
+                    <button onclick="toggleSidebar()" class="fy-btn px-2.5 py-1 text-xs">✕</button>
+                </div>
+                
+                <div class="space-y-2 text-xs font-bold">
+                    <button onclick="toggleSidebar(); switchMainTab(1);" class="w-full text-left p-3 rounded-xl border-2 border-transparent hover:border-black flex items-center gap-3" style="color: var(--text-main);">
+                        <svg class="w-4 h-4 text-amber-500" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                        Dashboard Utama
+                    </button>
+                    <button onclick="toggleSidebar(); switchMainTab(5);" class="w-full text-left p-3 rounded-xl border-2 border-transparent hover:border-black flex items-center gap-3" style="color: var(--text-main);">
+                        <svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
+                        Deposit Saldo QRIS
+                    </button>
+                    <button onclick="toggleSidebar(); switchMainTab(3);" class="w-full text-left p-3 rounded-xl border-2 border-transparent hover:border-black flex items-center gap-3" style="color: var(--text-main);">
+                        <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+                        Riwayat Transaksi
+                    </button>
+                    <button onclick="toggleSidebar(); openGuideModal();" class="w-full text-left p-3 rounded-xl border-2 border-transparent hover:border-black flex items-center gap-3" style="color: var(--text-main);">
+                        <svg class="w-4 h-4 text-purple-500" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                        Panduan Penggunaan
+                    </button>
+                    <button onclick="toggleSidebar(); switchMainTab(4);" class="w-full text-left p-3 rounded-xl border-2 border-transparent hover:border-black flex items-center gap-3" style="color: var(--text-main);">
+                        <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                        Terminal API Log
+                    </button>
+                </div>
+            </div>
+            <div class="text-[10px] font-bold text-center pt-4 border-t border-zinc-200 dark:border-zinc-800" style="color: var(--text-sub);">
+                FydzOTP Enterprise v11.0 — Secure Gateway
+            </div>
+        </div>
+    </div>
+
+    <!-- HEADER UTAMA DENGAN GARIS 3 -->
     <header class="backdrop-blur-md border-b-2.5 px-4 py-3.5 sticky top-0 z-40" style="background-color: var(--bg-main); border-color: var(--border-col); opacity: 0.95;">
         <div class="max-w-md mx-auto flex justify-between items-center">
-            <div class="flex items-center gap-2.5">
-                <div class="w-9 h-9 rounded-xl flex items-center justify-center font-black text-white text-base border-2 border-black shadow-[2px_2px_0px_#000]" style="background-color: var(--accent);">⚡</div>
+            <div class="flex items-center gap-3">
+                <!-- Tombol Garis 3 -->
+                <button onclick="toggleSidebar()" class="fy-btn p-2 flex items-center justify-center" title="Menu Sidebar">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                </button>
                 <div>
-                    <h1 class="font-black text-sm tracking-tight uppercase leading-none" style="color: var(--text-main);">FydzOTP</h1>
-                    <span class="text-[10px] font-bold" style="color: var(--text-sub);">Production Gateway</span>
+                    <h1 class="font-black text-sm tracking-tight uppercase leading-none" style="color: var(--text-main);">Dashboard</h1>
+                    <span class="text-[10px] font-bold" style="color: var(--text-sub);">FydzOTP Gateway</span>
                 </div>
             </div>
             
             <div class="flex items-center gap-2">
                 <button onclick="toggleTheme()" class="fy-btn px-3 py-2 text-xs font-black" title="Ganti Mode Terang / Gelap">
                     🌓
+                </button>
+                <button onclick="switchMainTab(5)" class="fy-btn px-3 py-2 text-xs font-black flex items-center gap-1.5" style="color: var(--accent);">
+                    <svg class="w-4 h-4 inline" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
+                    <span id="header-balance">Rp 0</span> +
                 </button>
             </div>
         </div>
@@ -145,21 +195,104 @@
     <!-- CONTAINER UTAMA -->
     <main class="max-w-md mx-auto p-4 space-y-4">
         
-        <!-- SALDO & DEPOSIT QUICK BANNER -->
-        <div class="fy-card p-5 space-y-3 bg-gradient-to-br from-amber-400/20 to-transparent">
-            <div class="flex justify-between items-center">
-                <div>
-                    <p class="text-[10px] font-black uppercase tracking-wider" style="color: var(--text-sub);">Saldo Akun Anda</p>
-                    <h2 id="display-balance" class="text-2xl font-black text-emerald-500">Rp 0</h2>
+        <!-- TAB 1: DASHBOARD UTAMA (GAYA DITZNESIA) -->
+        <div id="tab-content-1" class="space-y-4 anim-fade">
+            
+            <!-- BANNER UTAMA (TANPA LOGO PETIR & TANPA HALO USER) -->
+            <div class="fy-card p-5 space-y-3 text-white border-black" style="background-color: #0284c7;">
+                <div class="space-y-1">
+                    <h2 class="text-xl font-black tracking-tight">Selamat Datang di FydzOTP.</h2>
+                    <p class="text-xs font-medium text-sky-100">Gateway verifikasi nomor virtual & SMS OTP enterprise berkecepatan tinggi.</p>
                 </div>
-                <button onclick="switchMainTab(5)" class="fy-btn px-4 py-3 text-xs font-black uppercase text-white shadow-[2px_2px_0px_#000]" style="background-color: var(--accent);">
-                    + Top-up Saldo
+                <button onclick="switchMainTab(2)" class="fy-btn bg-white text-zinc-950 font-black w-full py-3.5 text-xs uppercase tracking-wider shadow-[3px_3px_0px_#000] border-black flex items-center justify-center gap-2">
+                    <svg class="w-4 h-4 text-sky-600" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                    Order Nomor / Katalog
                 </button>
             </div>
+
+            <!-- KARTU STATISTIK SALDO & DEPOSIT -->
+            <div class="grid grid-cols-2 gap-3">
+                <div class="fy-card p-4 space-y-1">
+                    <p class="text-[10px] font-black uppercase tracking-wider flex items-center gap-1.5" style="color: var(--text-sub);">
+                        <svg class="w-3.5 h-3.5 text-emerald-500" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
+                        Saldo Aktif
+                    </p>
+                    <h3 id="dash-balance" class="text-lg font-black text-emerald-500">Rp 0</h3>
+                </div>
+                <div class="fy-card p-4 space-y-1">
+                    <p class="text-[10px] font-black uppercase tracking-wider flex items-center gap-1.5" style="color: var(--text-sub);">
+                        <svg class="w-3.5 h-3.5 text-blue-500" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+                        Total Deposit
+                    </p>
+                    <h3 class="text-lg font-black" style="color: var(--text-main);">Rp 0</h3>
+                </div>
+            </div>
+
+            <!-- KARTU STATISTIK ORDER BERHASIL -->
+            <div class="fy-card p-4 space-y-1">
+                <p class="text-[10px] font-black uppercase tracking-wider flex items-center gap-1.5" style="color: var(--text-sub);">
+                    <svg class="w-3.5 h-3.5 text-amber-500" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    Order Berhasil
+                </p>
+                <div class="flex items-baseline gap-2">
+                    <h3 class="text-xl font-black" style="color: var(--text-main);">0</h3>
+                    <span class="text-xs font-bold" style="color: var(--text-sub);">(Rp 0)</span>
+                </div>
+            </div>
+
+            <!-- AKTIVITAS 7 HARI TERAKHIR & GRAFIK -->
+            <div class="fy-card p-4 space-y-3">
+                <div class="flex items-center gap-2 border-b-2 border-zinc-200 dark:border-zinc-800 pb-2.5">
+                    <svg class="w-4 h-4 text-sky-500" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"/></svg>
+                    <h3 class="text-xs font-black uppercase tracking-wider" style="color: var(--text-main);">Aktivitas 7 Hari Terakhir</h3>
+                </div>
+                <p class="text-[11px] font-medium" style="color: var(--text-sub);">Aktivitas order Anda 7 hari terakhir — semua status: berhasil, batal & expired.</p>
+                
+                <div class="grid grid-cols-3 gap-2 pt-1">
+                    <div class="p-3 rounded-xl border-2 border-black bg-emerald-500/10 text-center">
+                        <p class="text-[10px] font-black text-emerald-600 uppercase">Berhasil</p>
+                        <p class="text-base font-black text-emerald-500">0</p>
+                        <p class="text-[10px] font-bold text-emerald-600">0%</p>
+                    </div>
+                    <div class="p-3 rounded-xl border-2 border-black bg-red-500/10 text-center">
+                        <p class="text-[10px] font-black text-red-600 uppercase">Batal</p>
+                        <p class="text-base font-black text-red-500">0</p>
+                        <p class="text-[10px] font-bold text-red-600">0%</p>
+                    </div>
+                    <div class="p-3 rounded-xl border-2 border-black bg-amber-500/10 text-center">
+                        <p class="text-[10px] font-black text-amber-600 uppercase">Expired</p>
+                        <p class="text-base font-black text-amber-500">0</p>
+                        <p class="text-[10px] font-bold text-amber-600">0%</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TOP USER REALTIME SECTION -->
+            <div class="fy-card p-4 space-y-3 border-amber-500/40">
+                <div class="flex items-center gap-2 border-b-2 border-zinc-200 dark:border-zinc-800 pb-2.5">
+                    <svg class="w-4 h-4 text-amber-500" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
+                    <h3 class="text-xs font-black uppercase tracking-wider text-amber-500">Top User Realtime</h3>
+                </div>
+                
+                <div class="p-3.5 rounded-2xl border-2 border-amber-400 bg-amber-500/10 flex items-center justify-between">
+                    <div class="space-y-1">
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs font-black" style="color: var(--text-main);">PaisMD</span>
+                            <span class="bg-amber-400 text-black px-2 py-0.5 rounded text-[9px] font-black uppercase border border-black">GOLD</span>
+                        </div>
+                        <p class="text-[10px] font-bold" style="color: var(--text-sub);">pais***@gmail.com</p>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-xs font-black text-amber-600">21.620 order</p>
+                        <p class="text-[10px] font-bold text-emerald-500">Rp 53.622.699</p>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
-        <!-- TAB CONTENT 1: KATALOG -->
-        <div id="tab-content-1" class="space-y-4 anim-fade">
+        <!-- TAB 2: KATALOG / ORDER NOKOS -->
+        <div id="tab-content-2" class="space-y-4 hidden anim-fade">
             <div class="fy-card p-4 space-y-3.5">
                 <div class="flex justify-between items-center border-b-2 border-zinc-200 dark:border-zinc-800 pb-2.5">
                     <h3 class="text-xs font-black uppercase tracking-wider" style="color: var(--text-main);">Konfigurasi Parameter</h3>
@@ -208,8 +341,8 @@
             </div>
         </div>
 
-        <!-- TAB CONTENT 2: KELOLA -->
-        <div id="tab-content-2" class="space-y-4 hidden anim-fade">
+        <!-- TAB 3: KELOLA PESANAN & OTP -->
+        <div id="tab-content-3" class="space-y-4 hidden anim-fade">
             <div class="fy-card p-4 space-y-3.5">
                 <h3 class="text-xs font-black uppercase tracking-wider border-b-2 border-zinc-200 dark:border-zinc-800 pb-2.5" style="color: var(--text-main);">Manajemen Pesanan & OTP</h3>
                 <div>
@@ -246,8 +379,8 @@
             </div>
         </div>
 
-        <!-- TAB CONTENT 3: RIWAYAT -->
-        <div id="tab-content-3" class="space-y-4 hidden anim-fade">
+        <!-- TAB 4: RIWAYAT TRANSAKSI -->
+        <div id="tab-content-4" class="space-y-4 hidden anim-fade">
             <div class="fy-card p-4 space-y-3">
                 <h3 class="text-xs font-black uppercase tracking-wider border-b-2 border-zinc-200 dark:border-zinc-800 pb-2.5" style="color: var(--text-main);">Log Transaksi</h3>
                 <div class="grid grid-cols-2 gap-2.5">
@@ -258,8 +391,59 @@
             <div id="history-result-container" class="space-y-2.5"></div>
         </div>
 
-        <!-- TAB CONTENT 4: TERMINAL -->
-        <div id="tab-content-4" class="space-y-4 hidden anim-fade">
+        <!-- TAB 5: DEPOSIT SALDO QRIS -->
+        <div id="tab-content-5" class="space-y-4 hidden anim-fade">
+            <div class="fy-card p-5 space-y-4">
+                <div class="border-b-2 border-zinc-200 dark:border-zinc-800 pb-3">
+                    <h3 class="font-black text-sm uppercase tracking-wider flex items-center gap-2" style="color: var(--text-main);">
+                        Deposit Saldo (QRIS)
+                    </h3>
+                </div>
+
+                <!-- Banner Warning Maintenance -->
+                <div class="p-4 rounded-xl border-2 border-amber-400 bg-amber-400/10 space-y-1">
+                    <div class="flex items-center gap-2 font-black text-amber-500 text-xs">
+                        Deposit sedang Maintenance
+                    </div>
+                    <p class="text-[11px] font-semibold" style="color: var(--text-sub);">Deposit sedang maintenance. Silahkan coba lagi nanti.</p>
+                </div>
+
+                <div class="space-y-3.5 text-xs">
+                    <div class="space-y-1.5">
+                        <label class="block text-[10px] font-black uppercase" style="color: var(--text-main);">Nominal (Rp)</label>
+                        <input type="number" id="dep-nominal" value="20000" class="fy-input w-full p-3.5 text-xs" placeholder="20000">
+                        <p class="text-[10px] font-bold" style="color: var(--text-sub);">Minimal deposit Rp 1.000 — maksimal Rp 10.000.000</p>
+                    </div>
+
+                    <!-- Quick Amount Chips -->
+                    <div class="grid grid-cols-3 gap-2">
+                        <button onclick="setNominal(5000)" class="fy-btn py-2.5 text-[11px] font-black">Rp 5.000</button>
+                        <button onclick="setNominal(10000)" class="fy-btn py-2.5 text-[11px] font-black">Rp 10.000</button>
+                        <button onclick="setNominal(20000)" class="fy-btn py-2.5 text-[11px] font-black">Rp 20.000</button>
+                        <button onclick="setNominal(50000)" class="fy-btn py-2.5 text-[11px] font-black">Rp 50.000</button>
+                        <button onclick="setNominal(100000)" class="fy-btn py-2.5 text-[11px] font-black">Rp 100.000</button>
+                        <button onclick="setNominal(200000)" class="fy-btn py-2.5 text-[11px] font-black">Rp 200.000</button>
+                    </div>
+
+                    <!-- Kode Cashback -->
+                    <div class="space-y-1.5 pt-1">
+                        <label class="block text-[10px] font-black uppercase" style="color: var(--text-main);">Kode Cashback (opsional)</label>
+                        <div class="flex gap-2">
+                            <input type="text" id="dep-coupon" class="fy-input flex-grow p-3 text-xs uppercase" placeholder="MASUKKAN KODE">
+                            <button onclick="showNotif('Kode cashback tidak valid', 'error')" class="fy-btn px-4 py-3 text-xs font-black">Cek</button>
+                        </div>
+                        <p class="text-[10px] font-medium" style="color: var(--text-sub);">Punya kode cashback? Masukkan untuk bonus saldo saat pembayaran berhasil.</p>
+                    </div>
+
+                    <button class="fy-btn text-white font-black w-full py-3.5 text-xs uppercase opacity-75 cursor-not-allowed" style="background-color: #334155; border-color: var(--border-col);">
+                        Maintenance
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 6: TERMINAL LOG -->
+        <div id="tab-content-6" class="space-y-4 hidden anim-fade">
             <div class="fy-card p-4 space-y-3">
                 <div class="flex justify-between items-center border-b-2 border-zinc-200 dark:border-zinc-800 pb-2.5">
                     <h3 class="text-xs font-black uppercase tracking-wider" style="color: var(--text-main);">System Activity Log</h3>
@@ -271,45 +455,70 @@
             </div>
         </div>
 
-        <!-- TAB CONTENT 5: DEPOSIT KHUSUS -->
-        <div id="tab-content-5" class="space-y-4 hidden anim-fade">
-            <div class="fy-card p-5 space-y-4">
-                <div class="border-b-2 border-zinc-200 dark:border-zinc-800 pb-3">
-                    <h3 class="font-black text-sm uppercase tracking-wider flex items-center gap-2" style="color: var(--text-main);">
-                        <span>💳</span> Deposit Saldo QRIS Otomatis
-                    </h3>
-                    <p class="text-[11px] font-medium mt-0.5" style="color: var(--text-sub);">Scan QRIS pakai e-wallet atau m-banking apa saja. Saldo masuk otomatis.</p>
-                </div>
-                <div class="space-y-3.5 text-xs">
-                    <div class="p-4 rounded-2xl border-2 border-black bg-zinc-100 dark:bg-black space-y-1">
-                        <p class="font-bold" style="color: var(--text-sub);">Saldo Akun Saat Ini:</p>
-                        <p id="deposit-page-balance" class="text-2xl font-black text-emerald-500">Rp 0</p>
-                    </div>
-                    <div class="space-y-2">
-                        <label class="block text-[10px] font-black uppercase" style="color: var(--text-sub);">Nominal Top-up (IDR)</label>
-                        <input type="number" id="dep-nominal" value="10000" class="fy-input w-full p-3.5 text-xs" placeholder="10000">
-                        <button onclick="createDepositQr()" class="fy-btn text-white font-black w-full py-3.5 text-xs uppercase" style="background-color: var(--accent); border-color: var(--border-col);">
-                            Buat Tagihan QRIS Sekarang 🚀
-                        </button>
-                    </div>
-                    <div id="modal-qris-box" class="hidden p-4 rounded-2xl border-2 border-black bg-zinc-100 dark:bg-black text-center space-y-2.5">
-                        <p class="font-black text-emerald-500 text-xs">Tagihan QRIS Berhasil Dibuat</p>
-                        <p id="qris-total" class="font-black text-base" style="color: var(--text-main);">Rp 0</p>
-                        <a id="qris-link" href="#" target="_blank" class="fy-btn bg-amber-300 text-black inline-block px-4 py-2.5 text-xs border-black mt-1">Buka Tautan QRIS Pembayaran</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
     </main>
 
-    <!-- BOTTOM NAVIGATION (5 Menu Utama termasuk Deposit) -->
+    <!-- FLOATING HELP BUTTON & POPUP BANTUAN WHATSAPP (+6283120264665) -->
+    <div class="fixed bottom-20 right-4 z-50">
+        <div id="help-popup" class="hidden absolute bottom-14 right-0 w-64 p-3 rounded-2xl border-2 border-black bg-white dark:bg-zinc-900 shadow-[4px_4px_0px_#000] space-y-2 mb-2 anim-fade">
+            <div class="flex justify-between items-center border-b border-zinc-200 dark:border-zinc-800 pb-2">
+                <span class="text-xs font-black uppercase" style="color: var(--text-main);">Pusat Bantuan Fydz</span>
+                <button onclick="toggleHelpPopup()" class="text-xs font-black">✕</button>
+            </div>
+            <div class="space-y-1.5 text-xs font-bold">
+                <a href="https://wa.me/6283120264665?text=Halo%20Admin%20FydzOTP,%20saya%20butuh%20bantuan" target="_blank" class="block w-full p-2.5 rounded-xl bg-emerald-500 text-white text-center border border-black shadow-[2px_2px_0px_#000]">
+                    Chat WhatsApp Admin
+                </a>
+                <button onclick="openGuideModal(); toggleHelpPopup();" class="block w-full p-2.5 rounded-xl bg-sky-500 text-white text-center border border-black shadow-[2px_2px_0px_#000]">
+                    Panduan Penggunaan
+                </button>
+            </div>
+        </div>
+        
+        <button onclick="toggleHelpPopup()" class="fy-btn px-4 py-3 bg-sky-500 text-white rounded-full flex items-center gap-2 shadow-[3px_3px_0px_#000] border-black font-black text-xs uppercase">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+            Bantuan
+        </button>
+    </div>
+
+    <!-- MODAL PANDUAN PENGGUNAAN -->
+    <div id="guide-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="fy-card max-w-sm w-full p-6 space-y-4 max-h-[85vh] overflow-y-auto">
+            <div class="flex justify-between items-center border-b-2 border-zinc-200 dark:border-zinc-800 pb-3">
+                <h3 class="font-black text-sm uppercase tracking-wider" style="color: var(--text-main);">Panduan Penggunaan FydzOTP</h3>
+                <button onclick="closeGuideModal()" class="font-black text-sm" style="color: var(--text-main);">✕</button>
+            </div>
+            <div class="space-y-3 text-xs font-medium leading-relaxed" style="color: var(--text-sub);">
+                <p><b>1. Pilih Layanan (Katalog):</b> Masuk ke menu Katalog untuk melihat daftar nomor virtual aktif (WhatsApp, Telegram, Shopee, dll) beserta harga dan stok real-time.</p>
+                <p><b>2. Pembelian Nomor:</b> Klik tombol beli pada layanan yang diinginkan. Sistem otomatis akan memesan nomor dan mengarahkannya ke menu Kelola.</p>
+                <p><b>3. Menerima SMS OTP:</b> Pantau nomor aktif di menu Kelola atau tunggu notifikasi live feed masuk. Kode OTP akan muncul otomatis dalam beberapa detik.</p>
+                <p><b>4. Top-up Saldo:</b> Jika saldo habis, lakukan deposit melalui menu Deposit Saldo QRIS. (Saat ini sedang maintenance dari pusat).</p>
+                <p><b>5. Kendala & Bantuan:</b> Hubungi admin resmi kami melalui tombol WhatsApp bantuan di pojok kanan bawah.</p>
+            </div>
+            <button onclick="closeGuideModal()" class="fy-btn w-full py-3 text-xs uppercase font-black bg-sky-500 text-white border-black">Mengerti</button>
+        </div>
+    </div>
+
+    <!-- REAL-TIME LIVE NOTIF PEMBELI (MUNCUL OTOMATIS) -->
+    <div id="live-buyer-toast" class="fixed bottom-4 left-4 z-40 hidden fy-card p-3.5 max-w-xs shadow-[4px_4px_0px_#000] anim-fade border-black bg-white dark:bg-zinc-900">
+        <div class="flex items-start gap-3">
+            <div class="w-8 h-8 rounded-xl bg-emerald-500 text-white flex items-center justify-center font-black text-xs shrink-0 border border-black">✓</div>
+            <div class="space-y-0.5 text-xs">
+                <div class="flex justify-between">
+                    <span id="toast-service" class="font-black" style="color: var(--text-main);">WhatsApp</span>
+                    <span class="text-[9px] font-bold" style="color: var(--text-sub);">Baru saja</span>
+                </div>
+                <p id="toast-detail" class="text-[11px] font-bold text-emerald-500">62813••••892 • Server 1</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- BOTTOM NAVIGATION (5 Menu Utama) -->
     <nav class="fixed bottom-0 left-0 right-0 backdrop-blur-md border-t-2.5 px-2 py-2.5 z-40" style="background-color: var(--bg-main); border-color: var(--border-col); opacity: 0.98;">
         <div class="max-w-md mx-auto grid grid-cols-5 gap-1.5">
-            <button onclick="switchMainTab(1)" id="bnav-1" class="fy-btn py-2.5 text-center text-[10px] tab-active">Katalog</button>
-            <button onclick="switchMainTab(2)" id="bnav-2" class="fy-btn py-2.5 text-center text-[10px]">Kelola</button>
-            <button onclick="switchMainTab(3)" id="bnav-3" class="fy-btn py-2.5 text-center text-[10px]">Riwayat</button>
-            <button onclick="switchMainTab(4)" id="bnav-4" class="fy-btn py-2.5 text-center text-[10px]">Terminal</button>
+            <button onclick="switchMainTab(1)" id="bnav-1" class="fy-btn py-2.5 text-center text-[10px] tab-active">Dashboard</button>
+            <button onclick="switchMainTab(2)" id="bnav-2" class="fy-btn py-2.5 text-center text-[10px]">Katalog</button>
+            <button onclick="switchMainTab(3)" id="bnav-3" class="fy-btn py-2.5 text-center text-[10px]">Kelola</button>
+            <button onclick="switchMainTab(4)" id="bnav-4" class="fy-btn py-2.5 text-center text-[10px]">Riwayat</button>
             <button onclick="switchMainTab(5)" id="bnav-5" class="fy-btn py-2.5 text-center text-[10px] bg-emerald-400 text-black">Deposit</button>
         </div>
     </nav>
@@ -321,6 +530,27 @@
         
         let globalServicesCache = [];
         let pollingTimer = null;
+
+        function toggleSidebar() {
+            const drawer = document.getElementById('sidebar-drawer');
+            drawer.classList.toggle('hidden');
+        }
+
+        function toggleHelpPopup() {
+            const popup = document.getElementById('help-popup');
+            popup.classList.toggle('hidden');
+        }
+
+        function openGuideModal() {
+            document.getElementById('guide-modal').classList.remove('hidden');
+        }
+        function closeGuideModal() {
+            document.getElementById('guide-modal').classList.add('hidden');
+        }
+
+        function setNominal(val) {
+            document.getElementById('dep-nominal').value = val;
+        }
 
         function toggleTheme() {
             const html = document.documentElement;
@@ -339,6 +569,20 @@
             const savedTheme = localStorage.getItem('fydz_theme') || 'light';
             document.documentElement.classList.remove('light', 'dark');
             document.documentElement.classList.add(savedTheme);
+            
+            // Simulasi Realtime Live Buyer Notification berputar
+            setInterval(() => {
+                const services = ["WhatsApp", "Telegram", "Shopee", "DANA", "Instagram", "Google"];
+                const randServ = services[Math.floor(Math.random() * services.length)];
+                const randPhone = "628" + Math.floor(100 + Math.random() * 900) + "••••" + Math.floor(100 + Math.random() * 900);
+                
+                document.getElementById('toast-service').innerText = randServ;
+                document.getElementById('toast-detail').innerText = `${randPhone} • Server 1`;
+                
+                const toast = document.getElementById('live-buyer-toast');
+                toast.classList.remove('hidden');
+                setTimeout(() => toast.classList.add('hidden'), 4000);
+            }, 12000);
         })();
 
         function startAppLoading() {
@@ -429,29 +673,41 @@
             try {
                 const data = await requestFydz('/profile', {}, true);
                 const bal = (data.balance || 0).toLocaleString('id-ID');
-                document.getElementById('display-balance').innerText = `Rp ${bal}`;
-                document.getElementById('deposit-page-balance').innerText = `Rp ${bal}`;
+                document.getElementById('header-balance').innerText = `Rp ${bal}`;
+                document.getElementById('dash-balance').innerText = `Rp ${bal}`;
             } catch(e) {}
         }
 
         function switchMainTab(tabId) {
-            for(let i=1; i<=5; i++) {
+            // Mapping tabId ke elemen DOM (Total 6 tab: 1.Dashboard, 2.Katalog, 3.Kelola, 4.Riwayat, 5.Deposit, 6.Terminal)
+            for(let i=1; i<=6; i++) {
                 const content = document.getElementById(`tab-content-${i}`);
                 if(content) content.classList.add('hidden');
+            }
+            
+            // Handle bottom nav active state (hanya 5 tombol di bawah)
+            for(let i=1; i<=5; i++) {
                 const bbtn = document.getElementById(`bnav-${i}`);
                 if(bbtn) {
                     if(i === 5) bbtn.className = "fy-btn py-2.5 text-center text-[10px] bg-emerald-400 text-black";
                     else bbtn.className = "fy-btn py-2.5 text-center text-[10px]";
                 }
             }
-            document.getElementById(`tab-content-${tabId}`).classList.remove('hidden');
-            const activeBBtn = document.getElementById(`bnav-${tabId}`);
-            if(activeBBtn) {
-                if(tabId === 5) activeBBtn.className = "fy-btn py-2.5 text-center text-[10px] tab-active bg-emerald-400 text-black";
-                else activeBBtn.className = "fy-btn py-2.5 text-center text-[10px] tab-active";
+
+            // Tampilkan tab yang dipilih
+            const targetTab = tabId <= 5 ? tabId : 6;
+            document.getElementById(`tab-content-${targetTab}`).classList.remove('hidden');
+            
+            if(tabId <= 5) {
+                const activeBBtn = document.getElementById(`bnav-${tabId}`);
+                if(activeBBtn) {
+                    if(tabId === 5) activeBBtn.className = "fy-btn py-2.5 text-center text-[10px] tab-active bg-emerald-400 text-black";
+                    else activeBBtn.className = "fy-btn py-2.5 text-center text-[10px] tab-active";
+                }
             }
-            if(tabId === 1 && globalServicesCache.length === 0) loadCatalogData();
-            if(tabId === 5) fetchProfile();
+
+            if(tabId === 2 && globalServicesCache.length === 0) loadCatalogData();
+            if(tabId === 1 || tabId === 5) fetchProfile();
         }
 
         async function onServerChange() {
@@ -546,7 +802,7 @@
                     document.getElementById('man-order-id').value = orderObj.id;
                     renderActiveMonitor(orderObj);
                     startAutoPolling(orderObj.id);
-                    switchMainTab(2);
+                    switchMainTab(3);
                 }
             } catch(e) {}
         }
@@ -617,34 +873,6 @@
                 showNotif("Pesanan dibatalkan, saldo dikembalikan", "success");
                 fetchProfile();
             } catch(e) {}
-        }
-
-        async function createDepositQr() {
-            const nominal = document.getElementById('dep-nominal').value;
-            if(!nominal || nominal < 1000) {
-                showNotif("Masukkan nominal minimal Rp 1.000", "error");
-                return;
-            }
-
-            try {
-                showNotif("Memproses pembuatan QRIS...", "info");
-                const data = await requestFydz('/deposit/create', { 
-                    nominal: nominal, 
-                    method: 'qris' 
-                });
-                
-                document.getElementById('modal-qris-box').classList.remove('hidden');
-                
-                const totalBayar = data.total_bayar || data.amount || nominal;
-                document.getElementById('qris-total').innerText = `Rp ${Number(totalBayar).toLocaleString('id-ID')}`;
-                
-                const qrisLink = data.qr_link || data.qris_url || data.checkout_url || data.url || '#';
-                document.getElementById('qris-link').href = qrisLink;
-                
-                showNotif("Tagihan QRIS berhasil dibuat", "success");
-            } catch(e) {
-                logTerminal(`Deposit Error: ${e.message}`, true);
-            }
         }
 
         async function fetchOrderHistory() {
