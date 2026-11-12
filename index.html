@@ -165,7 +165,7 @@
                 </div>
             </div>
             <div class="text-[10px] font-bold text-center pt-4 border-t border-zinc-200 dark:border-zinc-800" style="color: var(--text-sub);">
-                FydzOTP Reseller v16.3 — Strict Secure
+                FydzOTP Reseller v16.4 — Auto Deposit & Strict Secure
             </div>
         </div>
     </div>
@@ -348,20 +348,20 @@
             <div id="history-result-container" class="space-y-2.5"></div>
         </div>
 
-        <!-- TAB 5: DEPOSIT SALDO QRIS (KONFIRMASI ADMIN WA) -->
+        <!-- TAB 5: DEPOSIT SALDO QRIS (OTOMATIS VIA API DITZNESIA) -->
         <div id="tab-content-5" class="space-y-4 hidden anim-fade">
             <div class="fy-card p-5 space-y-4">
                 <div class="border-b-2 border-zinc-200 dark:border-zinc-800 pb-3">
                     <h3 class="font-black text-sm uppercase tracking-wider flex items-center gap-2" style="color: var(--text-main);">
-                        Deposit Saldo QRIS
+                        Deposit Saldo QRIS Otomatis
                     </h3>
                 </div>
 
-                <div class="p-4 rounded-xl border-2 border-amber-500 bg-amber-500/10 space-y-1">
-                    <div class="flex items-center gap-2 font-black text-amber-600 text-xs">
-                        ℹ️ Instruksi Pembayaran QRIS
+                <div class="p-4 rounded-xl border-2 border-emerald-500 bg-emerald-500/10 space-y-1">
+                    <div class="flex items-center gap-2 font-black text-emerald-600 text-xs">
+                        ⚡ Sistem Deposit Otomatis
                     </div>
-                    <p class="text-[11px] font-semibold" style="color: var(--text-sub);">Scan QRIS di bawah ini, lalu konfirmasi pembayaran ke Admin WhatsApp agar saldo ditambahkan ke akun Anda.</p>
+                    <p class="text-[11px] font-semibold" style="color: var(--text-sub);">Masukkan nominal, generate QRIS resmi, scan dan bayar. Saldo akun kamu akan masuk otomatis setelah pembayaran terdeteksi!</p>
                 </div>
 
                 <div class="space-y-3.5 text-xs">
@@ -372,32 +372,35 @@
 
                     <!-- Quick Amount Chips -->
                     <div class="grid grid-cols-3 gap-2">
-                        <button onclick="setNominal(5000)" class="fy-btn py-2.5 text-[11px] font-black">Rp 5.000</button>
                         <button onclick="setNominal(10000)" class="fy-btn py-2.5 text-[11px] font-black">Rp 10.000</button>
                         <button onclick="setNominal(20000)" class="fy-btn py-2.5 text-[11px] font-black">Rp 20.000</button>
                         <button onclick="setNominal(50000)" class="fy-btn py-2.5 text-[11px] font-black">Rp 50.000</button>
                         <button onclick="setNominal(100000)" class="fy-btn py-2.5 text-[11px] font-black">Rp 100.000</button>
                         <button onclick="setNominal(200000)" class="fy-btn py-2.5 text-[11px] font-black">Rp 200.000</button>
+                        <button onclick="setNominal(500000)" class="fy-btn py-2.5 text-[11px] font-black">Rp 500.000</button>
                     </div>
 
                     <button id="btn-gen-qris" onclick="createDepositQr()" class="fy-btn text-white font-black w-full py-3.5 text-xs uppercase shadow-[3px_3px_0px_#000]" style="background-color: var(--accent); border-color: var(--border-col);">
-                        Generate QRIS Pembayaran
+                        Generate QRIS Otomatis
                     </button>
 
                     <div id="modal-qris-box" class="hidden p-5 rounded-2xl border-2 border-black bg-zinc-950 text-center space-y-4 anim-fade shadow-[4px_4px_0px_#000]">
                         <div class="space-y-1">
-                            <p class="font-black text-emerald-400 text-xs uppercase tracking-wider">QRIS Reseller Dibuat</p>
+                            <p class="font-black text-emerald-400 text-xs uppercase tracking-wider">QRIS Pembayaran Dibuat</p>
                             <p id="qris-total" class="font-black text-lg text-white">Rp 0</p>
+                            <p class="text-[10px] text-zinc-400 font-mono" id="qris-dep-id">ID: -</p>
                         </div>
                         
                         <div id="qrcode-container" class="p-3 bg-white border-2 border-black inline-block rounded-xl shadow-[3px_3px_0px_#000] mx-auto"></div>
 
-                        <a id="wa-confirm-btn" href="#" target="_blank" class="block w-full py-3 text-xs font-black bg-emerald-400 text-black border-2 border-black rounded-xl shadow-[2px_2px_0px_#000] uppercase">
-                            💬 Konfirmasi Transfer ke WhatsApp Admin
-                        </a>
-                        <button onclick="downloadQrisImage()" class="fy-btn w-full py-2.5 text-[10px] font-bold bg-zinc-800 text-white border-black">
-                            ↓ Unduh QRIS
-                        </button>
+                        <div class="space-y-2">
+                            <button onclick="checkDepositStatus()" class="fy-btn w-full py-3 text-xs font-black bg-emerald-400 text-black border-black uppercase">
+                                🔄 Cek Status Pembayaran
+                            </button>
+                            <button onclick="cancelActiveDeposit()" class="fy-btn w-full py-2.5 text-[10px] font-bold bg-red-600 text-white border-black">
+                                Batalkan Deposit
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -405,15 +408,16 @@
 
     </main>
 
-    <!-- SCRIPT ENGINE (STRICT BALANCE LOCK) -->
+    <!-- SCRIPT ENGINE (STRICT BALANCE LOCK & AUTO DEPOSIT) -->
     <script>
-        const _ENDPOINT = "/api/proxy";
+        const _PROXY_URL = "https://www.ditznesia.com/api/dev";
         const _SECRET_KEY = "otp_90b2ec4b500a5c63f0523d119a0673b2814f5a29";
         
         let currentUser = null;
         let globalServicesCache = [];
         let pollingTimer = null;
-        let currentDepNominal = 0;
+        let activeDepositId = null;
+        let activeDepositNominal = 0;
 
         function handleUserLogin() {
             const username = document.getElementById('auth-username').value.trim().toUpperCase();
@@ -553,8 +557,8 @@
             navigator.clipboard.writeText(text).then(() => showNotif("Berhasil disalin", "success"));
         }
 
-        async function requestFydz(path, params = {}, silent = false) {
-            const url = new URL(`${window.location.origin}${_ENDPOINT}${path}`);
+        async function requestFydz(endpoint, params = {}, silent = false) {
+            const url = new URL(`${_PROXY_URL}${endpoint}`);
             url.searchParams.append('apikey', _SECRET_KEY);
             for (const [k, v] of Object.entries(params)) {
                 if (v !== undefined && v !== "") url.searchParams.append(k, v);
@@ -575,7 +579,7 @@
                 document.getElementById(`tab-content-${i}`).classList.add('hidden');
             }
             document.getElementById(`tab-content-${tabId}`).classList.remove('hidden');
-            const titles = { 1: "Dashboard", 2: "Katalog Nokos", 3: "Kelola Pesanan", 4: "Riwayat", 5: "Deposit QRIS" };
+            const titles = { 1: "Dashboard", 2: "Katalog Nokos", 3: "Kelola Pesanan", 4: "Riwayat", 5: "Deposit Otomatis" };
             document.getElementById('header-title').innerText = titles[tabId] || "Dashboard";
             if(tabId === 2 && globalServicesCache.length === 0) loadCatalogData();
         }
@@ -586,7 +590,7 @@
             const opWrapper = document.getElementById('operator-wrapper');
             if(['1', '6', '7'].includes(server)) opWrapper.classList.remove('hidden');
             else opWrapper.classList.add('hidden');
-            loadCatalogData();
+            loadCatalogServices();
         }
 
         async function loadCatalogData() {
@@ -652,18 +656,22 @@
             }).join('');
         }
 
-        // VALIDASI SALDO KETAT: DIBLOKIR TOTAL JIKA SALDO 0 ATAU KURANG
+        // 1. STRICT BALANCE LOCK: CEK MUTLAK SALDO PRIBADI SEBELUM TEMBAK API
         async function buyNokosItem(produk, provider, total, totalPrice, serviceName) {
-            let userData = getActiveUserData();
-            if(!userData) {
+            let usersDB = JSON.parse(localStorage.getItem('fydz_reseller_db') || '{}');
+            let activeUserKey = localStorage.getItem('fydz_active_user');
+
+            if(!activeUserKey || !usersDB[activeUserKey]) {
                 showNotif("Silakan login terlebih dahulu!", "error");
                 return;
             }
 
-            // CEK MUTLAK SALDO PRIBADI
-            if(!userData.balance || userData.balance < totalPrice) {
-                showNotif(`Saldo Anda tidak mencukupi (Rp ${(userData.balance || 0).toLocaleString('id-ID')} < Rp ${totalPrice.toLocaleString('id-ID')}). Silakan deposit QRIS!`, "error");
-                return; // STOP DI SINI, API DITZNESIA TIDAK AKAN DITEMBAK!
+            let userData = usersDB[activeUserKey];
+            let currentBalance = Number(userData.balance) || 0;
+
+            if(currentBalance < totalPrice) {
+                showNotif(`GAGAL! Saldo Anda Rp ${currentBalance.toLocaleString('id-ID')} tidak cukup untuk membeli layanan seharga Rp ${totalPrice.toLocaleString('id-ID')}. Silakan deposit QRIS!`, "error");
+                return; // STOP DI SINI! API DITZNESIA DIJAMIN TIDAK AKAN DITEMBAK JIKA SALDO 0/KURANG.
             }
 
             const server = document.getElementById('sel-server').value;
@@ -674,15 +682,15 @@
             if(operator && operator !== 'any' && ['1', '6', '7'].includes(server)) params.operator = operator;
             
             try {
-                showNotif("Memproses pesanan...", "info");
+                showNotif("Memproses pesanan ke server...", "info");
                 
-                // BARU TEMBAK API KETIKA SALDO AMAN
                 const data = await requestFydz('/order', params);
                 
                 userData.balance -= totalPrice;
-                userData.totalOrder += 1;
+                userData.totalOrder = (userData.totalOrder || 0) + 1;
                 
                 const orderObj = data.orders ? data.orders[0] : data;
+                if(!userData.orders) userData.orders = [];
                 userData.orders.unshift({
                     id: orderObj.id || '-',
                     number: orderObj.number || '-',
@@ -693,7 +701,10 @@
                     created_at: new Date().toLocaleTimeString()
                 });
                 
-                saveActiveUserData(userData);
+                usersDB[activeUserKey] = userData;
+                localStorage.setItem('fydz_reseller_db', JSON.stringify(usersDB));
+                
+                syncUserDataUI();
                 showNotif("Pesanan berhasil dibuat!", "success");
 
                 if(orderObj && orderObj.id) {
@@ -703,7 +714,89 @@
                     switchMainTab(3);
                 }
             } catch(e) {
-                // Jika error dari server DitzNesia, saldo aman tidak terpotong
+                showNotif("Gagal order: " + e.message, "error");
+            }
+        }
+
+        // 2. FITUR DEPOSIT OTOMATIS VIA API DITZNESIA
+        async function createDepositQr() {
+            const nominal = Number(document.getElementById('dep-nominal').value);
+            if(!nominal || nominal < 1000) return showNotif("Minimal deposit Rp 1.000", "error");
+
+            try {
+                showNotif("Membuat QRIS deposit otomatis...", "info");
+                const res = await requestFydz('/deposit/create', { nominal });
+                
+                if(res && res.id) {
+                    activeDepositId = res.id;
+                    activeDepositNominal = res.total_diterima || nominal;
+
+                    document.getElementById('modal-qris-box').classList.remove('hidden');
+                    document.getElementById('qris-total').innerText = `Rp ${Number(res.total_bayar || nominal).toLocaleString('id-ID')}`;
+                    document.getElementById('qris-dep-id').innerText = `ID: ${res.id}`;
+                    
+                    const qrContainer = document.getElementById('qrcode-container');
+                    qrContainer.innerHTML = "";
+                    new QRCode(qrContainer, {
+                        text: res.qr_link || "https://www.ditznesia.com",
+                        width: 180, height: 180
+                    });
+
+                    showNotif("QRIS berhasil dibuat! Silakan scan untuk membayar.", "success");
+                }
+            } catch(e) {
+                showNotif("Gagal membuat deposit: " + e.message, "error");
+            }
+        }
+
+        async function checkDepositStatus() {
+            if(!activeDepositId) return showNotif("Tidak ada deposit aktif", "error");
+
+            let usersDB = JSON.parse(localStorage.getItem('fydz_reseller_db') || '{}');
+            let activeUserKey = localStorage.getItem('fydz_active_user');
+            if(!activeUserKey || !usersDB[activeUserKey]) return;
+
+            try {
+                showNotif("Mengecek status pembayaran...", "info");
+                const res = await requestFydz('/deposit/status', { id: activeDepositId });
+
+                if(res && res.status === 'berhasil') {
+                    let userData = usersDB[activeUserKey];
+                    
+                    // Tambah saldo ke akun user secara otomatis
+                    userData.balance = (userData.balance || 0) + Number(activeDepositNominal);
+                    if(!userData.deposits) userData.deposits = [];
+                    userData.deposits.unshift({
+                        id: activeDepositId,
+                        nominal: Number(activeDepositNominal),
+                        status: 'berhasil',
+                        created_at: new Date().toLocaleTimeString()
+                    });
+
+                    usersDB[activeUserKey] = userData;
+                    localStorage.setItem('fydz_reseller_db', JSON.stringify(usersDB));
+                    syncUserDataUI();
+
+                    showNotif(`SUKSES! Deposit Rp ${Number(activeDepositNominal).toLocaleString('id-ID')} masuk ke akun!`, "success");
+                    document.getElementById('modal-qris-box').classList.add('hidden');
+                    activeDepositId = null;
+                } else {
+                    showNotif(`Status deposit: ${(res.status || 'pending').toUpperCase()}`, "info");
+                }
+            } catch(e) {
+                showNotif("Gagal cek status: " + e.message, "error");
+            }
+        }
+
+        async function cancelActiveDeposit() {
+            if(!activeDepositId) return;
+            try {
+                await requestFydz('/deposit/cancel', { id: activeDepositId });
+                showNotif("Deposit dibatalkan", "success");
+                document.getElementById('modal-qris-box').classList.add('hidden');
+                activeDepositId = null;
+            } catch(e) {
+                showNotif("Gagal membatalkan deposit", "error");
             }
         }
 
@@ -761,13 +854,14 @@
                 await requestFydz('/cancel', { id }); 
                 if(pollingTimer) clearInterval(pollingTimer);
                 
-                let userData = getActiveUserData();
-                if(userData && userData.orders) {
-                    let targetOrder = userData.orders.find(o => o.id === id);
+                let usersDB = JSON.parse(localStorage.getItem('fydz_reseller_db') || '{}');
+                let activeUserKey = localStorage.getItem('fydz_active_user');
+                if(activeUserKey && usersDB[activeUserKey] && usersDB[activeUserKey].orders) {
+                    let targetOrder = usersDB[activeUserKey].orders.find(o => o.id === id);
                     if(targetOrder && targetOrder.status !== 'refunded') {
-                        userData.balance += targetOrder.price;
+                        usersDB[activeUserKey].balance += targetOrder.price;
                         targetOrder.status = 'refunded';
-                        saveActiveUserData(userData);
+                        localStorage.setItem('fydz_reseller_db', JSON.stringify(usersDB));
                         syncUserDataUI();
                     }
                 }
@@ -776,36 +870,6 @@
             } catch(e) {
                 showNotif("Gagal membatalkan pesanan: " + e.message, "error");
             }
-        }
-
-        function createDepositQr() {
-            const nominal = Number(document.getElementById('dep-nominal').value);
-            if(!nominal || nominal < 1000) return showNotif("Minimal deposit Rp 1.000", "error");
-
-            currentDepNominal = nominal;
-            document.getElementById('modal-qris-box').classList.remove('hidden');
-            document.getElementById('qris-total').innerText = `Rp ${nominal.toLocaleString('id-ID')}`;
-            
-            const waText = encodeURIComponent(`Halo Admin FydzOTP, saya ingin konfirmasi deposit saldo QRIS sebesar Rp ${nominal.toLocaleString('id-ID')} atas nama akun *${currentUser}*. Mohon segera diproses.`);
-            document.getElementById('wa-confirm-btn').href = `https://wa.me/6283120264665?text=${waText}`;
-
-            const qrContainer = document.getElementById('qrcode-container');
-            qrContainer.innerHTML = "";
-            new QRCode(qrContainer, {
-                text: `https://xtmione.web.id/qris-pay-${nominal}-${currentUser}`,
-                width: 180, height: 180
-            });
-            showNotif("QRIS dibuat! Silakan transfer dan konfirmasi ke WhatsApp Admin.", "success");
-        }
-
-        function downloadQrisImage() {
-            const qrCanvas = document.querySelector('#qrcode-container canvas');
-            if(!qrCanvas) return showNotif("QRIS belum ada", "error");
-            const link = document.createElement('a');
-            link.href = qrCanvas.toDataURL("image/png");
-            link.download = `QRIS-Reseller-${currentDepNominal}.png`;
-            link.click();
-            showNotif("QRIS diunduh", "success");
         }
 
         function fetchOrderHistory() {
