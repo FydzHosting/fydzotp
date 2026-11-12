@@ -619,15 +619,24 @@
 
         async function createDepositQr() {
             const nominal = document.getElementById('dep-nominal').value;
+            if(!nominal || nominal < 1000) {
+                showNotif("Masukkan nominal minimal Rp 1.000", "error");
+                return;
+            }
+
             try {
-                const data = await requestFydz('/deposit/create', { nominal });
+                showNotif("Memproses pembuatan QRIS...", "info");
+                const data = await requestFydz('/deposit/create', { 
+                    nominal: nominal, 
+                    method: 'qris' 
+                });
+                
                 document.getElementById('modal-qris-box').classList.remove('hidden');
                 
-                // Menangkap respons QRIS sesuai standar DitzNesia / qris gateway
                 const totalBayar = data.total_bayar || data.amount || nominal;
                 document.getElementById('qris-total').innerText = `Rp ${Number(totalBayar).toLocaleString('id-ID')}`;
                 
-                const qrisLink = data.qr_link || data.qris_url || data.checkout_url || '#';
+                const qrisLink = data.qr_link || data.qris_url || data.checkout_url || data.url || '#';
                 document.getElementById('qris-link').href = qrisLink;
                 
                 showNotif("Tagihan QRIS berhasil dibuat", "success");
