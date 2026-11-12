@@ -38,7 +38,7 @@
             color: var(--text-main);
             background-image: linear-gradient(to right, var(--bg-grid) 1px, transparent 1px), linear-gradient(to bottom, var(--bg-grid) 1px, transparent 1px);
             background-size: 24px 24px;
-            padding-bottom: 50px;
+            padding-bottom: 70px;
             transition: background-color 0.2s ease, color 0.2s ease;
         }
 
@@ -90,7 +90,7 @@
 </head>
 <body class="min-h-screen">
 
-    <!-- MODAL MAINTENANCE GLOBAL (JIKA AKTIF DAN BUKAN ADMIN) -->
+    <!-- MODAL MAINTENANCE GLOBAL -->
     <div id="maintenance-screen" class="fixed inset-0 z-50 bg-zinc-950 flex items-center justify-center p-6 text-center hidden">
         <div class="fy-card max-w-sm w-full p-6 space-y-4 bg-zinc-900 border-amber-500 text-white shadow-[6px_6px_0px_#f59e0b]">
             <div class="w-16 h-16 bg-amber-500 text-black border-2 border-black rounded-2xl mx-auto flex items-center justify-center text-2xl font-black">
@@ -138,6 +138,45 @@
     <!-- TOAST NOTIFICATION -->
     <div id="toast-container" class="fixed top-3 left-0 right-0 z-50 flex flex-col items-center gap-2 px-4 pointer-events-none"></div>
 
+    <!-- FLOATING BANTUAN WIDGET (YANG DIMINTA) -->
+    <div class="fixed bottom-5 right-5 z-40 flex flex-col items-end gap-2">
+        <!-- Menu Pop-up Bantuan -->
+        <div id="help-popup-menu" class="hidden fy-card p-3 space-y-2 bg-white dark:bg-zinc-900 border-black shadow-[4px_4px_0px_#000] mb-2 w-48 anim-fade">
+            <div class="flex justify-between items-center border-b border-zinc-200 dark:border-zinc-800 pb-1.5">
+                <span class="text-[10px] font-black uppercase text-amber-500">Pusat Bantuan</span>
+                <button onclick="toggleHelpMenu()" class="text-xs font-bold px-1">✕</button>
+            </div>
+            <a href="https://wa.me/6283120264665" target="_blank" class="w-full text-left p-2 rounded-xl bg-emerald-500/10 border-2 border-emerald-500 text-emerald-600 dark:text-emerald-400 text-xs font-black flex items-center gap-2 hover:bg-emerald-500/20">
+                <span>🟢</span> WhatsApp (+6283)
+            </a>
+            <button onclick="openGuideModal()" class="w-full text-left p-2 rounded-xl bg-sky-500/10 border-2 border-sky-500 text-sky-600 dark:text-sky-400 text-xs font-black flex items-center gap-2 hover:bg-sky-500/20">
+                <span>📖</span> Lihat Panduan
+            </button>
+        </div>
+
+        <!-- Tombol Utama Bantuan -->
+        <button onclick="toggleHelpMenu()" class="fy-btn px-4 py-3 bg-sky-600 text-white border-black font-black text-xs uppercase flex items-center gap-2 shadow-[4px_4px_0px_#000]">
+            <span class="text-base">🛟</span> Bantuan
+        </button>
+    </div>
+
+    <!-- MODAL PANDUAN (GUIDE) -->
+    <div id="guide-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+        <div class="fy-card max-w-sm w-full p-5 space-y-4 bg-white dark:bg-zinc-900 border-black">
+            <div class="flex justify-between items-center border-b-2 border-zinc-200 dark:border-zinc-800 pb-3">
+                <h3 class="font-black text-sm uppercase text-sky-500">Panduan Penggunaan FydzOTP</h3>
+                <button onclick="closeGuideModal()" class="fy-btn px-2.5 py-1 text-xs">✕</button>
+            </div>
+            <div class="space-y-3 text-xs font-medium" style="color: var(--text-sub);">
+                <p>1. <b>Login Akun:</b> Masukkan username dan PIN kamu. Akun otomatis terdaftar dengan dompet saldo mandiri.</p>
+                <p>2. <b>Deposit Saldo:</b> Masuk ke menu Deposit QRIS, masukkan nominal, scan QRIS, dan saldo masuk otomatis.</p>
+                <p>3. <b>Order Nokos:</b> Pilih server dan layanan di katalog. Sistem aman dari saldo minus (Strict Balance Lock).</p>
+                <p>4. <b>Notifikasi & OTP:</b> Kode OTP masuk otomatis dengan suara notifikasi "Ting!" pada menu Kelola Pesanan.</p>
+            </div>
+            <button onclick="closeGuideModal()" class="fy-btn w-full py-2.5 text-xs bg-sky-500 text-white border-black uppercase font-black">Mengerti</button>
+        </div>
+    </div>
+
     <!-- SIDEBAR DRAWER -->
     <div id="sidebar-drawer" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm hidden transition-opacity" onclick="toggleSidebar()">
         <div class="absolute left-0 top-0 bottom-0 w-72 p-5 space-y-6 flex flex-col justify-between" style="background-color: var(--card-bg); border-right: 3px solid var(--border-col);" onclick="event.stopPropagation()">
@@ -175,7 +214,7 @@
                         Deposit Saldo QRIS
                     </button>
 
-                    <!-- MENU KHUSUS ADMIN (MAINTENANCE & BROADCAST) -->
+                    <!-- MENU ADMIN -->
                     <div id="admin-only-menu" class="hidden pt-2 border-t-2 border-dashed border-zinc-300 dark:border-zinc-800 space-y-2">
                         <p class="text-[9px] font-black uppercase text-amber-500 px-1">🔒 Panel Kontrol Admin</p>
                         <button onclick="toggleSidebar(); openAdminControlModal();" class="w-full text-left p-3 rounded-xl border-2 border-amber-500 text-amber-500 hover:bg-amber-500/10 flex items-center gap-3 font-black">
@@ -195,12 +234,12 @@
                 </div>
             </div>
             <div class="text-[10px] font-bold text-center pt-4 border-t border-zinc-200 dark:border-zinc-800" style="color: var(--text-sub);">
-                FydzOTP v16.9 — Broadcast & Maintenance Ready
+                FydzOTP v17.0 — Help & Sound Ready
             </div>
         </div>
     </div>
 
-    <!-- MODAL PENGATURAN ADMIN (MAINTENANCE & BROADCAST) -->
+    <!-- MODAL PENGATURAN ADMIN -->
     <div id="admin-control-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 hidden">
         <div class="fy-card max-w-sm w-full p-5 space-y-4 bg-white dark:bg-zinc-900 border-black">
             <div class="flex justify-between items-center border-b-2 border-zinc-200 dark:border-zinc-800 pb-3">
@@ -209,7 +248,6 @@
             </div>
 
             <div class="space-y-4 text-xs">
-                <!-- Mode Maintenance -->
                 <div class="space-y-1.5 p-3 rounded-xl border-2 border-amber-400 bg-amber-500/10">
                     <label class="block font-black uppercase text-amber-600">Status Maintenance Website</label>
                     <div class="flex gap-2">
@@ -218,10 +256,9 @@
                     </div>
                 </div>
 
-                <!-- Broadcast Mengambang -->
                 <div class="space-y-1.5">
                     <label class="block font-black uppercase" style="color: var(--text-main);">Pesan Broadcast Mengambang</label>
-                    <textarea id="input-broadcast-msg" rows="3" class="fy-input w-full p-2.5 text-xs" placeholder="Tulis pengumuman penting di sini... (kosongkan jika tidak ada)"></textarea>
+                    <textarea id="input-broadcast-msg" rows="3" class="fy-input w-full p-2.5 text-xs" placeholder="Tulis pengumuman penting di sini..."></textarea>
                 </div>
 
                 <button onclick="saveAdminSettings()" class="fy-btn w-full py-3 bg-amber-500 text-black border-black font-black uppercase">
@@ -256,13 +293,11 @@
         </div>
     </header>
 
-    <!-- BANNER BROADCAST MENGAMBANG DI ATAS (DINAMIS) -->
+    <!-- BANNER BROADCAST MENGAMBANG DI ATAS -->
     <div id="broadcast-banner" class="hidden max-w-md mx-auto px-4 pt-3">
         <div class="fy-card p-3 bg-amber-400 text-black border-black flex items-start gap-2.5 shadow-[3px_3px_0px_#000]">
             <span class="text-base">📢</span>
-            <div class="flex-1 text-xs font-black leading-snug" id="broadcast-text-content">
-                -
-            </div>
+            <div class="flex-1 text-xs font-black leading-snug" id="broadcast-text-content">-</div>
             <button onclick="dismissBroadcast()" class="text-xs font-extrabold px-1.5 py-0.5 rounded border border-black bg-white">✕</button>
         </div>
     </div>
@@ -270,9 +305,8 @@
     <!-- CONTAINER UTAMA -->
     <main class="max-w-md mx-auto p-4 space-y-4">
         
-        <!-- TAB 1: DASHBOARD UTAMA -->
+        <!-- TAB 1: DASHBOARD -->
         <div id="tab-content-1" class="space-y-4 anim-fade">
-            
             <div class="fy-card p-5 space-y-3 text-white border-black" style="background-color: #0284c7;">
                 <div class="space-y-1">
                     <h2 id="banner-welcome-text" class="text-xl font-black tracking-tight">Halo @USER Selamat datang di FydzOTP</h2>
@@ -286,24 +320,17 @@
 
             <div class="grid grid-cols-2 gap-3">
                 <div class="fy-card p-4 space-y-1">
-                    <p class="text-[10px] font-black uppercase tracking-wider flex items-center gap-1.5" style="color: var(--text-sub);">
-                        <svg class="w-3.5 h-3.5 text-emerald-500" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
-                        Saldo Anda
-                    </p>
+                    <p class="text-[10px] font-black uppercase tracking-wider flex items-center gap-1.5" style="color: var(--text-sub);">Saldo Anda</p>
                     <h3 id="dash-balance" class="text-lg font-black text-emerald-500">Rp 0</h3>
                 </div>
                 <div class="fy-card p-4 space-y-1">
-                    <p class="text-[10px] font-black uppercase tracking-wider flex items-center gap-1.5" style="color: var(--text-sub);">
-                        <svg class="w-3.5 h-3.5 text-blue-500" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
-                        Total Order
-                    </p>
+                    <p class="text-[10px] font-black uppercase tracking-wider flex items-center gap-1.5" style="color: var(--text-sub);">Total Order</p>
                     <h3 id="stat-total-order" class="text-lg font-black" style="color: var(--text-main);">0</h3>
                 </div>
             </div>
 
             <div class="fy-card p-4 space-y-3 border-amber-500/40">
                 <div class="flex items-center gap-2 border-b-2 border-zinc-200 dark:border-zinc-800 pb-2.5">
-                    <svg class="w-4 h-4 text-amber-500" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
                     <h3 class="text-xs font-black uppercase tracking-wider text-amber-500">Top User</h3>
                 </div>
                 <div id="top-user-list" class="space-y-2">
@@ -312,10 +339,9 @@
                     </div>
                 </div>
             </div>
-
         </div>
 
-        <!-- TAB 2: KATALOG & ORDER NOKOS -->
+        <!-- TAB 2: KATALOG -->
         <div id="tab-content-2" class="space-y-4 hidden anim-fade">
             <div class="fy-card p-4 space-y-3.5">
                 <div class="flex justify-between items-center border-b-2 border-zinc-200 dark:border-zinc-800 pb-2.5">
@@ -351,7 +377,7 @@
                     </select>
                 </div>
                 <div>
-                    <input type="text" id="search-catalog" oninput="renderCatalogGrid()" class="fy-input w-full p-3 text-xs" placeholder="Cari layanan (WhatsApp, Telegram, dll)...">
+                    <input type="text" id="search-catalog" oninput="renderCatalogGrid()" class="fy-input w-full p-3 text-xs" placeholder="Cari layanan...">
                 </div>
             </div>
 
@@ -361,12 +387,12 @@
                     <button onclick="loadCatalogServices()" class="text-xs font-extrabold hover:underline" style="color: var(--accent);">Refresh</button>
                 </div>
                 <div id="catalog-grid" class="space-y-2.5">
-                    <div class="fy-card p-5 text-center text-xs font-bold" style="color: var(--text-sub);">Memuat data dari server...</div>
+                    <div class="fy-card p-5 text-center text-xs font-bold" style="color: var(--text-sub);">Memuat data...</div>
                 </div>
             </div>
         </div>
 
-        <!-- TAB 3: KELOLA PESANAN & OTP (NOTIFIKASI ORDER LENGKAP) -->
+        <!-- TAB 3: KELOLA PESANAN & OTP (DENGAN SOUND NOTIFIKASI TING!) -->
         <div id="tab-content-3" class="space-y-4 hidden anim-fade">
             <div class="fy-card p-4 space-y-3.5">
                 <h3 class="text-xs font-black uppercase tracking-wider border-b-2 border-zinc-200 dark:border-zinc-800 pb-2.5" style="color: var(--text-main);">Manajemen Pesanan & OTP</h3>
@@ -404,7 +430,7 @@
             </div>
         </div>
 
-        <!-- TAB 4: RIWAYAT TRANSAKSI -->
+        <!-- TAB 4: RIWAYAT -->
         <div id="tab-content-4" class="space-y-4 hidden anim-fade">
             <div class="fy-card p-4 space-y-3">
                 <h3 class="text-xs font-black uppercase tracking-wider border-b-2 border-zinc-200 dark:border-zinc-800 pb-2.5" style="color: var(--text-main);">Log Transaksi Pribadi</h3>
@@ -416,20 +442,16 @@
             <div id="history-result-container" class="space-y-2.5"></div>
         </div>
 
-        <!-- TAB 5: DEPOSIT SALDO QRIS -->
+        <!-- TAB 5: DEPOSIT -->
         <div id="tab-content-5" class="space-y-4 hidden anim-fade">
             <div class="fy-card p-5 space-y-4">
                 <div class="border-b-2 border-zinc-200 dark:border-zinc-800 pb-3">
-                    <h3 class="font-black text-sm uppercase tracking-wider flex items-center gap-2" style="color: var(--text-main);">
-                        Deposit Saldo QRIS Otomatis
-                    </h3>
+                    <h3 class="font-black text-sm uppercase tracking-wider" style="color: var(--text-main);">Deposit Saldo QRIS Otomatis</h3>
                 </div>
 
                 <div class="p-4 rounded-xl border-2 border-emerald-500 bg-emerald-500/10 space-y-1">
-                    <div class="flex items-center gap-2 font-black text-emerald-600 text-xs">
-                        ⚡ Sistem Deposit Otomatis
-                    </div>
-                    <p class="text-[11px] font-semibold" style="color: var(--text-sub);">Masukkan nominal, generate QRIS resmi, scan dan bayar. Saldo akun kamu akan masuk otomatis setelah pembayaran terdeteksi!</p>
+                    <div class="flex items-center gap-2 font-black text-emerald-600 text-xs">⚡ Sistem Deposit Otomatis</div>
+                    <p class="text-[11px] font-semibold" style="color: var(--text-sub);">Scan QRIS dan saldo masuk otomatis setelah pembayaran terdeteksi[span_0](start_span)[span_0](end_span)!</p>
                 </div>
 
                 <div class="space-y-3.5 text-xs">
@@ -461,12 +483,8 @@
                         <div id="qrcode-container" class="p-3 bg-white border-2 border-black inline-block rounded-xl shadow-[3px_3px_0px_#000] mx-auto"></div>
 
                         <div class="space-y-2">
-                            <button onclick="checkDepositStatus()" class="fy-btn w-full py-3 text-xs font-black bg-emerald-400 text-black border-black uppercase">
-                                🔄 Cek Status Pembayaran
-                            </button>
-                            <button onclick="cancelActiveDeposit()" class="fy-btn w-full py-2.5 text-[10px] font-bold bg-red-600 text-white border-black">
-                                Batalkan Deposit
-                            </button>
+                            <button onclick="checkDepositStatus()" class="fy-btn w-full py-3 text-xs font-black bg-emerald-400 text-black border-black uppercase">🔄 Cek Status Pembayaran</button>
+                            <button onclick="cancelActiveDeposit()" class="fy-btn w-full py-2.5 text-[10px] font-bold bg-red-600 text-white border-black">Batalkan Deposit</button>
                         </div>
                     </div>
                 </div>
@@ -489,6 +507,46 @@
         let activeDepositId = null;
         let activeDepositNominal = 0;
         let adminBypassActive = false;
+        let lastKnownOtp = "Waiting";
+
+        // WEB AUDIO API UNTUK BUNYI NOTIFIKASI "TING!"
+        function playNotificationSound() {
+            try {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                if(!AudioContext) return;
+                const ctx = new AudioContext();
+                
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(800, ctx.currentTime); // Frekuensi "ting" tinggi
+                osc.frequency.exponentialRampToValueAtTime(400, ctx.currentTime + 0.15);
+                
+                gain.gain.setValueAtTime(0.3, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.15);
+                
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                
+                osc.start();
+                osc.stop(ctx.currentTime + 0.15);
+            } catch(e) {}
+        }
+
+        // TOGGLE MENU BANTUAN & PANDUAN
+        function toggleHelpMenu() {
+            document.getElementById('help-popup-menu').classList.toggle('hidden');
+        }
+
+        function openGuideModal() {
+            document.getElementById('help-popup-menu').classList.add('hidden');
+            document.getElementById('guide-modal').classList.remove('hidden');
+        }
+
+        function closeGuideModal() {
+            document.getElementById('guide-modal').classList.add('hidden');
+        }
 
         // CEK STATUS MAINTENANCE SAAT HALAMAN DIMUAT
         (function checkGlobalSystemStatus() {
@@ -496,21 +554,17 @@
             const broadcastMsg = localStorage.getItem('fydz_broadcast_msg') || '';
             const activeUser = localStorage.getItem('fydz_active_user');
 
-            // Render Broadcast Banner jika ada pesan
             if (broadcastMsg.trim() !== "") {
                 document.getElementById('broadcast-text-content').innerText = broadcastMsg;
                 document.getElementById('broadcast-banner').classList.remove('hidden');
             }
 
-            // Cek Maintenance
             if (maintStatus && activeUser !== ADMIN_USER && !adminBypassActive) {
                 document.getElementById('maintenance-screen').classList.remove('hidden');
-                // Jika user sudah login tapi bukan admin, tampilkan info
                 if (activeUser) {
                     document.getElementById('maintenance-msg-text').innerText = `Halo @${activeUser}, website sedang dalam pemeliharaan sistem.`;
                 }
             } else if (maintStatus && activeUser === ADMIN_USER) {
-                // Jika admin login saat mode maint aktif, berikan opsi bypass
                 document.getElementById('maintenance-screen').classList.remove('hidden');
                 document.getElementById('admin-bypass-box').classList.remove('hidden');
             }
@@ -530,31 +584,17 @@
             const username = document.getElementById('auth-username').value.trim().toUpperCase();
             const pin = document.getElementById('auth-pin').value.trim();
 
-            if(!username || !pin) {
-                return showNotif("Masukkan username dan PIN terlebih dahulu!", "error");
-            }
+            if(!username || !pin) return showNotif("Masukkan username dan PIN terlebih dahulu!", "error");
 
-            if(username === ADMIN_USER) {
-                if(pin !== ADMIN_PIN) {
-                    return showNotif("PIN Admin salah!", "error");
-                }
+            if(username === ADMIN_USER && pin !== ADMIN_PIN) {
+                return showNotif("PIN Admin salah!", "error");
             }
 
             let usersDB = JSON.parse(localStorage.getItem('fydz_user_db') || '{}');
-            
             if(!usersDB[username]) {
-                usersDB[username] = {
-                    pin: pin,
-                    balance: 0,
-                    totalOrder: 0,
-                    totalDeposit: 0,
-                    orders: [],
-                    deposits: []
-                };
-            } else {
-                if(usersDB[username].pin !== pin) {
-                    return showNotif("PIN salah untuk username tersebut!", "error");
-                }
+                usersDB[username] = { pin: pin, balance: 0, totalOrder: 0, totalDeposit: 0, orders: [], deposits: [] };
+            } else if(usersDB[username].pin !== pin) {
+                return showNotif("PIN salah untuk username tersebut!", "error");
             }
 
             localStorage.setItem('fydz_user_db', JSON.stringify(usersDB));
@@ -563,7 +603,6 @@
 
             document.getElementById('auth-modal').classList.add('hidden');
             
-            // Cek jika sedang maintenance dan bukan admin
             const maintStatus = localStorage.getItem('fydz_maint_status') === 'true';
             if (maintStatus && username !== ADMIN_USER) {
                 document.getElementById('maintenance-screen').classList.remove('hidden');
@@ -583,23 +622,18 @@
         }
 
         function resetLocalDataAccount() {
-            if(currentUser !== ADMIN_USER) {
-                return showNotif("Akses ditolak! Fitur ini khusus Admin.", "error");
-            }
-            if(confirm("PERINGATAN ADMIN: Apakah Anda ingin mereset seluruh database sistem?")) {
+            if(currentUser !== ADMIN_USER) return showNotif("Akses ditolak!", "error");
+            if(confirm("PERINGATAN ADMIN: Reset seluruh database sistem?")) {
                 localStorage.removeItem('fydz_user_db');
                 localStorage.removeItem('fydz_active_user');
                 location.reload();
             }
         }
 
-        // FUNGSI KONTROL ADMIN (MAINTENANCE & BROADCAST)
         function openAdminControlModal() {
             if(currentUser !== ADMIN_USER) return showNotif("Akses ditolak!", "error");
             const maintStatus = localStorage.getItem('fydz_maint_status') === 'true';
-            const broadcastMsg = localStorage.getItem('fydz_broadcast_msg') || '';
-
-            document.getElementById('input-broadcast-msg').value = broadcastMsg;
+            document.getElementById('input-broadcast-msg').value = localStorage.getItem('fydz_broadcast_msg') || '';
             if(maintStatus) {
                 document.getElementById('btn-maint-on').className = "fy-btn flex-1 py-2 font-black bg-amber-500 text-black border-black";
                 document.getElementById('btn-maint-off').className = "fy-btn flex-1 py-2 font-black bg-white text-zinc-900 border-black";
@@ -607,7 +641,6 @@
                 document.getElementById('btn-maint-on').className = "fy-btn flex-1 py-2 font-black bg-white text-zinc-900 border-black";
                 document.getElementById('btn-maint-off').className = "fy-btn flex-1 py-2 font-black bg-emerald-400 text-black border-black";
             }
-
             document.getElementById('admin-control-modal').classList.remove('hidden');
         }
 
@@ -629,9 +662,8 @@
         }
 
         function saveAdminSettings() {
-            const msg = document.getElementById('input-broadcast-msg').value.trim();
-            localStorage.setItem('fydz_broadcast_msg', msg);
-            showNotif("Pengaturan admin berhasil disimpan!", "success");
+            localStorage.setItem('fydz_broadcast_msg', document.getElementById('input-broadcast-msg').value.trim());
+            showNotif("Pengaturan disimpan!", "success");
             closeAdminControlModal();
             setTimeout(() => location.reload(), 1000);
         }
@@ -641,9 +673,7 @@
             if(active) {
                 currentUser = active;
                 const maintStatus = localStorage.getItem('fydz_maint_status') === 'true';
-                if (maintStatus && active !== ADMIN_USER && !adminBypassActive) {
-                    return; // Biar layar maintenance tetap nangkring
-                }
+                if (maintStatus && active !== ADMIN_USER && !adminBypassActive) return;
                 document.getElementById('auth-modal').classList.add('hidden');
                 applyUserRoleUI(active);
                 syncUserDataUI();
@@ -713,22 +743,9 @@
             `).join('');
         }
 
-        function toggleSidebar() {
-            document.getElementById('sidebar-drawer').classList.toggle('hidden');
-        }
-
-        function setNominal(val) {
-            document.getElementById('dep-nominal').value = val;
-        }
-
-        function toggleTheme() {
-            const html = document.documentElement;
-            if (html.classList.contains('light')) {
-                html.classList.remove('light'); html.classList.add('dark');
-            } else {
-                html.classList.remove('dark'); html.classList.add('light');
-            }
-        }
+        function toggleSidebar() { document.getElementById('sidebar-drawer').classList.toggle('hidden'); }
+        function setNominal(val) { document.getElementById('dep-nominal').value = val; }
+        function toggleTheme() { document.documentElement.classList.toggle('light'); document.documentElement.classList.toggle('dark'); }
 
         function showNotif(message, type = 'info') {
             const container = document.getElementById('toast-container');
@@ -750,7 +767,6 @@
         async function requestFydz(endpoint, params = {}, silent = false) {
             const cleanEndpoint = endpoint.startsWith('/') ? endpoint.slice(1) : endpoint;
             const url = new URL(`${window.location.origin}${_PROXY_URL}/${cleanEndpoint}`);
-            
             url.searchParams.append('apikey', _SECRET_KEY);
             for (const [k, v] of Object.entries(params)) {
                 if (v !== undefined && v !== "") url.searchParams.append(k, v);
@@ -767,9 +783,7 @@
         }
 
         function switchMainTab(tabId) {
-            for(let i=1; i<=5; i++) {
-                document.getElementById(`tab-content-${i}`).classList.add('hidden');
-            }
+            for(let i=1; i<=5; i++) document.getElementById(`tab-content-${i}`).classList.add('hidden');
             document.getElementById(`tab-content-${tabId}`).classList.remove('hidden');
             const titles = { 1: "Dashboard", 2: "Katalog Nokos", 3: "Kelola Pesanan", 4: "Riwayat", 5: "Deposit Otomatis" };
             document.getElementById('header-title').innerText = titles[tabId] || "Dashboard";
@@ -839,29 +853,24 @@
                             <p class="text-[10px] font-bold" style="color: var(--text-sub);">Stok: <b class="text-emerald-500">${stock}</b></p>
                             <p class="text-xs font-black text-amber-500">Rp ${price.toLocaleString('id-ID')}</p>
                         </div>
-                        <div class="flex items-center gap-1.5">
-                            <button onclick="buyNokosItem('${prodId}', '${provId}', 1, ${price}, '${name}')" class="fy-btn px-3 py-2 text-[10px] text-white font-black" style="background-color: var(--accent);">Beli Nokos</button>
-                        </div>
+                        <button onclick="buyNokosItem('${prodId}', '${provId}', 1, ${price}, '${name}')" class="fy-btn px-3 py-2 text-[10px] text-white font-black" style="background-color: var(--accent);">Beli Nokos</button>
                     </div>
                 `;
             }).join('');
         }
 
-        // STRICT BALANCE LOCK & ORDER NOTIFICATION SYSTEM
+        // STRICT BALANCE LOCK & AUTO POLLING DENGAN SOUND NOTIFIKASI
         async function buyNokosItem(produk, provider, total, totalPrice, serviceName) {
             let usersDB = JSON.parse(localStorage.getItem('fydz_user_db') || '{}');
             let activeUserKey = localStorage.getItem('fydz_active_user');
 
-            if(!activeUserKey || !usersDB[activeUserKey]) {
-                showNotif("Silakan login terlebih dahulu!", "error");
-                return;
-            }
+            if(!activeUserKey || !usersDB[activeUserKey]) return showNotif("Silakan login terlebih dahulu!", "error");
 
             let userData = usersDB[activeUserKey];
             let currentBalance = Number(userData.balance) || 0;
 
             if(currentBalance < totalPrice) {
-                showNotif(`GAGAL! Saldo Anda Rp ${currentBalance.toLocaleString('id-ID')} tidak cukup untuk membeli layanan seharga Rp ${totalPrice.toLocaleString('id-ID')}. Silakan deposit QRIS!`, "error");
+                showNotif(`GAGAL! Saldo Anda Rp ${currentBalance.toLocaleString('id-ID')} tidak cukup untuk membeli layanan seharga Rp ${totalPrice.toLocaleString('id-ID')}.`, "error");
                 return;
             }
 
@@ -874,7 +883,6 @@
             
             try {
                 showNotif("Memproses pesanan ke server...", "info");
-                
                 const data = await requestFydz('order', params);
                 
                 userData.balance -= totalPrice;
@@ -896,7 +904,8 @@
                 localStorage.setItem('fydz_user_db', JSON.stringify(usersDB));
                 
                 syncUserDataUI();
-                showNotif("Pesanan berhasil dibuat! Notifikasi aktif.", "success");
+                playNotificationSound(); // Bunyi ting saat order berhasil dibuat
+                showNotif("Pesanan berhasil dibuat!", "success");
 
                 if(orderObj && orderObj.id) {
                     document.getElementById('man-order-id').value = orderObj.id;
@@ -916,23 +925,17 @@
             try {
                 showNotif("Membuat QRIS deposit otomatis...", "info");
                 const res = await requestFydz('deposit/create', { nominal });
-                
                 if(res && res.id) {
                     activeDepositId = res.id;
                     activeDepositNominal = res.total_diterima || nominal;
-
                     document.getElementById('modal-qris-box').classList.remove('hidden');
                     document.getElementById('qris-total').innerText = `Rp ${Number(res.total_bayar || nominal).toLocaleString('id-ID')}`;
                     document.getElementById('qris-dep-id').innerText = `ID: ${res.id}`;
                     
                     const qrContainer = document.getElementById('qrcode-container');
                     qrContainer.innerHTML = "";
-                    new QRCode(qrContainer, {
-                        text: res.qr_link || "https://www.ditznesia.com",
-                        width: 180, height: 180
-                    });
-
-                    showNotif("QRIS berhasil dibuat! Silakan scan untuk membayar.", "success");
+                    new QRCode(qrContainer, { text: res.qr_link || "https://www.ditznesia.com", width: 180, height: 180 });
+                    showNotif("QRIS berhasil dibuat!", "success");
                 }
             } catch(e) {
                 showNotif("Gagal membuat deposit: " + e.message, "error");
@@ -941,7 +944,6 @@
 
         async function checkDepositStatus() {
             if(!activeDepositId) return showNotif("Tidak ada deposit aktif", "error");
-
             let usersDB = JSON.parse(localStorage.getItem('fydz_user_db') || '{}');
             let activeUserKey = localStorage.getItem('fydz_active_user');
             if(!activeUserKey || !usersDB[activeUserKey]) return;
@@ -949,26 +951,18 @@
             try {
                 showNotif("Mengecek status pembayaran...", "info");
                 const res = await requestFydz('deposit/status', { id: activeDepositId });
-
                 if(res && res.status === 'berhasil') {
                     let userData = usersDB[activeUserKey];
-                    
                     userData.balance = (userData.balance || 0) + Number(activeDepositNominal);
                     userData.totalDeposit = (userData.totalDeposit || 0) + Number(activeDepositNominal);
-
                     if(!userData.deposits) userData.deposits = [];
-                    userData.deposits.unshift({
-                        id: activeDepositId,
-                        nominal: Number(activeDepositNominal),
-                        status: 'berhasil',
-                        created_at: new Date().toLocaleTimeString()
-                    });
+                    userData.deposits.unshift({ id: activeDepositId, nominal: Number(activeDepositNominal), status: 'berhasil', created_at: new Date().toLocaleTimeString() });
 
                     usersDB[activeUserKey] = userData;
                     localStorage.setItem('fydz_user_db', JSON.stringify(usersDB));
                     syncUserDataUI();
-
-                    showNotif(`SUKSES! Deposit Rp ${Number(activeDepositNominal).toLocaleString('id-ID')} masuk ke akun!`, "success");
+                    playNotificationSound(); // Bunyi ting saat deposit masuk
+                    showNotif(`SUKSES! Deposit Rp ${Number(activeDepositNominal).toLocaleString('id-ID')} masuk ke akun[span_1](start_span)[span_1](end_span)!`, "success");
                     document.getElementById('modal-qris-box').classList.add('hidden');
                     activeDepositId = null;
                 } else {
@@ -986,9 +980,7 @@
                 showNotif("Deposit dibatalkan", "success");
                 document.getElementById('modal-qris-box').classList.add('hidden');
                 activeDepositId = null;
-            } catch(e) {
-                showNotif("Gagal membatalkan deposit", "error");
-            }
+            } catch(e) { showNotif("Gagal membatalkan deposit", "error"); }
         }
 
         function renderActiveMonitor(obj) {
@@ -997,7 +989,16 @@
             document.getElementById('mon-status').innerText = obj.status || 'pending';
             document.getElementById('mon-server').innerText = `Server ${obj.server || '1'}`;
             document.getElementById('mon-number').innerText = obj.number || '-';
-            document.getElementById('mon-otp').innerText = (obj.otp && obj.otp !== 'Waiting') ? obj.otp : 'Menunggu SMS...';
+            
+            const currentOtp = (obj.otp && obj.otp !== 'Waiting') ? obj.otp : 'Menunggu SMS...';
+            document.getElementById('mon-otp').innerText = currentOtp;
+
+            // Jika OTP baru masuk dan sebelumnya belum ada, bunyikan notifikasi "Ting!"
+            if(obj.otp && obj.otp !== 'Waiting' && obj.otp !== lastKnownOtp) {
+                lastKnownOtp = obj.otp;
+                playNotificationSound();
+                showNotif(`OTP Diterima: ${obj.otp}`, "success");
+            }
         }
 
         function startAutoPolling(orderId) {
@@ -1006,10 +1007,7 @@
                 try {
                     const st = await requestFydz('status', { id: orderId }, true);
                     renderActiveMonitor(st);
-                    if(st.otp && st.otp !== 'Waiting') {
-                        clearInterval(pollingTimer);
-                        showNotif(`OTP Diterima: ${st.otp}`, "success");
-                    }
+                    if(st.otp && st.otp !== 'Waiting') clearInterval(pollingTimer);
                 } catch(e) { clearInterval(pollingTimer); }
             }, 5000);
         }
@@ -1039,7 +1037,6 @@
         async function cancelActiveOrder() {
             const id = document.getElementById('man-order-id').value.trim();
             if(!id) return showNotif("Masukkan Order ID terlebih dahulu", "error");
-            
             try {
                 showNotif("Memproses pembatalan & refund...", "info");
                 await requestFydz('cancel', { id }); 
@@ -1056,11 +1053,8 @@
                         syncUserDataUI();
                     }
                 }
-
-                showNotif("Pesanan dibatalkan & saldo otomatis dikembalikan!", "success"); 
-            } catch(e) {
-                showNotif("Gagal membatalkan pesanan: " + e.message, "error");
-            }
+                showNotif("Pesanan dibatalkan & saldo dikembalikan!", "success"); 
+            } catch(e) { showNotif("Gagal membatalkan pesanan: " + e.message, "error"); }
         }
 
         function fetchOrderHistory() {
@@ -1095,7 +1089,7 @@
             const container = document.getElementById('history-result-container');
             container.innerHTML = `
                 <h4 class="text-xs font-black uppercase tracking-wider px-0.5 pt-1" style="color: var(--text-sub);">${title}</h4>
-                <div class="space-y-2.5 pt-1">${itemsHtml.length ? itemsHtml.join('') : '<p class="text-xs font-bold p-3" style="color: var(--text-sub);">Belum ada riwayat transaksi.</p>'}</div>
+                <div class="space-y-2.5 pt-1">${itemsHtml.length ? itemsHtml.join('') : '<p class="text-xs font-bold p-3" style="color: var(--text-sub);">Belum ada riwayat.</p>'}</div>
             `;
         }
     </script>
