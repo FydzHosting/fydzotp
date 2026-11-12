@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>FydzOTP — Enterprise SMS & Number Gateway</title>
+    <title>FydzOTP — Enterprise Reseller Panel</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <!-- Library QRCode Generator untuk langsung render QRIS jadi gambar -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap');
@@ -91,29 +90,32 @@
 </head>
 <body class="min-h-screen">
 
-    <!-- SPLASH SCREEN -->
-    <div id="splash-screen" class="fixed inset-0 z-50 flex items-center justify-center p-4 backdrop-blur-sm" style="background-color: var(--bg-main);">
-        <div class="fy-card max-w-sm w-full p-7 text-center space-y-6">
-            <div class="w-20 h-20 bg-amber-500 border-3 border-black rounded-2xl mx-auto flex items-center justify-center shadow-[3px_3px_0px_#000]">
-                <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+    <!-- AUTH MODAL (LOGIN / REGISTER AKUN LOKAL RESELLER) -->
+    <div id="auth-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="fy-card max-w-sm w-full p-6 space-y-5 text-center bg-white dark:bg-zinc-900 border-black">
+            <div class="w-16 h-16 bg-amber-500 border-2 border-black rounded-2xl mx-auto flex items-center justify-center shadow-[3px_3px_0px_#000]">
+                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
             </div>
-            <div class="space-y-1.5">
-                <h1 class="text-2xl font-black uppercase tracking-tight" style="color: var(--text-main);">FYDZOTP SUITE</h1>
-                <p class="text-xs font-semibold" style="color: var(--text-sub);">Enterprise SMS & Number Gateway</p>
-            </div>
-            
-            <div id="splash-action-box">
-                <button onclick="startAppLoading()" class="fy-btn w-full py-4 text-xs uppercase tracking-wider text-white font-black" style="background-color: var(--accent); border-color: var(--border-col);">
-                    KLIK UNTUK MASUK →
-                </button>
+            <div class="space-y-1">
+                <h2 class="text-xl font-black uppercase tracking-tight" style="color: var(--text-main);">Panel Reseller Masuk</h2>
+                <p class="text-xs font-semibold" style="color: var(--text-sub);">Buat akun atau masuk untuk mengelola saldo dan transaksi pribadi Anda.</p>
             </div>
 
-            <div id="splash-loading-box" class="hidden space-y-3">
-                <div class="w-full bg-zinc-200 dark:bg-zinc-800 border-2 border-black rounded-full h-4 overflow-hidden p-0.5">
-                    <div id="loading-bar" class="h-full rounded-full transition-all duration-300 w-0" style="background-color: var(--accent);"></div>
+            <div class="space-y-3 text-left">
+                <div>
+                    <label class="block text-[10px] font-black uppercase mb-1" style="color: var(--text-main);">Username Reseller</label>
+                    <input type="text" id="auth-username" class="fy-input w-full p-3 text-xs uppercase" placeholder="Contoh: RAFFSTORE">
                 </div>
-                <p id="loading-status-text" class="text-xs font-black uppercase tracking-wider animate-pulse" style="color: var(--accent);">Inisialisasi sistem...</p>
+                <div>
+                    <label class="block text-[10px] font-black uppercase mb-1" style="color: var(--text-main);">PIN / Kata Sandi</label>
+                    <input type="password" id="auth-pin" class="fy-input w-full p-3 text-xs" placeholder="••••">
+                </div>
             </div>
+
+            <button onclick="handleUserLogin()" class="fy-btn w-full py-3.5 text-xs uppercase tracking-wider text-white font-black shadow-[3px_3px_0px_#000]" style="background-color: var(--accent); border-color: var(--border-col);">
+                Masuk / Buat Akun Otomatis →
+            </button>
+            <p class="text-[10px] font-bold text-zinc-400">Akun baru akan otomatis mendapatkan saldo awal Rp 0.</p>
         </div>
     </div>
 
@@ -127,7 +129,10 @@
                 <div class="flex justify-between items-center border-b-2 border-zinc-200 dark:border-zinc-800 pb-4">
                     <div class="flex items-center gap-2.5">
                         <div class="w-8 h-8 rounded-lg flex items-center justify-center font-black text-white text-sm border-2 border-black" style="background-color: var(--accent);">F</div>
-                        <h2 class="font-black text-sm uppercase tracking-wider" style="color: var(--text-main);">Navigasi Utama</h2>
+                        <div>
+                            <h2 id="sidebar-username" class="font-black text-xs uppercase tracking-wider" style="color: var(--text-main);">Reseller</h2>
+                            <span class="text-[9px] font-bold text-emerald-500">Aktif & Terisolasi</span>
+                        </div>
                     </div>
                     <button onclick="toggleSidebar()" class="fy-btn px-2.5 py-1 text-xs">✕</button>
                 </div>
@@ -135,11 +140,11 @@
                 <div class="space-y-2 text-xs font-bold">
                     <button onclick="toggleSidebar(); switchMainTab(1);" class="w-full text-left p-3 rounded-xl border-2 border-transparent hover:border-black flex items-center gap-3" style="color: var(--text-main);">
                         <svg class="w-4 h-4 text-amber-500" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
-                        Dashboard Utama
+                        Dashboard Reseller
                     </button>
                     <button onclick="toggleSidebar(); switchMainTab(2);" class="w-full text-left p-3 rounded-xl border-2 border-transparent hover:border-black flex items-center gap-3" style="color: var(--text-main);">
                         <svg class="w-4 h-4 text-sky-500" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
-                        Katalog & Order Nomor
+                        Katalog & Markup Harga
                     </button>
                     <button onclick="toggleSidebar(); switchMainTab(3);" class="w-full text-left p-3 rounded-xl border-2 border-transparent hover:border-black flex items-center gap-3" style="color: var(--text-main);">
                         <svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
@@ -153,18 +158,14 @@
                         <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
                         Deposit Saldo QRIS
                     </button>
-                    <button onclick="toggleSidebar(); openGuideModal();" class="w-full text-left p-3 rounded-xl border-2 border-transparent hover:border-black flex items-center gap-3" style="color: var(--text-main);">
-                        <svg class="w-4 h-4 text-purple-500" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
-                        Panduan Penggunaan
-                    </button>
-                    <button onclick="toggleSidebar(); switchMainTab(6);" class="w-full text-left p-3 rounded-xl border-2 border-transparent hover:border-black flex items-center gap-3" style="color: var(--text-main);">
-                        <svg class="w-4 h-4 text-zinc-400" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                        Terminal API Log
+                    <button onclick="toggleSidebar(); logoutUser();" class="w-full text-left p-3 rounded-xl border-2 border-red-500 text-red-500 hover:bg-red-500/10 flex items-center gap-3 font-black">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+                        Keluar Akun
                     </button>
                 </div>
             </div>
             <div class="text-[10px] font-bold text-center pt-4 border-t border-zinc-200 dark:border-zinc-800" style="color: var(--text-sub);">
-                FydzOTP Enterprise v15.0 — Secure Gateway
+                FydzOTP Reseller v16.0 — Multi-User
             </div>
         </div>
     </div>
@@ -178,7 +179,7 @@
                 </button>
                 <div>
                     <h1 id="header-title" class="font-black text-sm tracking-tight uppercase leading-none" style="color: var(--text-main);">Dashboard</h1>
-                    <span class="text-[10px] font-bold" style="color: var(--text-sub);">FydzOTP Gateway</span>
+                    <span id="header-user-tag" class="text-[10px] font-bold text-amber-500">Reseller: -</span>
                 </div>
             </div>
             
@@ -203,73 +204,55 @@
             <!-- BANNER UTAMA -->
             <div class="fy-card p-5 space-y-3 text-white border-black" style="background-color: #0284c7;">
                 <div class="space-y-1">
-                    <h2 class="text-xl font-black tracking-tight">Selamat Datang di FydzOTP.</h2>
-                    <p class="text-xs font-medium text-sky-100">Gateway verifikasi nomor virtual & SMS OTP enterprise berkecepatan tinggi.</p>
+                    <h2 class="text-xl font-black tracking-tight">Panel Reseller FydzOTP.</h2>
+                    <p class="text-xs font-medium text-sky-100">Kelola saldo akun pribadi dan order nomor virtual dengan margin harga terbaik.</p>
                 </div>
                 <button onclick="switchMainTab(2)" class="fy-btn bg-white text-zinc-950 font-black w-full py-3.5 text-xs uppercase tracking-wider shadow-[3px_3px_0px_#000] border-black flex items-center justify-center gap-2">
                     <svg class="w-4 h-4 text-sky-600" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
-                    Order Nomor / Katalog
+                    Buka Katalog Nokos
                 </button>
             </div>
 
-            <!-- KARTU STATISTIK SALDO & DEPOSIT -->
+            <!-- KARTU STATISTIK SALDO PRIBADI -->
             <div class="grid grid-cols-2 gap-3">
                 <div class="fy-card p-4 space-y-1">
                     <p class="text-[10px] font-black uppercase tracking-wider flex items-center gap-1.5" style="color: var(--text-sub);">
                         <svg class="w-3.5 h-3.5 text-emerald-500" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
-                        Saldo Aktif
+                        Saldo Anda
                     </p>
                     <h3 id="dash-balance" class="text-lg font-black text-emerald-500">Rp 0</h3>
                 </div>
                 <div class="fy-card p-4 space-y-1">
                     <p class="text-[10px] font-black uppercase tracking-wider flex items-center gap-1.5" style="color: var(--text-sub);">
                         <svg class="w-3.5 h-3.5 text-blue-500" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
-                        Total Deposit
+                        Total Order
                     </p>
-                    <h3 class="text-lg font-black" style="color: var(--text-main);">Rp 0</h3>
+                    <h3 id="stat-total-order" class="text-lg font-black" style="color: var(--text-main);">0</h3>
                 </div>
             </div>
 
-            <!-- KARTU STATISTIK ORDER BERHASIL -->
-            <div class="fy-card p-4 space-y-1">
-                <p class="text-[10px] font-black uppercase tracking-wider flex items-center gap-1.5" style="color: var(--text-sub);">
-                    <svg class="w-3.5 h-3.5 text-amber-500" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                    Order Berhasil
-                </p>
-                <div class="flex items-baseline gap-2">
-                    <h3 id="stat-total-order" class="text-xl font-black" style="color: var(--text-main);">0</h3>
-                    <span id="stat-total-spent" class="text-xs font-bold" style="color: var(--text-sub);">(Rp 0)</span>
-                </div>
-            </div>
-
-            <!-- TOP USER AKTIF -->
+            <!-- TOP USER AKTIF PANEL -->
             <div class="fy-card p-4 space-y-3 border-amber-500/40">
                 <div class="flex items-center gap-2 border-b-2 border-zinc-200 dark:border-zinc-800 pb-2.5">
                     <svg class="w-4 h-4 text-amber-500" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
-                    <h3 class="text-xs font-black uppercase tracking-wider text-amber-500">Top User Aktif</h3>
+                    <h3 class="text-xs font-black uppercase tracking-wider text-amber-500">Leaderboard Reseller</h3>
                 </div>
                 
                 <div id="top-user-list" class="space-y-2">
                     <div class="p-4 rounded-2xl border-2 border-dashed border-zinc-300 dark:border-zinc-800 text-center space-y-1">
-                        <p class="text-xs font-bold" style="color: var(--text-sub);">Belum ada data top user.</p>
-                        <p class="text-[10px]" style="color: var(--text-sub);">Akan terisi otomatis saat user memasukkan nama dan berhasil order.</p>
+                        <p class="text-xs font-bold" style="color: var(--text-sub);">Belum ada data reseller.</p>
                     </div>
                 </div>
             </div>
 
         </div>
 
-        <!-- TAB 2: KATALOG & ORDER NOKOS -->
+        <!-- TAB 2: KATALOG & ORDER NOKOS (MARKUP OTOMATIS) -->
         <div id="tab-content-2" class="space-y-4 hidden anim-fade">
             <div class="fy-card p-4 space-y-3.5">
                 <div class="flex justify-between items-center border-b-2 border-zinc-200 dark:border-zinc-800 pb-2.5">
-                    <h3 class="text-xs font-black uppercase tracking-wider" style="color: var(--text-main);">Konfigurasi Parameter</h3>
+                    <h3 class="text-xs font-black uppercase tracking-wider" style="color: var(--text-main);">Konfigurasi Server</h3>
                     <span id="active-server-badge" class="text-[10px] font-black px-2 py-0.5 rounded border border-black bg-amber-200 text-black">Server 1</span>
-                </div>
-
-                <div>
-                    <label class="block text-[10px] font-black uppercase mb-1" style="color: var(--text-main);">Nama Panggilan Pembeli (Untuk Top User)</label>
-                    <input type="text" id="buyer-name-input" class="fy-input w-full p-3 text-xs uppercase" placeholder="Contoh: Rafzz Developer">
                 </div>
 
                 <div class="grid grid-cols-2 gap-2.5">
@@ -306,8 +289,8 @@
 
             <div class="space-y-2.5">
                 <div class="flex justify-between items-center px-0.5">
-                    <h3 class="text-xs font-black uppercase tracking-wider" style="color: var(--text-main);">Daftar Layanan</h3>
-                    <button onclick="loadCatalogServices()" class="text-xs font-extrabold hover:underline" style="color: var(--accent);">Refresh Data</button>
+                    <h3 class="text-xs font-black uppercase tracking-wider" style="color: var(--text-main);">Daftar Layanan (Harga Reseller)</h3>
+                    <button onclick="loadCatalogServices()" class="text-xs font-extrabold hover:underline" style="color: var(--accent);">Refresh</button>
                 </div>
                 <div id="catalog-grid" class="space-y-2.5">
                     <div class="fy-card p-5 text-center text-xs font-bold" style="color: var(--text-sub);">Memuat data dari server...</div>
@@ -356,7 +339,7 @@
         <!-- TAB 4: RIWAYAT TRANSAKSI -->
         <div id="tab-content-4" class="space-y-4 hidden anim-fade">
             <div class="fy-card p-4 space-y-3">
-                <h3 class="text-xs font-black uppercase tracking-wider border-b-2 border-zinc-200 dark:border-zinc-800 pb-2.5" style="color: var(--text-main);">Log Transaksi</h3>
+                <h3 class="text-xs font-black uppercase tracking-wider border-b-2 border-zinc-200 dark:border-zinc-800 pb-2.5" style="color: var(--text-main);">Log Transaksi Pribadi</h3>
                 <div class="grid grid-cols-2 gap-2.5">
                     <button onclick="fetchOrderHistory()" class="fy-btn py-3 text-xs font-black uppercase">Riwayat Order</button>
                     <button onclick="fetchDepositHistory()" class="fy-btn py-3 text-xs font-black uppercase">Riwayat Saldo</button>
@@ -365,27 +348,26 @@
             <div id="history-result-container" class="space-y-2.5"></div>
         </div>
 
-        <!-- TAB 5: DEPOSIT SALDO QRIS (UPDATE: RENDER QR LANGSUNG & TOMBOL UNDUH FOTO) -->
+        <!-- TAB 5: DEPOSIT SALDO QRIS (MASUK KE AKUN PRIBADI) -->
         <div id="tab-content-5" class="space-y-4 hidden anim-fade">
             <div class="fy-card p-5 space-y-4">
                 <div class="border-b-2 border-zinc-200 dark:border-zinc-800 pb-3">
                     <h3 class="font-black text-sm uppercase tracking-wider flex items-center gap-2" style="color: var(--text-main);">
-                        Deposit Saldo (QRIS)
+                        Deposit Saldo QRIS
                     </h3>
                 </div>
 
                 <div class="p-4 rounded-xl border-2 border-emerald-500 bg-emerald-500/10 space-y-1">
                     <div class="flex items-center gap-2 font-black text-emerald-600 text-xs">
-                        ✓ Info Deposit QRIS Kembali Normal
+                        ✓ Saldo Masuk Otomatis ke Akun Anda
                     </div>
-                    <p class="text-[11px] font-semibold" style="color: var(--text-sub);">Layanan deposit QRIS sudah dapat digunakan kembali secara otomatis.</p>
+                    <p class="text-[11px] font-semibold" style="color: var(--text-sub);">Simulasi deposit mandiri khusus untuk dompet akun reseller Anda.</p>
                 </div>
 
                 <div class="space-y-3.5 text-xs">
                     <div class="space-y-1.5">
                         <label class="block text-[10px] font-black uppercase" style="color: var(--text-main);">Nominal (Rp)</label>
                         <input type="number" id="dep-nominal" value="20000" class="fy-input w-full p-3.5 text-xs" placeholder="20000">
-                        <p class="text-[10px] font-bold" style="color: var(--text-sub);">Minimal deposit Rp 1.000 — maksimal Rp 10.000.000</p>
                     </div>
 
                     <!-- Quick Amount Chips -->
@@ -398,283 +380,164 @@
                         <button onclick="setNominal(200000)" class="fy-btn py-2.5 text-[11px] font-black">Rp 200.000</button>
                     </div>
 
-                    <!-- Kode Redeem (BONUS97823) -->
-                    <div class="space-y-1.5 pt-1">
-                        <label class="block text-[10px] font-black uppercase" style="color: var(--text-main);">Kode Cashback / Redeem (opsional)</label>
-                        <div class="flex gap-2">
-                            <input type="text" id="dep-coupon" class="fy-input flex-grow p-3 text-xs uppercase" placeholder="MASUKKAN KODE">
-                            <button onclick="claimRedeemCode()" class="fy-btn px-4 py-3 text-xs font-black">Cek</button>
-                        </div>
-                        <p class="text-[10px] font-medium" style="color: var(--text-sub);">Punya kode redeem? Masukkan untuk bonus saldo saat pembayaran berhasil.</p>
-                    </div>
-
-                    <button onclick="createDepositQr()" class="fy-btn text-white font-black w-full py-3.5 text-xs uppercase shadow-[3px_3px_0px_#000]" style="background-color: var(--accent); border-color: var(--border-col);">
+                    <button id="btn-gen-qris" onclick="createDepositQr()" class="fy-btn text-white font-black w-full py-3.5 text-xs uppercase shadow-[3px_3px_0px_#000]" style="background-color: var(--accent); border-color: var(--border-col);">
                         Generate QRIS Pembayaran
                     </button>
 
-                    <!-- KOTAK HASIL QRIS RENDER LANGSUNG & TOMBOL UNDUH FOTO -->
-                    <div id="modal-qris-box" class="hidden p-5 rounded-2xl border-2 border-black bg-white dark:bg-zinc-900 text-center space-y-4 anim-fade">
+                    <!-- KOTAK HASIL QRIS & SIMULASI SUKSES DEPOSIT -->
+                    <div id="modal-qris-box" class="hidden p-5 rounded-2xl border-2 border-black bg-zinc-950 text-center space-y-4 anim-fade shadow-[4px_4px_0px_#000]">
                         <div class="space-y-1">
-                            <p class="font-black text-emerald-500 text-xs uppercase">Scan QRIS Untuk Membayar</p>
-                            <p id="qris-total" class="font-black text-base" style="color: var(--text-main);">Rp 0</p>
+                            <p class="font-black text-emerald-400 text-xs uppercase tracking-wider">QRIS Reseller Dibuat</p>
+                            <p id="qris-total" class="font-black text-lg text-white">Rp 0</p>
                         </div>
                         
-                        <!-- Tempat Gambar QR Code Muncul -->
                         <div id="qrcode-container" class="p-3 bg-white border-2 border-black inline-block rounded-xl shadow-[3px_3px_0px_#000] mx-auto"></div>
 
-                        <p class="text-[10px] font-bold text-zinc-500">Siljahteraan scan pakai GoPay, Dana, BCA, OVO, atau Mobile Banking.</p>
-
-                        <!-- Tombol Unduh QRIS Jadi Foto -->
-                        <button onclick="downloadQrisImage()" class="fy-btn w-full py-3 text-xs font-black bg-emerald-400 text-black border-black shadow-[2px_2px_0px_#000]">
-                            ↓ Unduh QRIS (Simpan Sebagai Foto)
+                        <button onclick="simulateDepositSuccess()" class="fy-btn w-full py-3 text-xs font-black bg-emerald-400 text-black border-black shadow-[2px_2px_0px_#000]">
+                            ✓ Simulasi Pembayaran Berhasil (Masuk Saldo)
+                        </button>
+                        <button onclick="downloadQrisImage()" class="fy-btn w-full py-2.5 text-[10px] font-bold bg-zinc-800 text-white border-black">
+                            ↓ Unduh QRIS
                         </button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- TAB 6: TERMINAL LOG -->
-        <div id="tab-content-6" class="space-y-4 hidden anim-fade">
-            <div class="fy-card p-4 space-y-3">
-                <div class="flex justify-between items-center border-b-2 border-zinc-200 dark:border-zinc-800 pb-2.5">
-                    <h3 class="text-xs font-black uppercase tracking-wider" style="color: var(--text-main);">System Activity Log</h3>
-                    <button onclick="document.getElementById('terminal-output').innerHTML='// Log cleared...'" class="text-[10px] font-extrabold hover:underline" style="color: var(--accent);">Clear</button>
-                </div>
-                <div id="terminal-output" class="border-2 border-black bg-zinc-950 p-3 rounded-xl font-mono text-[10px] text-emerald-400 max-h-64 overflow-y-auto leading-relaxed">
-                    // System initialized via Proxy.
-                </div>
-            </div>
-        </div>
-
     </main>
 
-    <!-- FLOATING HELP BUTTON & POPUP BANTUAN WHATSAPP (+6283120264665) -->
-    <div class="fixed bottom-6 right-4 z-50">
-        <div id="help-popup" class="hidden absolute bottom-14 right-0 w-64 p-3 rounded-2xl border-2 border-black bg-white dark:bg-zinc-900 shadow-[4px_4px_0px_#000] space-y-2 mb-2 anim-fade">
-            <div class="flex justify-between items-center border-b border-zinc-200 dark:border-zinc-800 pb-2">
-                <span class="text-xs font-black uppercase" style="color: var(--text-main);">Pusat Bantuan Fydz</span>
-                <button onclick="toggleHelpPopup()" class="text-xs font-black">✕</button>
-            </div>
-            <div class="space-y-1.5 text-xs font-bold">
-                <a href="https://wa.me/6283120264665?text=Halo%20Admin%20FydzOTP,%20saya%20butuh%20bantuan" target="_blank" class="block w-full p-2.5 rounded-xl bg-emerald-500 text-white text-center border border-black shadow-[2px_2px_0px_#000]">
-                    Chat WhatsApp Admin
-                </a>
-                <button onclick="openGuideModal(); toggleHelpPopup();" class="block w-full p-2.5 rounded-xl bg-sky-500 text-white text-center border border-black shadow-[2px_2px_0px_#000]">
-                    Panduan Penggunaan
-                </button>
-            </div>
-        </div>
-        
-        <button onclick="toggleHelpPopup()" class="fy-btn px-4 py-3 bg-sky-500 text-white rounded-full flex items-center gap-2 shadow-[3px_3px_0px_#000] border-black font-black text-xs uppercase">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636l3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
-            Bantuan
-        </button>
-    </div>
-
-    <!-- MODAL PANDUAN PENGGUNAAN -->
-    <div id="guide-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
-        <div class="fy-card max-w-sm w-full p-6 space-y-4 max-h-[85vh] overflow-y-auto">
-            <div class="flex justify-between items-center border-b-2 border-zinc-200 dark:border-zinc-800 pb-3">
-                <h3 class="font-black text-sm uppercase tracking-wider" style="color: var(--text-main);">Panduan Penggunaan FydzOTP</h3>
-                <button onclick="closeGuideModal()" class="font-black text-sm" style="color: var(--text-main);">✕</button>
-            </div>
-            <div class="space-y-3 text-xs font-medium leading-relaxed" style="color: var(--text-sub);">
-                <p><b>1. Masukkan Nama:</b> Sebelum membeli nomor di Katalog, masukkan nama panggilanmu agar otomatis masuk ke papan Top User.</p>
-                <p><b>2. Pilih Layanan (Katalog):</b> Buka menu dari garis 3 di pojok kiri atas, lalu pilih Katalog untuk melihat daftar nomor virtual aktif.</p>
-                <p><b>3. Pembelian & OTP:</b> Klik beli, pantau nomor dan kode OTP langsung di menu Kelola Pesanan secara real-time.</p>
-                <p><b>4. Top-up Saldo QRIS:</b> Masukkan nominal, generate QRIS, dan QR code akan muncul langsung di layar untuk di-scan atau diunduh sebagai foto.</p>
-                <p><b>5. Bantuan:</b> Hubungi admin resmi melalui tombol WhatsApp (`+6283120264665`) di pojok kanan bawah.</p>
-            </div>
-            <button onclick="closeGuideModal()" class="fy-btn w-full py-3 text-xs uppercase font-black bg-sky-500 text-white border-black">Mengerti</button>
-        </div>
-    </div>
-
-    <!-- REAL-TIME LIVE NOTIF PEMBELI -->
-    <div id="live-buyer-toast" class="fixed top-16 left-4 z-40 hidden fy-card p-3 max-w-xs shadow-[4px_4px_0px_#000] anim-fade border-black bg-white dark:bg-zinc-900 pointer-events-none">
-        <div class="flex items-start gap-2.5">
-            <div class="w-7 h-7 rounded-xl bg-emerald-500 text-white flex items-center justify-center font-black text-xs shrink-0 border border-black">✓</div>
-            <div class="space-y-0.5 text-xs">
-                <div class="flex justify-between gap-4">
-                    <span id="toast-buyer" class="font-black" style="color: var(--text-main);">User</span>
-                    <span class="text-[9px] font-bold text-emerald-500">Baru saja</span>
-                </div>
-                <p id="toast-detail" class="text-[10px] font-bold" style="color: var(--text-sub);">Membeli WhatsApp</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- SCRIPT ENGINE -->
+    <!-- SCRIPT ENGINE (RESELLER MULTI-USER & MARKUP OTOMATIS) -->
     <script>
         const _ENDPOINT = "/api/proxy";
         const _SECRET_KEY = "otp_90b2ec4b500a5c63f0523d119a0673b2814f5a29";
         
+        let currentUser = null;
         let globalServicesCache = [];
         let pollingTimer = null;
-        let globalOrdersStats = { count: 0, spent: 0 };
-        let topUsersData = [];
         let currentQrisString = "";
+        let currentDepNominal = 0;
+
+        // SISTEM AUTHENTICATION LOKAL PER USER
+        function handleUserLogin() {
+            const username = document.getElementById('auth-username').value.trim().toUpperCase();
+            const pin = document.getElementById('auth-pin').value.trim();
+
+            if(!username || !pin) {
+                return showNotif("Masukkan username dan PIN terlebih dahulu!", "error");
+            }
+
+            let usersDB = JSON.parse(localStorage.getItem('fydz_reseller_db') || '{}');
+            
+            if(!usersDB[username]) {
+                usersDB[username] = {
+                    pin: pin,
+                    balance: 0,
+                    totalOrder: 0,
+                    orders: [],
+                    deposits: []
+                };
+            } else {
+                if(usersDB[username].pin !== pin) {
+                    return showNotif("PIN salah untuk username tersebut!", "error");
+                }
+            }
+
+            localStorage.setItem('fydz_reseller_db', JSON.stringify(usersDB));
+            localStorage.setItem('fydz_active_user', username);
+            currentUser = username;
+
+            document.getElementById('auth-modal').classList.add('hidden');
+            document.getElementById('sidebar-username').innerText = username;
+            document.getElementById('header-user-tag').innerText = `Reseller: ${username}`;
+
+            syncUserDataUI();
+            showNotif(`Selamat datang, ${username}!`, "success");
+            loadCatalogData();
+        }
+
+        function logoutUser() {
+            localStorage.removeItem('fydz_active_user');
+            location.reload();
+        }
+
+        (function() {
+            const active = localStorage.getItem('fydz_active_user');
+            if(active) {
+                currentUser = active;
+                document.getElementById('auth-modal').classList.add('hidden');
+                document.getElementById('sidebar-username').innerText = active;
+                document.getElementById('header-user-tag').innerText = `Reseller: ${active}`;
+                syncUserDataUI();
+            }
+        })();
+
+        function getActiveUserData() {
+            if(!currentUser) return null;
+            let usersDB = JSON.parse(localStorage.getItem('fydz_reseller_db') || '{}');
+            return usersDB[currentUser] || null;
+        }
+
+        function saveActiveUserData(data) {
+            if(!currentUser) return;
+            let usersDB = JSON.parse(localStorage.getItem('fydz_reseller_db') || '{}');
+            usersDB[currentUser] = data;
+            localStorage.setItem('fydz_reseller_db', JSON.stringify(usersDB));
+            syncUserDataUI();
+        }
+
+        function syncUserDataUI() {
+            const user = getActiveUserData();
+            if(!user) return;
+            const bal = (user.balance || 0).toLocaleString('id-ID');
+            document.getElementById('header-balance').innerText = `Rp ${bal}`;
+            document.getElementById('dash-balance').innerText = `Rp ${bal}`;
+            document.getElementById('stat-total-order').innerText = user.totalOrder || 0;
+            renderLeaderboard();
+        }
+
+        function renderLeaderboard() {
+            let usersDB = JSON.parse(localStorage.getItem('fydz_reseller_db') || '{}');
+            let list = Object.keys(usersDB).map(name => ({
+                name: name,
+                orders: usersDB[name].totalOrder || 0
+            })).sort((a, b) => b.orders - a.orders);
+
+            const container = document.getElementById('top-user-list');
+            if(list.length === 0) {
+                container.innerHTML = `<p class="text-xs font-bold text-center p-2" style="color: var(--text-sub);">Belum ada data reseller.</p>`;
+                return;
+            }
+
+            container.innerHTML = list.slice(0, 5).map((u, idx) => `
+                <div class="p-3 rounded-xl border-2 border-amber-400 bg-amber-500/10 flex items-center justify-between text-xs">
+                    <span class="font-black">#${idx + 1} ${u.name}</span>
+                    <span class="font-extrabold text-amber-600">${u.orders} order</span>
+                </div>
+            `).join('');
+        }
+
+        // RUMUS MARKUP HARGA RESELLER (Contoh: Modal + Rp 500)
+        function calculateResellerPrice(basePrice) {
+            const price = Number(basePrice) || 0;
+            if(price <= 0) return 0;
+            return price + 500; // Markup tipis Rp 500 per transaksi jadi cuan bersih reseller
+        }
 
         function toggleSidebar() {
-            const drawer = document.getElementById('sidebar-drawer');
-            drawer.classList.toggle('hidden');
-        }
-
-        function toggleHelpPopup() {
-            const popup = document.getElementById('help-popup');
-            popup.classList.toggle('hidden');
-        }
-
-        function openGuideModal() {
-            document.getElementById('guide-modal').classList.remove('hidden');
-        }
-        function closeGuideModal() {
-            document.getElementById('guide-modal').classList.add('hidden');
+            document.getElementById('sidebar-drawer').classList.toggle('hidden');
         }
 
         function setNominal(val) {
             document.getElementById('dep-nominal').value = val;
         }
 
-        function claimRedeemCode() {
-            const code = document.getElementById('dep-coupon').value.trim();
-            if(code.toUpperCase() === 'BONUS97823') {
-                showNotif("Kode redeem berhasil! Bonus saldo akan ditambahkan setelah deposit.", "success");
-            } else {
-                showNotif("Kode redeem tidak valid atau sudah kadaluarsa.", "error");
-            }
-        }
-
         function toggleTheme() {
             const html = document.documentElement;
             if (html.classList.contains('light')) {
-                html.classList.remove('light');
-                html.classList.add('dark');
-                localStorage.setItem('fydz_theme', 'dark');
+                html.classList.remove('light'); html.classList.add('dark');
             } else {
-                html.classList.remove('dark');
-                html.classList.add('light');
-                localStorage.setItem('fydz_theme', 'light');
+                html.classList.remove('dark'); html.classList.add('light');
             }
-        }
-
-        (function() {
-            const savedTheme = localStorage.getItem('fydz_theme') || 'light';
-            document.documentElement.classList.remove('light', 'dark');
-            document.documentElement.classList.add(savedTheme);
-            loadTopUsersStorage();
-        })();
-
-        function recordOrderToTopUser(buyerName, serviceName, price) {
-            const name = buyerName ? buyerName.toUpperCase() : "ANONIM";
-            let existing = topUsersData.find(u => u.name === name);
-            if(existing) {
-                existing.orders += 1;
-                existing.spent += price;
-            } else {
-                topUsersData.push({ name: name, orders: 1, spent: price });
-            }
-            topUsersData.sort((a, b) => b.orders - a.orders);
-            localStorage.setItem('fydz_top_users', JSON.stringify(topUsersData));
-            renderTopUsersUI();
-
-            globalOrdersStats.count += 1;
-            globalOrdersStats.spent += price;
-            document.getElementById('stat-total-order').innerText = globalOrdersStats.count;
-            document.getElementById('stat-total-spent').innerText = `(Rp ${globalOrdersStats.spent.toLocaleString('id-ID')})`;
-
-            triggerLiveOrderNotification(name, serviceName);
-        }
-
-        function loadTopUsersStorage() {
-            const saved = localStorage.getItem('fydz_top_users');
-            if(saved) {
-                try { topUsersData = JSON.parse(saved); } catch(e) { topUsersData = []; }
-            }
-            renderTopUsersUI();
-        }
-
-        function renderTopUsersUI() {
-            const container = document.getElementById('top-user-list');
-            if(topUsersData.length === 0) {
-                container.innerHTML = `
-                    <div class="p-4 rounded-2xl border-2 border-dashed border-zinc-300 dark:border-zinc-800 text-center space-y-1">
-                        <p class="text-xs font-bold" style="color: var(--text-sub);">Belum ada data top user.</p>
-                        <p class="text-[10px]" style="color: var(--text-sub);">Akan terisi otomatis saat user memasukkan nama dan berhasil order.</p>
-                    </div>
-                `;
-                return;
-            }
-
-            container.innerHTML = topUsersData.slice(0, 5).map((u, idx) => `
-                <div class="p-3.5 rounded-2xl border-2 border-amber-400 bg-amber-500/10 flex items-center justify-between">
-                    <div class="space-y-0.5">
-                        <div class="flex items-center gap-2">
-                            <span class="text-xs font-black" style="color: var(--text-main);">#${idx + 1} ${u.name}</span>
-                            <span class="bg-amber-400 text-black px-2 py-0.5 rounded text-[9px] font-black uppercase border border-black">TOP</span>
-                        </div>
-                        <p class="text-[10px] font-bold" style="color: var(--text-sub);">Aktivitas Order Pembeli</p>
-                    </div>
-                    <div class="text-right">
-                        <p class="text-xs font-black text-amber-600">${u.orders} order</p>
-                        <p class="text-[10px] font-bold text-emerald-500">Rp ${u.spent.toLocaleString('id-ID')}</p>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function triggerLiveOrderNotification(buyerName, serviceName) {
-            document.getElementById('toast-buyer').innerText = buyerName;
-            document.getElementById('toast-detail').innerText = `Membeli ${serviceName}`;
-            const toast = document.getElementById('live-buyer-toast');
-            toast.classList.remove('hidden');
-            setTimeout(() => toast.classList.add('hidden'), 4000);
-        }
-
-        function startAppLoading() {
-            document.getElementById('splash-action-box').classList.add('hidden');
-            document.getElementById('splash-loading-box').classList.remove('hidden');
-            
-            const bar = document.getElementById('loading-bar');
-            const statusText = document.getElementById('loading-status-text');
-            
-            let progress = 0;
-            const duration = 6000;
-            const intervalTime = 60;
-            const increment = 100 / (duration / intervalTime);
-
-            const steps = [
-                { at: 20, text: "Memuat modul autentikasi..." },
-                { at: 50, text: "Menghubungkan ke API Proxy..." },
-                { at: 80, text: "Sinkronisasi direktori layanan..." }
-            ];
-
-            const loadingInterval = setInterval(() => {
-                progress += increment;
-                if(progress >= 100) {
-                    progress = 100;
-                    clearInterval(loadingInterval);
-                    const splash = document.getElementById('splash-screen');
-                    splash.style.opacity = '0';
-                    splash.style.transition = 'opacity 0.4s ease';
-                    setTimeout(() => {
-                        splash.remove();
-                        fetchProfile();
-                        loadCatalogData();
-                    }, 400);
-                }
-                bar.style.width = progress + '%';
-                const currentStep = [...steps].reverse().find(s => progress >= s.at);
-                if(currentStep) statusText.innerText = currentStep.text;
-            }, intervalTime);
-        }
-
-        function logTerminal(text, isError = false) {
-            const term = document.getElementById('terminal-output');
-            if(!term) return;
-            const time = new Date().toLocaleTimeString();
-            const color = isError ? "text-red-400" : "text-emerald-400";
-            term.innerHTML += `<div class="${color}">[${time}] ${text}</div>`;
-            term.scrollTop = term.scrollHeight;
         }
 
         function showNotif(message, type = 'info') {
@@ -691,7 +554,7 @@
         }
 
         function copyToClipboard(text) {
-            navigator.clipboard.writeText(text).then(() => showNotif("Berhasil disalin ke clipboard", "success"));
+            navigator.clipboard.writeText(text).then(() => showNotif("Berhasil disalin", "success"));
         }
 
         async function requestFydz(path, params = {}, silent = false) {
@@ -700,49 +563,25 @@
             for (const [k, v] of Object.entries(params)) {
                 if (v !== undefined && v !== "") url.searchParams.append(k, v);
             }
-            logTerminal(`API REQ: ${path}`);
             try {
                 const res = await fetch(url.toString());
                 const data = await res.json();
                 if (!res.ok || data.detail) throw new Error(data.detail || `HTTP Error ${res.status}`);
-                logTerminal(`API RES: ${path} [OK]`);
                 return data;
             } catch (err) {
-                logTerminal(`API ERR [${path}]: ${err.message}`, true);
                 if (!silent) showNotif(err.message, "error");
                 throw err;
             }
         }
 
-        async function fetchProfile() {
-            try {
-                const data = await requestFydz('/profile', {}, true);
-                const bal = (data.balance || 0).toLocaleString('id-ID');
-                document.getElementById('header-balance').innerText = `Rp ${bal}`;
-                document.getElementById('dash-balance').innerText = `Rp ${bal}`;
-            } catch(e) {}
-        }
-
         function switchMainTab(tabId) {
-            for(let i=1; i<=6; i++) {
-                const content = document.getElementById(`tab-content-${i}`);
-                if(content) content.classList.add('hidden');
+            for(let i=1; i<=5; i++) {
+                document.getElementById(`tab-content-${i}`).classList.add('hidden');
             }
-            
             document.getElementById(`tab-content-${tabId}`).classList.remove('hidden');
-            
-            const titles = {
-                1: "Dashboard",
-                2: "Katalog Layanan",
-                3: "Kelola Pesanan",
-                4: "Riwayat Transaksi",
-                5: "Deposit QRIS",
-                6: "Terminal API"
-            };
+            const titles = { 1: "Dashboard", 2: "Katalog Nokos", 3: "Kelola Pesanan", 4: "Riwayat", 5: "Deposit QRIS" };
             document.getElementById('header-title').innerText = titles[tabId] || "Dashboard";
-
             if(tabId === 2 && globalServicesCache.length === 0) loadCatalogData();
-            if(tabId === 1 || tabId === 5) fetchProfile();
         }
 
         async function onServerChange() {
@@ -774,13 +613,13 @@
             const server = document.getElementById('sel-server').value;
             const country = document.getElementById('sel-country').value;
             const grid = document.getElementById('catalog-grid');
-            grid.innerHTML = `<div class="fy-card p-4 text-center text-xs font-bold" style="color: var(--text-sub);">Memuat layanan dari server ${server}...</div>`;
+            grid.innerHTML = `<div class="fy-card p-4 text-center text-xs font-bold" style="color: var(--text-sub);">Memuat layanan reseller...</div>`;
             try {
                 const list = await requestFydz('/services', { server, country }, true);
                 globalServicesCache = Array.isArray(list) ? list : [];
                 renderCatalogGrid();
             } catch(e) {
-                grid.innerHTML = `<div class="fy-card p-4 text-center text-xs text-red-500 font-bold">Gagal memuat data layanan via Proxy.</div>`;
+                grid.innerHTML = `<div class="fy-card p-4 text-center text-xs text-red-500 font-bold">Gagal memuat katalog.</div>`;
             }
         }
 
@@ -798,22 +637,19 @@
             grid.innerHTML = filtered.slice(0, 40).map(item => {
                 const prodId = item.produk || item.id;
                 const provId = item.provider || '';
-                const price = item.price || item.base_price || 0;
+                const basePrice = item.price || item.base_price || 0;
+                const resellerPrice = calculateResellerPrice(basePrice);
                 const stock = item.count ?? '-';
                 const name = item.service_name || item.name || item.produk;
-                const rate = item.rate_sms ? `• Success: ${item.rate_sms}%` : '';
                 return `
                     <div class="fy-card p-4 flex justify-between items-center gap-3">
                         <div class="space-y-0.5">
                             <h4 class="text-xs font-black uppercase truncate" style="color: var(--text-main);">${name}</h4>
-                            <p class="text-[10px] font-bold" style="color: var(--text-sub);">
-                                ${provId ? `Provider: <b>${provId}</b> • ` : ''}Stok: <b class="text-emerald-500">${stock}</b> ${rate}
-                            </p>
-                            <p class="text-xs font-black text-amber-500">Rp ${price.toLocaleString('id-ID')}</p>
+                            <p class="text-[10px] font-bold" style="color: var(--text-sub);">Stok: <b class="text-emerald-500">${stock}</b></p>
+                            <p class="text-xs font-black text-amber-500">Rp ${resellerPrice.toLocaleString('id-ID')} <span class="text-[9px] text-zinc-400 font-normal">(Reseller)</span></p>
                         </div>
                         <div class="flex items-center gap-1.5">
-                            <button onclick="buyNokosItem('${prodId}', '${provId}', 1, ${price}, '${name}')" class="fy-btn px-2.5 py-1.5 text-[10px]">Beli 1x</button>
-                            <button onclick="buyNokosItem('${prodId}', '${provId}', 5, ${price * 5}, '${name}')" class="fy-btn px-2.5 py-1.5 text-[10px] text-white font-black" style="background-color: var(--accent);">Beli 5x</button>
+                            <button onclick="buyNokosItem('${prodId}', '${provId}', 1, ${resellerPrice}, '${name}')" class="fy-btn px-3 py-2 text-[10px] text-white font-black" style="background-color: var(--accent);">Beli Nokos</button>
                         </div>
                     </div>
                 `;
@@ -821,11 +657,11 @@
         }
 
         async function buyNokosItem(produk, provider, total, totalPrice, serviceName) {
-            const buyerName = document.getElementById('buyer-name-input').value.trim();
-            if(!buyerName) {
-                showNotif("Masukkan nama panggilanmu terlebih dahulu di atas katalog!", "error");
-                switchMainTab(2);
-                return;
+            let userData = getActiveUserData();
+            if(!userData) return showNotif("Silakan login terlebih dahulu!", "error");
+
+            if(userData.balance < totalPrice) {
+                return showNotif("Saldo akun Anda tidak mencukupi! Silakan deposit QRIS terlebih dahulu.", "error");
             }
 
             const server = document.getElementById('sel-server').value;
@@ -836,14 +672,27 @@
             if(operator && operator !== 'any' && ['1', '6', '7'].includes(server)) params.operator = operator;
             
             try {
-                showNotif(`Memproses pemesanan ${total} nomor...`, "info");
+                showNotif("Memproses pesanan...", "info");
                 const data = await requestFydz('/order', params);
-                showNotif(`Pesanan berhasil dibuat`, "success");
-                fetchProfile();
                 
-                recordOrderToTopUser(buyerName, serviceName, totalPrice);
-
+                // POTONG SALDO AKUN PRIBADI USER
+                userData.balance -= totalPrice;
+                userData.totalOrder += 1;
+                
                 const orderObj = data.orders ? data.orders[0] : data;
+                userData.orders.unshift({
+                    id: orderObj.id || '-',
+                    number: orderObj.number || '-',
+                    service_name: serviceName,
+                    otp: orderObj.otp || 'Waiting',
+                    status: orderObj.status || 'pending',
+                    price: totalPrice,
+                    created_at: new Date().toLocaleTimeString()
+                });
+                
+                saveActiveUserData(userData);
+                showNotif("Pesanan berhasil dibuat!", "success");
+
                 if(orderObj && orderObj.id) {
                     document.getElementById('man-order-id').value = orderObj.id;
                     renderActiveMonitor(orderObj);
@@ -871,162 +720,121 @@
                     if(st.otp && st.otp !== 'Waiting') {
                         clearInterval(pollingTimer);
                         showNotif(`OTP Diterima: ${st.otp}`, "success");
-                    } else if(st.status !== 'pending') {
-                        clearInterval(pollingTimer);
                     }
-                } catch(e) {
-                    clearInterval(pollingTimer);
-                }
+                } catch(e) { clearInterval(pollingTimer); }
             }, 5000);
         }
 
         async function checkOrderStatus(notify = false) {
             const id = document.getElementById('man-order-id').value.trim();
-            if(!id) return showNotif("Masukkan Order ID terlebih dahulu", "error");
+            if(!id) return showNotif("Masukkan Order ID", "error");
             try {
                 const st = await requestFydz('/status', { id }, !notify);
                 renderActiveMonitor(st);
-                if(notify) showNotif(`Status: ${st.status} | OTP: ${st.otp || 'Waiting'}`, "info");
+                if(notify) showNotif(`Status: ${st.status}`, "info");
             } catch(e) {}
         }
 
         async function resendSmsOtp() {
             const id = document.getElementById('man-order-id').value.trim();
-            if(!id) return showNotif("Masukkan Order ID terlebih dahulu", "error");
-            try {
-                await requestFydz('/resend', { id });
-                showNotif("Permintaan kirim ulang SMS dikirim", "success");
-            } catch(e) {}
+            if(!id) return showNotif("Masukkan Order ID", "error");
+            try { await requestFydz('/resend', { id }); showNotif("SMS dikirim ulang", "success"); } catch(e) {}
         }
 
         async function reactivateOrderNum() {
             const id = document.getElementById('man-order-id').value.trim();
-            if(!id) return showNotif("Masukkan Order ID terlebih dahulu", "error");
-            try {
-                const res = await requestFydz('/reactivate', { id });
-                showNotif("Nomor berhasil diperpanjang", "success");
-                if(res.id) document.getElementById('man-order-id').value = res.id;
-                fetchProfile();
-            } catch(e) {}
+            if(!id) return showNotif("Masukkan Order ID", "error");
+            try { await requestFydz('/reactivate', { id }); showNotif("Nomor diperpanjang", "success"); } catch(e) {}
         }
 
         async function cancelActiveOrder() {
             const id = document.getElementById('man-order-id').value.trim();
-            if(!id) return showNotif("Masukkan Order ID terlebih dahulu", "error");
-            try {
-                await requestFydz('/cancel', { id });
+            if(!id) return showNotif("Masukkan Order ID", "error");
+            try { 
+                await requestFydz('/cancel', { id }); 
                 if(pollingTimer) clearInterval(pollingTimer);
-                showNotif("Pesanan dibatalkan, saldo dikembalikan", "success");
-                fetchProfile();
+                showNotif("Pesanan dibatalkan", "success"); 
             } catch(e) {}
         }
 
-        // FUNGSI RENDER QRIS LANGSUNG & DOWNLOAD SEBAGAI FOTO
         async function createDepositQr() {
-            const nominal = document.getElementById('dep-nominal').value;
-            if(!nominal || nominal < 1000) {
-                return showNotif("Minimal deposit adalah Rp 1.000", "error");
-            }
+            const nominal = Number(document.getElementById('dep-nominal').value);
+            if(!nominal || nominal < 1000) return showNotif("Minimal deposit Rp 1.000", "error");
 
-            try {
-                showNotif("Membuat tagihan QRIS...", "info");
-                const data = await requestFydz('/deposit/create', { 
-                    nominal: nominal, 
-                    method: 'qris' 
-                });
-                
-                document.getElementById('modal-qris-box').classList.remove('hidden');
-                
-                const totalBayar = data.total_bayar || data.amount || nominal;
-                document.getElementById('qris-total').innerText = `Rp ${Number(totalBayar).toLocaleString('id-ID')}`;
-                
-                // Ambil string mentah qris dari API (biasanya di qris_string, qr_string, atau url)
-                currentQrisString = data.qris_string || data.qr_string || data.qr_link || data.qris_url || `00020101021126690016ID.CO.QRIS.WWWRELAY0303UBS51440014ID.CO.QRIS.WWW0215ID202324567890303UBS5204541153033605802ID5910FYDZ STORE6007JAKARTA6304`;
-                
-                // Render QR code langsung di dalam elemen div #qrcode-container
-                const qrContainer = document.getElementById('qrcode-container');
-                qrContainer.innerHTML = ""; // Bersihkan QR sebelumnya
-                
-                new QRCode(qrContainer, {
-                    text: currentQrisString,
-                    width: 200,
-                    height: 200,
-                    colorDark : "#000000",
-                    colorLight : "#ffffff",
-                    correctLevel : QRCode.CorrectLevel.H
-                });
-                
-                showNotif("QRIS berhasil dibuat!", "success");
-            } catch(e) {
-                logTerminal(`Deposit Error: ${e.message}`, true);
-                // Fallback demo qris jika API pusat sedang ada kendala format
-                document.getElementById('modal-qris-box').classList.remove('hidden');
-                document.getElementById('qris-total').innerText = `Rp ${Number(nominal).toLocaleString('id-ID')}`;
-                
-                const qrContainer = document.getElementById('qrcode-container');
-                qrContainer.innerHTML = "";
-                new QRCode(qrContainer, {
-                    text: "https://xtmione.web.id/qris-dummy-" + nominal,
-                    width: 200,
-                    height: 200
-                });
-                showNotif("QRIS berhasil dimuat", "success");
-            }
+            currentDepNominal = nominal;
+            document.getElementById('modal-qris-box').classList.remove('hidden');
+            document.getElementById('qris-total').innerText = `Rp ${nominal.toLocaleString('id-ID')}`;
+            
+            const qrContainer = document.getElementById('qrcode-container');
+            qrContainer.innerHTML = "";
+            new QRCode(qrContainer, {
+                text: `https://fydzotp.reseller/deposit-${nominal}-${currentUser}`,
+                width: 180, height: 180
+            });
+            showNotif("QRIS siap di-scan", "success");
+        }
+
+        // SIMULASI PEMBAYARAN QRIS BERHASIL (MASUK SALDO AKUN PRIBADI)
+        function simulateDepositSuccess() {
+            let userData = getActiveUserData();
+            if(!userData) return;
+
+            userData.balance += currentDepNominal;
+            userData.deposits.unshift({
+                id: 'DEP-' + Math.floor(Math.random() * 900000 + 100000),
+                nominal: currentDepNominal,
+                status: 'berhasil',
+                created_at: new Date().toLocaleTimeString()
+            });
+
+            saveActiveUserData(userData);
+            document.getElementById('modal-qris-box').classList.add('hidden');
+            showNotif(`Deposit Rp ${currentDepNominal.toLocaleString('id-ID')} berhasil masuk!`, "success");
         }
 
         function downloadQrisImage() {
             const qrCanvas = document.querySelector('#qrcode-container canvas');
-            if(!qrCanvas) {
-                return showNotif("QRIS belum digenerate!", "error");
-            }
-            
-            // Konversi canvas QR code menjadi file gambar PNG yang bisa di-download otomatis
-            const imageURI = qrCanvas.toDataURL("image/png");
-            const downloadLink = document.createElement('a');
-            downloadLink.href = imageURI;
-            downloadLink.download = `QRIS-FydzOTP-${document.getElementById('dep-nominal').value}.png`;
-            document.body.appendChild(downloadLink);
-            downloadLink.click();
-            document.body.removeChild(downloadLink);
-            
-            showNotif("QRIS berhasil diunduh sebagai foto!", "success");
+            if(!qrCanvas) return showNotif("QRIS belum ada", "error");
+            const link = document.createElement('a');
+            link.href = qrCanvas.toDataURL("image/png");
+            link.download = `QRIS-Reseller-${currentDepNominal}.png`;
+            link.click();
+            showNotif("QRIS diunduh", "success");
         }
 
-        async function fetchOrderHistory() {
-            try {
-                const list = await requestFydz('/history', { limit: 20 });
-                renderHistoryList("Riwayat Order", list.map(i => `
-                    <div class="fy-card p-3.5 flex justify-between items-center text-xs">
-                        <div>
-                            <p class="font-black" style="color: var(--text-main);">${i.number} (${i.service_name})</p>
-                            <p class="text-[10px] font-bold" style="color: var(--text-sub);">OTP: <b class="text-emerald-500 select-all">${i.otp || '-'}</b> • ${i.created_at}</p>
-                        </div>
-                        <span class="px-2.5 py-1 rounded-lg text-[10px] font-black border border-black ${i.status === 'success' ? 'bg-emerald-400 text-black' : 'bg-zinc-200 dark:bg-zinc-800 text-zinc-500'}">${i.status}</span>
+        function fetchOrderHistory() {
+            let user = getActiveUserData();
+            let items = user && user.orders ? user.orders : [];
+            renderHistoryList("Riwayat Order Pribadi", items.map(i => `
+                <div class="fy-card p-3.5 flex justify-between items-center text-xs">
+                    <div>
+                        <p class="font-black" style="color: var(--text-main);">${i.number} (${i.service_name})</p>
+                        <p class="text-[10px] font-bold" style="color: var(--text-sub);">OTP: <b class="text-emerald-500">${i.otp}</b> • Rp ${i.price.toLocaleString('id-ID')} • ${i.created_at}</p>
                     </div>
-                `));
-            } catch(e) {}
+                    <span class="px-2.5 py-1 rounded-lg text-[10px] font-black border border-black bg-emerald-400 text-black">Sukses</span>
+                </div>
+            `));
         }
 
-        async function fetchDepositHistory() {
-            try {
-                const list = await requestFydz('/deposit/history', { limit: 20 });
-                renderHistoryList("Riwayat Deposit", list.map(i => `
-                    <div class="fy-card p-3.5 flex justify-between items-center text-xs">
-                        <div>
-                            <p class="font-black" style="color: var(--text-main);">Rp ${(i.nominal || 0).toLocaleString('id-ID')}</p>
-                            <p class="text-[10px] font-mono font-bold" style="color: var(--text-sub);">${i.id} • ${i.created_at}</p>
-                        </div>
-                        <span class="px-2.5 py-1 rounded-lg text-[10px] font-black border border-black ${i.status === 'berhasil' ? 'bg-emerald-400 text-black' : 'bg-amber-300 text-black'}">${i.status}</span>
+        function fetchDepositHistory() {
+            let user = getActiveUserData();
+            let items = user && user.deposits ? user.deposits : [];
+            renderHistoryList("Riwayat Saldo Pribadi", items.map(i => `
+                <div class="fy-card p-3.5 flex justify-between items-center text-xs">
+                    <div>
+                        <p class="font-black" style="color: var(--text-main);">Rp ${i.nominal.toLocaleString('id-ID')}</p>
+                        <p class="text-[10px] font-mono font-bold" style="color: var(--text-sub);">${i.id} • ${i.created_at}</p>
                     </div>
-                `));
-            } catch(e) {}
+                    <span class="px-2.5 py-1 rounded-lg text-[10px] font-black border border-black bg-emerald-400 text-black">Berhasil</span>
+                </div>
+            `));
         }
 
         function renderHistoryList(title, itemsHtml) {
             const container = document.getElementById('history-result-container');
             container.innerHTML = `
                 <h4 class="text-xs font-black uppercase tracking-wider px-0.5 pt-1" style="color: var(--text-sub);">${title}</h4>
-                <div class="space-y-2.5 pt-1">${itemsHtml.length ? itemsHtml.join('') : '<p class="text-xs font-bold p-3" style="color: var(--text-sub);">Tidak ada data riwayat.</p>'}</div>
+                <div class="space-y-2.5 pt-1">${itemsHtml.length ? itemsHtml.join('') : '<p class="text-xs font-bold p-3" style="color: var(--text-sub);">Belum ada riwayat transaksi.</p>'}</div>
             `;
         }
     </script>
