@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>FydzOTP — Layanan Nomor Virtual & OTP Instan</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+        body {
+            -webkit-tap-highlight-color: transparent;
+            padding-bottom: 88px;
+        }
+        .card-neo {
+            border: 2.5px solid #18181b;
+            box-shadow: 3.5px 3.5px 0px #18181b;
+            border-radius: 14px;
+            background: #ffffff;
+        }
+        .btn-neo {
+            border: 2px solid #18181b;
+            box-shadow: 2.5px 2.5px 0px #18181b;
+            border-radius: 10px;
+            transition: transform 0.08s ease, box-shadow 0.08s ease;
+        }
+        .btn-neo:active {
+            transform: translate(2px, 2px);
+            box-shadow: 0px 0px 0px #18181b;
+        }
+        .input-neo {
+            border: 2px solid #18181b;
+            border-radius: 10px;
+            background: #f8fafc;
+        }
+        .input-neo:focus {
+            outline: none;
+            background: #ffffff;
+            box-shadow: 2px 2px 0px #18181b;
+        }
+        .nav-active {
+            color: #000000;
+            background-color: #fde047;
+            border: 2px solid #18181b;
+            box-shadow: 2px 2px 0px #18181b;
+        }
+    </style>
+</head>
+<body class="bg-slate-100 text-zinc-900 font-sans min-h-screen">
+
+    <!-- Top App Bar -->
+    <header class="bg-white border-b-2.5 border-zinc-900 px-4 py-3 sticky top-0 z-40">
+        <div class="max-w-md mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-2.5">
+                <div class="w-9 h-9 bg-yellow-300 border-2 border-zinc-900 rounded-xl flex items-center justify-center font-black text-base shadow-[2px_2px_0px_#000]">⚡</div>
+                <div>
+                    <h1 class="font-black text-base leading-none tracking-tight">FydzOTP</h1>
+                    <span class="text-[10px] font-bold text-zinc-500">By Fydz Official</span>
+                </div>
+            </div>
+            <span class="bg-emerald-100 text-emerald-800 border border-emerald-800 px-2.5 py-1 rounded-full text-[10px] font-black flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-emerald-600 animate-pulse"></span> ONLINE
+            </span>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="max-w-md mx-auto p-4 space-y-5">
+
+        <!-- PAGE 1: HOME -->
+        <section id="page-home" class="space-y-4">
+            <!-- Saldo Card -->
+            <div class="card-neo p-5 bg-gradient-to-br from-yellow-300 to-amber-300">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <p class="text-[11px] font-extrabold uppercase tracking-wider text-zinc-800">Saldo Akun</p>
+                        <h2 class="text-3xl font-black mt-1">Rp <span id="display-balance">0</span></h2>
+                        <p class="text-[11px] font-bold text-zinc-800 mt-1" id="display-user">Menghubungkan sistem...</p>
+                    </div>
+                    <button onclick="fetchProfile()" class="btn-neo bg-white px-3 py-1.5 text-xs font-black">
+                        🔄 Refresh
+                    </button>
+                </div>
+                <div class="grid grid-cols-2 gap-2.5 mt-4">
+                    <button onclick="navigate('page-deposit')" class="btn-neo bg-zinc-900 text-white py-2.5 text-xs font-black">
+                        + Deposit QRIS
+                    </button>
+                    <button onclick="navigate('page-order')" class="btn-neo bg-white text-zinc-900 py-2.5 text-xs font-black">
+                        🛒 Beli Nomor
+                    </button>
+                </div>
+            </div>
+
+            <!-- Auto-Bypass CORS Toggle -->
+            <div class="card-neo p-3.5 flex items-center justify-between bg-white">
+                <div class="flex items-center gap-2.5">
+                    <span class="text-base">🛡️</span>
+                    <div>
+                        <p class="text-xs font-black">Mode Jalur Aman (Auto-Proxy)</p>
+                        <p class="text-[10px] text-zinc-500 font-medium">Mencegah blokir browser saat akses langsung</p>
+                    </div>
+                </div>
+                <label class="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" id="use-proxy" class="sr-only peer" checked>
+                    <div class="w-9 h-5 bg-zinc-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-zinc-900 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-400 border border-zinc-900"></div>
+                </label>
+            </div>
+
+            <!-- Monitor Order Aktif -->
+            <div class="card-neo p-4">
+                <div class="flex justify-between items-center mb-3">
+                    <h3 class="text-xs font-black uppercase tracking-wider">⚡ Pantauan Order Aktif</h3>
+                    <button onclick="navigate('page-manage')" class="text-[11px] font-bold underline">Menu Kelola →</button>
+                </div>
+                <div id="home-active-box" class="bg-slate-50 border-2 border-dashed border-zinc-300 rounded-xl p-4 text-center">
+                    <p class="text-xs text-zinc-500 font-medium">Belum ada pesanan nomor aktif pada sesi ini.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- PAGE 2: ORDER OTP -->
+        <section id="page-order" class="space-y-4 hidden">
+            <div class="card-neo p-4 space-y-3">
+                <h2 class="text-sm font-black uppercase border-b-2 border-zinc-900 pb-2">🛒 Pesan Nomor Virtual</h2>
+                
+                <div>
+                    <label class="block text-[11px] font-black uppercase mb-1">Pilih Server</label>
+                    <select id="ord-server" onchange="onServerChange()" class="input-neo w-full p-2.5 text-xs font-bold">
+                        <option value="1">Server 1 — Operator Seluler</option>
+                        <option value="2">Server 2 — Provider Varian</option>
+                        <option value="3">Server 3 — Reguler</option>
+                        <option value="4">Server 4 — Negara ISO (cth: id)</option>
+                        <option value="5">Server 5 — Varian Harga</option>
+                        <option value="6">Server 6 — Multi Varian + Operator</option>
+                        <option value="7">Server 7 — Provider + Operator</option>
+                        <option value="8">Server 8 — WhatsApp Siap Pakai</option>
+                    </select>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-[11px] font-black uppercase mb-1">Kode Negara</label>
+                        <input type="text" id="ord-country" value="6" class="input-neo w-full p-2.5 text-xs font-bold" placeholder="6 atau id">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-black uppercase mb-1">Kode Layanan</label>
+                        <input type="text" id="ord-produk" value="wa" class="input-neo w-full p-2.5 text-xs font-bold" placeholder="wa, tw, dll">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-[11px] font-black uppercase mb-1">Provider / Varian</label>
+                        <input type="text" id="ord-provider" class="input-neo w-full p-2.5 text-xs font-bold" placeholder="Opsional (Srv 2,4,5,6,7)">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-black uppercase mb-1">Operator</label>
+                        <input type="text" id="ord-operator" value="any" class="input-neo w-full p-2.5 text-xs font-bold" placeholder="any / telkomsel">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-[11px] font-black uppercase mb-1">Jumlah Order (1 - 5 Nomor)</label>
+                    <input type="number" id="ord-total" value="1" min="1" max="5" class="input-neo w-full p-2.5 text-xs font-bold">
+                </div>
+
+                <div class="flex gap-2 pt-1">
+                    <button onclick="executeOrder()" class="btn-neo bg-yellow-300 font-black py-3 text-xs uppercase flex-grow">
+                        🚀 Order Sekarang
+                    </button>
+                    <button onclick="checkServices()" class="btn-neo bg-cyan-200 font-black px-3.5 py-3 text-xs uppercase">
+                        📋 Cek Harga
+                    </button>
+                </div>
+            </div>
+
+            <!-- Multi-Layanan Server 9 -->
+            <div class="card-neo p-4 space-y-3">
+                <h3 class="text-xs font-black uppercase border-b-2 border-zinc-900 pb-2">🔀 Order Multi-Layanan (1 Nomor Banyak Aplikasi)</h3>
+                <div>
+                    <label class="block text-[11px] font-black uppercase mb-1">ID Layanan (Pisahkan Koma, Min 2 Maks 5)</label>
+                    <input type="text" id="ord-multi-produk" class="input-neo w-full p-2.5 text-xs font-mono" placeholder="Contoh: 140525,140374">
+                </div>
+                <button onclick="executeOrderMulti()" class="btn-neo bg-purple-300 font-black w-full py-2.5 text-xs uppercase">
+                    ⚡ Order Multi-Layanan
+                </button>
+            </div>
+        </section>
+
+        <!-- PAGE 3: KELOLA & OTP -->
+        <section id="page-manage" class="space-y-4 hidden">
+            <div class="card-neo p-4 space-y-3">
+                <h2 class="text-sm font-black uppercase border-b-2 border-zinc-900 pb-2">📲 Kelola Pesanan & OTP</h2>
+                <div>
+                    <label class="block text-[11px] font-black uppercase mb-1">ID Pesanan (Order ID)</label>
+                    <input type="text" id="man-id" class="input-neo w-full p-2.5 text-xs font-mono" placeholder="Masukkan Order ID...">
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <button onclick="checkStatus()" class="btn-neo bg-yellow-300 py-2.5 text-xs font-black uppercase">🔍 Cek OTP</button>
+                    <button onclick="resendOtp()" class="btn-neo bg-cyan-200 py-2.5 text-xs font-black uppercase">🔄 Kirim Ulang SMS</button>
+                    <button onclick="requestCodeSrv8()" class="btn-neo bg-purple-200 py-2.5 text-xs font-black uppercase">📱 Minta Kode (Srv 8)</button>
+                    <button onclick="reactivateNum()" class="btn-neo bg-lime-200 py-2.5 text-xs font-black uppercase">♻️ Beli Ulang Nomor</button>
+                </div>
+                <button onclick="cancelOrder()" class="btn-neo bg-red-400 text-white w-full py-2.5 text-xs font-black uppercase">
+                    ❌ Batalkan Pesanan (Refund Saldo)
+                </button>
+            </div>
+        </section>
+
+        <!-- PAGE 4: DEPOSIT QRIS -->
+        <section id="page-deposit" class="space-y-4 hidden">
+            <div class="card-neo p-4 space-y-3">
+                <h2 class="text-sm font-black uppercase border-b-2 border-zinc-900 pb-2">💳 Isi Saldo Otomatis (QRIS)</h2>
+                <div>
+                    <label class="block text-[11px] font-black uppercase mb-1">Nominal Deposit (Rp)</label>
+                    <input type="number" id="dep-nominal" value="10000" min="1000" class="input-neo w-full p-2.5 text-xs font-bold">
+                </div>
+                <button onclick="createDeposit()" class="btn-neo bg-emerald-300 w-full py-3 text-xs font-black uppercase">
+                    💵 Buat Pembayaran QRIS
+                </button>
+
+                <hr class="border-zinc-200 my-2">
+
+                <div>
+                    <label class="block text-[11px] font-black uppercase mb-1">Cek / Batalkan Deposit ID</label>
+                    <input type="text" id="dep-id" class="input-neo w-full p-2.5 text-xs font-mono mb-2" placeholder="Masukkan Deposit ID...">
+                    <div class="grid grid-cols-2 gap-2">
+                        <button onclick="checkDeposit()" class="btn-neo bg-yellow-200 py-2 text-xs font-black uppercase">Cek Status</button>
+                        <button onclick="cancelDeposit()" class="btn-neo bg-red-300 py-2 text-xs font-black uppercase">Batalkan</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PAGE 5: RIWAYAT & DATA -->
+        <section id="page-history" class="space-y-4 hidden">
+            <div class="card-neo p-4 space-y-3">
+                <h2 class="text-sm font-black uppercase border-b-2 border-zinc-900 pb-2">📜 Riwayat & Referensi Layanan</h2>
+                <div class="grid grid-cols-2 gap-2">
+                    <button onclick="getHistoryOrder()" class="btn-neo bg-white py-2.5 text-xs font-black">📦 Riwayat Order</button>
+                    <button onclick="getHistoryDeposit()" class="btn-neo bg-white py-2.5 text-xs font-black">💰 Riwayat Deposit</button>
+                    <button onclick="getCountries()" class="btn-neo bg-white py-2.5 text-xs font-black">🌍 Daftar Negara</button>
+                    <button onclick="getOperators()" class="btn-neo bg-white py-2.5 text-xs font-black">📡 Daftar Operator</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- SYSTEM RESPONSE LOG -->
+        <section class="card-neo p-4">
+            <div class="flex justify-between items-center mb-2">
+                <span class="text-[11px] font-black uppercase tracking-wider">💻 Log Respon Sistem</span>
+                <button onclick="clearConsole()" class="text-[10px] font-bold text-red-600 underline">Bersihkan</button>
+            </div>
+            <div id="console-box" class="bg-zinc-900 text-emerald-400 p-3 rounded-xl font-mono text-[11px] overflow-x-auto max-h-64 min-h-[110px]">
+                // Sistem FydzOTP siap digunakan.
+            </div>
+        </section>
+
+    </main>
+
+    <!-- BOTTOM NAVIGATION BAR -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-white border-t-2.5 border-zinc-900 px-2 py-2 z-50">
+        <div class="max-w-md mx-auto grid grid-cols-5 gap-1">
+            <button onclick="navigate('page-home')" id="nav-page-home" class="nav-active flex flex-col items-center justify-center py-1.5 rounded-xl text-[10px] font-black transition-all">
+                <span class="text-base">🏠</span>
+                <span>Home</span>
+            </button>
+            <button onclick="navigate('page-order')" id="nav-page-order" class="text-zinc-500 flex flex-col items-center justify-center py-1.5 rounded-xl text-[10px] font-bold transition-all">
+                <span class="text-base">🛒</span>
+                <span>Order</span>
+            </button>
+            <button onclick="navigate('page-manage')" id="nav-page-manage" class="text-zinc-500 flex flex-col items-center justify-center py-1.5 rounded-xl text-[10px] font-bold transition-all">
+                <span class="text-base">📲</span>
+                <span>OTP</span>
+            </button>
+            <button onclick="navigate('page-deposit')" id="nav-page-deposit" class="text-zinc-500 flex flex-col items-center justify-center py-1.5 rounded-xl text-[10px] font-bold transition-all">
+                <span class="text-base">💳</span>
+                <span>Deposit</span>
+            </button>
+            <button onclick="navigate('page-history')" id="nav-page-history" class="text-zinc-500 flex flex-col items-center justify-center py-1.5 rounded-xl text-[10px] font-bold transition-all">
+                <span class="text-base">📜</span>
+                <span>Riwayat</span>
+            </button>
+        </div>
+    </nav>
+
+    <script>
+        // Konfigurasi Internal Tertanam (Tidak Tampil di Layar)
+        const _ENDPOINT = "https://www.ditznesia.com/api/dev";
+        const _SECRET_KEY = "otp_90b2ec4b500a5c63f0523d119a0673b2814f5a29";
+        let pollingTimer = null;
+
+        // Navigasi Bottom Bar
+        function navigate(pageId) {
+            ['page-home', 'page-order', 'page-manage', 'page-deposit', 'page-history'].forEach(id => {
+                document.getElementById(id).classList.add('hidden');
+                const btn = document.getElementById('nav-' + id);
+                btn.className = "text-zinc-500 flex flex-col items-center justify-center py-1.5 rounded-xl text-[10px] font-bold transition-all";
+            });
+            document.getElementById(pageId).classList.remove('hidden');
+            const activeBtn = document.getElementById('nav-' + pageId);
+            activeBtn.className = "nav-active flex flex-col items-center justify-center py-1.5 rounded-xl text-[10px] font-black transition-all";
+        }
+
+        function onServerChange() {
+            const srv = document.getElementById('ord-server').value;
+            document.getElementById('ord-country').value = (srv === '8') ? 'ID' : (srv === '4' ? 'id' : '6');
+        }
+
+        function logConsole(data, isError = false) {
+            const box = document.getElementById('console-box');
+            box.className = isError 
+                ? "bg-zinc-900 text-red-400 p-3 rounded-xl font-mono text-[11px] overflow-x-auto max-h-64 min-h-[110px]"
+                : "bg-zinc-900 text-emerald-400 p-3 rounded-xl font-mono text-[11px] overflow-x-auto max-h-64 min-h-[110px]";
+            box.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+        }
+
+        function clearConsole() {
+            document.getElementById('console-box').innerHTML = "// Log sistem dibersihkan.";
+        }
+
+        // Core API Request Handler
+        async function requestFydz(path, params = {}) {
+            const targetUrl = new URL(`${_ENDPOINT}${path}`);
+            targetUrl.searchParams.append('apikey', _SECRET_KEY);
+            for (const [k, v] of Object.entries(params)) {
+                if (v !== undefined && v !== "") targetUrl.searchParams.append(k, v);
+            }
+
+            const useProxy = document.getElementById('use-proxy').checked;
+            const finalUrl = useProxy 
+                ? `https://corsproxy.io/?${encodeURIComponent(targetUrl.toString())}`
+                : targetUrl.toString();
+
+            logConsole({ status: "Memproses permintaan...", layanan: path });
+
+            try {
+                const response = await fetch(finalUrl);
+                const data = await response.json();
+                if (!response.ok || data.detail) {
+                    throw new Error(data.detail || `Gagal memproses (Kode ${response.status})`);
+                }
+                logConsole(data);
+                return data;
+            } catch (err) {
+                logConsole({ 
+                    status: "Gagal Terhubung", 
+                    pesan: err.message,
+                    saran: "Periksa koneksi internet Anda atau coba ubah opsi Mode Jalur Aman di halaman Home."
+                }, true);
+                throw err;
+            }
+        }
+
+        // 1. Profil & Saldo
+        async function fetchProfile() {
+            try {
+                const data = await requestFydz('/profile');
+                document.getElementById('display-balance').innerText = (data.balance || 0).toLocaleString('id-ID');
+                document.getElementById('display-user').innerText = `${data.name || 'Member FydzOTP'} • Aktif`;
+            } catch (e) {
+                document.getElementById('display-user').innerText = "Gagal memuat info akun";
+            }
+        }
+
+        // 2. Order Nomor
+        async function executeOrder() {
+            const server = document.getElementById('ord-server').value;
+            const country = document.getElementById('ord-country').value.trim();
+            const produk = document.getElementById('ord-produk').value.trim();
+            const provider = document.getElementById('ord-provider').value.trim();
+            const operator = document.getElementById('ord-operator').value.trim();
+            const total = document.getElementById('ord-total').value;
+
+            const params = { server, country, produk };
+            if (total > 1) params.total = total;
+            if (provider) params.provider = provider;
+            if (operator && ['1', '6', '7'].includes(server)) params.operator = operator;
+
+            try {
+                const data = await requestFydz('/order', params);
+                fetchProfile();
+                const orderObj = data.orders ? data.orders[0] : data;
+                if (orderObj && orderObj.id) {
+                    document.getElementById('man-id').value = orderObj.id;
+                    updateHomeMonitor(orderObj);
+                    startAutoPolling(orderObj.id);
+                }
+            } catch (e) {}
+        }
+
+        async function executeOrderMulti() {
+            const produk = document.getElementById('ord-multi-produk').value.trim();
+            if (!produk) return alert("Masukkan minimal 2 ID layanan dipisah koma!");
+            try {
+                const data = await requestFydz('/order-multi', { produk });
+                fetchProfile();
+                if (data.orders && data.orders.length > 0) {
+                    document.getElementById('man-id').value = data.orders[0].id;
+                    updateHomeMonitor(data.orders[0]);
+                }
+            } catch (e) {}
+        }
+
+        function updateHomeMonitor(orderObj) {
+            document.getElementById('home-active-box').innerHTML = `
+                <div class="text-left space-y-1.5">
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm font-black text-emerald-700">${orderObj.number}</span>
+                        <span class="bg-yellow-200 border border-black px-2 py-0.5 rounded text-[10px] font-black uppercase">${orderObj.status}</span>
+                    </div>
+                    <p class="text-[11px] font-bold">OTP: <span class="text-blue-700 font-mono">${orderObj.otp || 'Menunggu SMS...'}</span></p>
+                    <p class="text-[10px] font-mono text-zinc-500">ID: ${orderObj.id}</p>
+                    <button onclick="navigate('page-manage'); checkStatus();" class="btn-neo bg-yellow-300 w-full py-1.5 mt-1 text-[11px] font-black">Kelola / Cek OTP →</button>
+                </div>
+            `;
+        }
+
+        function startAutoPolling(orderId) {
+            if (pollingTimer) clearInterval(pollingTimer);
+            pollingTimer = setInterval(async () => {
+                try {
+                    const st = await requestFydz('/status', { id: orderId });
+                    updateHomeMonitor(st);
+                    if (st.otp && st.otp !== 'Waiting') {
+                        clearInterval(pollingTimer);
+                        alert(`🎉 Kode OTP Masuk (${st.number}): ${st.otp}`);
+                    } else if (st.status !== 'pending') {
+                        clearInterval(pollingTimer);
+                    }
+                } catch (e) {
+                    clearInterval(pollingTimer);
+                }
+            }, 5000);
+        }
+
+        async function checkServices() {
+            const server = document.getElementById('ord-server').value;
+            const country = document.getElementById('ord-country').value.trim();
+            const service = document.getElementById('ord-produk').value.trim();
+            try { await requestFydz('/services', { server, country, service }); } catch (e) {}
+        }
+
+        // 3. Kelola OTP
+        async function checkStatus() {
+            const id = document.getElementById('man-id').value.trim();
+            if (!id) return alert("Masukkan ID Pesanan terlebih dahulu!");
+            try {
+                const st = await requestFydz('/status', { id });
+                updateHomeMonitor(st);
+            } catch (e) {}
+        }
+        async function resendOtp() {
+            const id = document.getElementById('man-id').value.trim();
+            if (!id) return alert("Masukkan ID Pesanan terlebih dahulu!");
+            try { await requestFydz('/resend', { id }); } catch (e) {}
+        }
+        async function requestCodeSrv8() {
+            const id = document.getElementById('man-id').value.trim();
+            if (!id) return alert("Masukkan ID Pesanan terlebih dahulu!");
+            try { await requestFydz('/request-code', { id }); } catch (e) {}
+        }
+        async function reactivateNum() {
+            const id = document.getElementById('man-id').value.trim();
+            if (!id) return alert("Masukkan ID Pesanan terlebih dahulu!");
+            try { await requestFydz('/reactivate', { id }); fetchProfile(); } catch (e) {}
+        }
+        async function cancelOrder() {
+            const id = document.getElementById('man-id').value.trim();
+            if (!id) return alert("Masukkan ID Pesanan terlebih dahulu!");
+            try {
+                await requestFydz('/cancel', { id });
+                if (pollingTimer) clearInterval(pollingTimer);
+                fetchProfile();
+            } catch (e) {}
+        }
+
+        // 4. Deposit
+        async function createDeposit() {
+            const nominal = document.getElementById('dep-nominal').value;
+            try {
+                const data = await requestFydz('/deposit/create', { nominal });
+                if (data.id) document.getElementById('dep-id').value = data.id;
+            } catch (e) {}
+        }
+        async function checkDeposit() {
+            const id = document.getElementById('dep-id').value.trim();
+            if (!id) return alert("Masukkan Deposit ID terlebih dahulu!");
+            try { await requestFydz('/deposit/status', { id }); fetchProfile(); } catch (e) {}
+        }
+        async function cancelDeposit() {
+            const id = document.getElementById('dep-id').value.trim();
+            if (!id) return alert("Masukkan Deposit ID terlebih dahulu!");
+            try { await requestFydz('/deposit/cancel', { id }); } catch (e) {}
+        }
+
+        // 5. Riwayat & Referensi
+        async function getHistoryOrder() { try { await requestFydz('/history', { limit: 20 }); } catch (e) {} }
+        async function getHistoryDeposit() { try { await requestFydz('/deposit/history', { limit: 20 }); } catch (e) {} }
+        async function getCountries() {
+            const server = document.getElementById('ord-server').value;
+            try { await requestFydz('/countries', { server }); } catch (e) {}
+        }
+        async function getOperators() {
+            const server = document.getElementById('ord-server').value;
+            const country = document.getElementById('ord-country').value.trim();
+            try { await requestFydz('/operators', { server, country }); } catch (e) {}
+        }
+
+        window.onload = () => {
+            fetchProfile();
+        };
+    </script>
+</body>
+</html>
