@@ -97,7 +97,7 @@
 <body class="min-h-screen">
 
     <!-- SPLASH SCREEN GAYA NEO-BRUTALISM LIGHT/DARK -->
-    <div id="splash-screen" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm" style="background-color: var(--bg-main);">
+    <div id="splash-screen" class="fixed inset-0 z-50 flex items-center justify-center p-4 backdrop-blur-sm" style="background-color: var(--bg-main);">
         <div class="fy-card max-w-sm w-full p-7 text-center space-y-6">
             <div class="w-20 h-20 bg-amber-500 border-3 border-black rounded-2xl mx-auto flex items-center justify-center text-3xl shadow-[3px_3px_0px_#000] font-black text-white">⚡</div>
             <div class="space-y-1.5">
@@ -135,7 +135,6 @@
             </div>
             
             <div class="flex items-center gap-2">
-                <!-- Tombol Toggle Terang / Gelap -->
                 <button onclick="toggleTheme()" class="fy-btn px-3 py-2 text-xs font-black" title="Ganti Mode Terang / Gelap">
                     🌓
                 </button>
@@ -320,7 +319,6 @@
         let globalServicesCache = [];
         let pollingTimer = null;
 
-        // Toggle Theme Terang / Gelap
         function toggleTheme() {
             const html = document.documentElement;
             if (html.classList.contains('light')) {
@@ -334,7 +332,6 @@
             }
         }
 
-        // Cek preferensi tema tersimpan
         (function() {
             const savedTheme = localStorage.getItem('fydz_theme') || 'light';
             document.documentElement.classList.remove('light', 'dark');
@@ -349,7 +346,7 @@
             const statusText = document.getElementById('loading-status-text');
             
             let progress = 0;
-            const duration = 6000; // 6 detik
+            const duration = 6000;
             const intervalTime = 60;
             const increment = 100 / (duration / intervalTime);
 
@@ -625,10 +622,18 @@
             try {
                 const data = await requestFydz('/deposit/create', { nominal });
                 document.getElementById('modal-qris-box').classList.remove('hidden');
-                document.getElementById('qris-total').innerText = `Rp ${(data.total_bayar || nominal).toLocaleString('id-ID')}`;
-                document.getElementById('qris-link').href = data.qr_link || '#';
+                
+                // Menangkap respons QRIS sesuai standar DitzNesia / qris gateway
+                const totalBayar = data.total_bayar || data.amount || nominal;
+                document.getElementById('qris-total').innerText = `Rp ${Number(totalBayar).toLocaleString('id-ID')}`;
+                
+                const qrisLink = data.qr_link || data.qris_url || data.checkout_url || '#';
+                document.getElementById('qris-link').href = qrisLink;
+                
                 showNotif("Tagihan QRIS berhasil dibuat", "success");
-            } catch(e) {}
+            } catch(e) {
+                logTerminal(`Deposit Error: ${e.message}`, true);
+            }
         }
 
         async function fetchOrderHistory() {
