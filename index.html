@@ -38,7 +38,7 @@
             color: var(--text-main);
             background-image: linear-gradient(to right, var(--bg-grid) 1px, transparent 1px), linear-gradient(to bottom, var(--bg-grid) 1px, transparent 1px);
             background-size: 24px 24px;
-            padding-bottom: 80px;
+            padding-bottom: 100px;
             transition: background-color 0.2s ease, color 0.2s ease;
         }
 
@@ -86,6 +86,12 @@
             font-weight: 800;
             box-shadow: 2px 2px 0px var(--shadow-col);
             cursor: pointer;
+        }
+
+        .nominal-card-active {
+            border-color: #0284c7 !important;
+            background: rgba(2, 132, 199, 0.12) !important;
+            box-shadow: 4px 4px 0px #0284c7 !important;
         }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
@@ -172,8 +178,8 @@
         </div>
     </div>
 
-    <!-- FLOATING BANTUAN WIDGET -->
-    <div class="fixed bottom-5 right-5 z-40 flex flex-col items-end gap-2">
+    <!-- FLOATING BANTUAN WIDGET (POSISI DINAMIS) -->
+    <div id="floating-help-widget" class="fixed bottom-5 right-5 z-40 flex flex-col items-end gap-2 transition-all">
         <div id="help-popup-menu" class="hidden fy-card p-3 space-y-2 bg-white dark:bg-zinc-900 border-black shadow-[4px_4px_0px_#000] mb-2 w-48 anim-fade">
             <div class="flex justify-between items-center border-b border-zinc-200 dark:border-zinc-800 pb-1.5">
                 <span class="text-[10px] font-black uppercase text-amber-500">Pusat Bantuan</span>
@@ -185,6 +191,17 @@
         <button onclick="toggleHelpMenu()" class="fy-btn px-4 py-3 bg-sky-600 text-white border-black font-black text-xs uppercase flex items-center gap-2 shadow-[4px_4px_0px_#000]"><span>🛟</span> Bantuan</button>
     </div>
 
+    <!-- STICKY BOTTOM CHECKOUT BAR UNTUK TOPUP GAME (ALA DITZNESIA) -->
+    <div id="tp-sticky-bottom-bar" class="fixed bottom-0 left-0 right-0 z-40 border-t-2.5 px-4 py-3 backdrop-blur-md hidden" style="background-color: var(--card-bg); border-color: var(--border-col);">
+        <div class="max-w-md mx-auto flex items-center justify-between gap-3">
+            <div class="min-w-0">
+                <p id="tp-bottom-item-name" class="text-[11px] font-bold truncate" style="color: var(--text-sub);">Pilih nominal</p>
+                <p id="tp-bottom-item-price" class="text-sm font-black text-sky-600 dark:text-sky-400">-</p>
+            </div>
+            <button onclick="orderTopupGame()" class="fy-btn px-6 py-2.5 text-xs font-black uppercase text-white bg-sky-600 border-black shrink-0">Beli</button>
+        </div>
+    </div>
+
     <!-- MODAL PANDUAN -->
     <div id="guide-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 hidden">
         <div class="fy-card max-w-sm w-full p-5 space-y-4 bg-white dark:bg-zinc-900 border-black anim-pop">
@@ -193,9 +210,9 @@
                 <button onclick="closeGuideModal()" class="fy-btn px-2.5 py-1 text-xs">✕</button>
             </div>
             <div class="space-y-3 text-xs font-medium" style="color: var(--text-sub);">
-                <p>1. Menu SMM Panel & Topup Game dirancang persis dengan layout Grid & Step ala Ditznesia.</p>
-                <p>2. Pilih server, pilih platform/game, lalu tentukan layanan & nominal.</p>
-                <p>3. Saldo terisolasi per akun & deposit QRIS otomatis aktif.</p>
+                <p>1. Menu Suntik Sosmed & Topup Game menggunakan alur dan ikon brand resmi persis Ditznesia.</p>
+                <p>2. Pada Topup Game: Pilih Game → 1. Masukkan ID Akun → 2. Pilih Kartu Nominal → Klik Beli di bar bawah.</p>
+                <p>3. Pada Suntik Sosmed: Pilih Server → 1. Platform → 2. Jenis → 3. Paket & Target dinamis.</p>
             </div>
             <button onclick="closeGuideModal()" class="fy-btn w-full py-2.5 text-xs bg-sky-500 text-white border-black uppercase font-black">Mengerti</button>
         </div>
@@ -219,8 +236,8 @@
                 <div class="space-y-2 text-xs font-bold">
                     <button onclick="toggleSidebar(); switchMainTab(1);" class="w-full text-left p-3 rounded-xl border-2 border-transparent hover:border-black flex items-center gap-3" style="color: var(--text-main);">Dashboard Utama</button>
                     <button onclick="toggleSidebar(); switchMainTab(2);" class="w-full text-left p-3 rounded-xl border-2 border-transparent hover:border-black flex items-center gap-3" style="color: var(--text-main);">Katalog Nokos OTP</button>
-                    <button onclick="toggleSidebar(); switchMainTab(6);" class="w-full text-left p-3 rounded-xl border-2 border-transparent hover:border-black flex items-center gap-3" style="color: var(--text-main);">SMM Panel (Suntik Sosmed)</button>
-                    <button onclick="toggleSidebar(); switchMainTab(7);" class="w-full text-left p-3 rounded-xl border-2 border-transparent hover:border-black flex items-center gap-3" style="color: var(--text-main);">Topup Game Voucher</button>
+                    <button onclick="toggleSidebar(); switchMainTab(6);" class="w-full text-left p-3 rounded-xl border-2 border-transparent hover:border-black flex items-center gap-3" style="color: var(--text-main);">Suntik Sosmed (SMM)</button>
+                    <button onclick="toggleSidebar(); switchMainTab(7);" class="w-full text-left p-3 rounded-xl border-2 border-transparent hover:border-black flex items-center gap-3" style="color: var(--text-main);">Topup Game</button>
                     <button onclick="toggleSidebar(); switchMainTab(3);" class="w-full text-left p-3 rounded-xl border-2 border-transparent hover:border-black flex items-center gap-3" style="color: var(--text-main);">Kelola Pesanan Nokos</button>
                     <button onclick="toggleSidebar(); switchMainTab(4);" class="w-full text-left p-3 rounded-xl border-2 border-transparent hover:border-black flex items-center gap-3" style="color: var(--text-main);">Riwayat Transaksi</button>
                     <button onclick="toggleSidebar(); switchMainTab(5);" class="w-full text-left p-3 rounded-xl border-2 border-transparent hover:border-black flex items-center gap-3" style="color: var(--text-main);">Deposit Saldo QRIS</button>
@@ -234,7 +251,7 @@
                     <button onclick="toggleSidebar(); logoutUser();" class="w-full text-left p-3 rounded-xl border-2 border-red-500 text-red-500 hover:bg-red-500/10 flex items-center gap-3 font-black mt-3">Keluar Akun</button>
                 </div>
             </div>
-            <div class="text-[10px] font-bold text-center pt-4 border-t border-zinc-200 dark:border-zinc-800" style="color: var(--text-sub);">FydzOfficial v22.0 — Ditznesia Exact UI</div>
+            <div class="text-[10px] font-bold text-center pt-4 border-t border-zinc-200 dark:border-zinc-800" style="color: var(--text-sub);">FydzOfficial v23.0 — Exact Ditznesia</div>
         </div>
     </div>
 
@@ -301,11 +318,11 @@
             <div class="fy-card p-5 space-y-3 text-white border-black" style="background-color: #0284c7;">
                 <div class="space-y-1">
                     <h2 id="banner-welcome-text" class="text-xl font-black tracking-tight">Halo @USER</h2>
-                    <p class="text-xs font-medium text-sky-100">Pusat layanan digital: Nokos OTP, SMM Panel, & Topup Game ala Ditznesia.</p>
+                    <p class="text-xs font-medium text-sky-100">Pusat layanan digital: Nokos OTP, Suntik Sosmed, & Topup Game.</p>
                 </div>
                 <div class="grid grid-cols-3 gap-2 pt-1">
                     <button onclick="switchMainTab(2)" class="fy-btn bg-white text-zinc-950 font-black py-2.5 text-[10px] uppercase border-black">Nokos</button>
-                    <button onclick="switchMainTab(6)" class="fy-btn bg-white text-zinc-950 font-black py-2.5 text-[10px] uppercase border-black">SMM Panel</button>
+                    <button onclick="switchMainTab(6)" class="fy-btn bg-white text-zinc-950 font-black py-2.5 text-[10px] uppercase border-black">Suntik Sosmed</button>
                     <button onclick="switchMainTab(7)" class="fy-btn bg-white text-zinc-950 font-black py-2.5 text-[10px] uppercase border-black">Topup Game</button>
                 </div>
             </div>
@@ -396,157 +413,166 @@
             </div>
         </div>
 
-        <!-- TAB 6: SMM PANEL (PERSIS DITZNESIA: SERVER, STEP NAV, PLATFORM GRID, KATEGORI/JENIS GRID) -->
+        <!-- TAB 6: SMM PANEL / SUNTIK SOSMED (EXACT DITZNESIA) -->
         <div id="tab-content-6" class="space-y-4 hidden anim-fade">
-            <!-- Banner Info -->
-            <div class="fy-card p-5 space-y-3 text-white border-black" style="background: linear-gradient(135deg, #7c3aed, #4f46e5);">
-                <div class="space-y-1">
-                    <h2 class="text-lg font-black tracking-tight uppercase">Suntik Sosmed</h2>
-                    <p class="text-xs font-medium text-purple-100">Tambah followers, likes, views & lainnya. Pilih platform, lalu jenis, lalu layanan.</p>
+            <!-- Banner Info Suntik Sosmed -->
+            <div class="fy-card p-4 flex items-center gap-3.5 border-black">
+                <div class="w-12 h-12 rounded-2xl bg-pink-600 text-white flex items-center justify-center shrink-0 border-2 border-black shadow-[2px_2px_0px_#000]">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+                </div>
+                <div class="space-y-0.5">
+                    <h2 class="text-base font-black tracking-tight" style="color: var(--text-main);">Suntik Sosmed</h2>
+                    <p class="text-[11px] font-semibold leading-snug" style="color: var(--text-sub);">Tambah followers, likes, views & lainnya. Pilih platform, lalu jenis, lalu layanan. Harga dihitung per jumlah yang dipesan.</p>
                 </div>
             </div>
 
-            <!-- Bagian Pemilihan Server SMM -->
-            <div class="fy-card p-3 space-y-2">
-                <p class="text-[10px] font-black uppercase text-zinc-500">Server SMM</p>
-                <div class="grid grid-cols-2 gap-2">
-                    <button onclick="switchSmmServer('1')" id="btn-smm-srv-1" class="fy-btn py-2.5 text-xs font-black bg-zinc-200 dark:bg-zinc-800">Server 1 (Main)</button>
-                    <button onclick="switchSmmServer('2')" id="btn-smm-srv-2" class="fy-btn py-2.5 text-xs font-black text-white bg-purple-600">Server 2</button>
-                </div>
-            </div>
-
-            <!-- Step Indicator Ditznesia -->
-            <div id="smm-step-indicator" class="fy-card p-3 flex items-center justify-between text-[11px] font-black">
-                <button id="smm-step-btn-1" onclick="resetSmmToPlatform()" class="px-3 py-1 rounded-xl bg-purple-600 text-white border border-black shadow">1. Platform</button>
-                <span class="text-zinc-400">></span>
-                <span id="smm-step-lbl-2" class="px-3 py-1 rounded-xl bg-zinc-200 dark:bg-zinc-800 text-zinc-500">2. Jenis</span>
-                <span class="text-zinc-400">></span>
-                <span id="smm-step-lbl-3" class="px-3 py-1 rounded-xl bg-zinc-200 dark:bg-zinc-800 text-zinc-500">3. Harga</span>
-            </div>
-
-            <!-- CONTAINER LEVEL 1: GRID PLATFORM SOSMED -->
-            <div id="smm-view-platform" class="space-y-3">
-                <div class="flex justify-between items-center px-0.5">
-                    <h3 class="text-xs font-black uppercase tracking-wider" style="color: var(--text-main);">Pilih Platform Sosmed</h3>
-                </div>
-                <div id="smm-platform-grid" class="grid grid-cols-3 gap-2.5">
-                    <div class="col-span-3 fy-card p-5 text-center text-xs font-bold" style="color: var(--text-sub);">Memuat platform...</div>
-                </div>
-            </div>
-
-            <!-- CONTAINER LEVEL 2: GRID JENIS / KATEGORI LAYANAN DALAM PLATFORM TERSEBUT -->
-            <div id="smm-view-category" class="space-y-3 hidden anim-fade">
-                <div class="flex justify-between items-center border-b-2 pb-2" style="border-color: var(--border-col);">
-                    <div class="flex items-center gap-2">
-                        <span id="smm-selected-platform-icon" class="text-xl">📱</span>
-                        <h3 id="smm-selected-platform-title" class="font-black text-xs uppercase" style="color: var(--text-main);">Platform</h3>
+            <!-- Panel Utama SMM -->
+            <div class="fy-card p-4 space-y-4">
+                <!-- Server Selector -->
+                <div class="space-y-1.5">
+                    <p class="text-[10px] font-black uppercase" style="color: var(--text-sub);">Server</p>
+                    <div class="flex gap-2">
+                        <button onclick="switchSmmServer('1')" id="btn-smm-srv-1" class="fy-btn px-3 py-2 text-[11px] font-black bg-zinc-200 dark:bg-zinc-800">Server 1 (Maintenance)</button>
+                        <button onclick="switchSmmServer('2')" id="btn-smm-srv-2" class="fy-btn px-4 py-2 text-[11px] font-black text-white bg-sky-600 border-black">Server 2</button>
                     </div>
-                    <button onclick="resetSmmToPlatform()" class="fy-btn px-2.5 py-1 text-[10px] font-black">← Kembali</button>
                 </div>
-                <div id="smm-category-grid" class="grid grid-cols-2 gap-2.5">
-                    <!-- Dynamic Category Cards -->
-                </div>
-            </div>
 
-            <!-- CONTAINER LEVEL 3: FORM PEMESANAN & PILIH PAKET LAYANAN -->
-            <div id="smm-view-order" class="space-y-4 hidden anim-fade fy-card p-4">
-                <div class="flex justify-between items-center border-b-2 pb-3" style="border-color: var(--border-col);">
+                <!-- Breadcrumb Steps Ditznesia -->
+                <div class="flex items-center gap-1.5 text-[11px] font-black overflow-x-auto pb-1">
+                    <button id="smm-back-btn" onclick="handleSmmBack()" class="hidden fy-btn px-2.5 py-1 text-[10px]">← Kembali</button>
+                    <span id="smm-step-1" class="px-3 py-1 rounded-full bg-sky-600 text-white border border-black shrink-0">1. Platform</span>
+                    <span class="text-zinc-400">&gt;</span>
+                    <span id="smm-step-2" class="px-3 py-1 rounded-full bg-zinc-200 dark:bg-zinc-800 text-zinc-500 shrink-0">2. Jenis</span>
+                    <span class="text-zinc-400">&gt;</span>
+                    <span id="smm-step-3" class="px-3 py-1 rounded-full bg-zinc-200 dark:bg-zinc-800 text-zinc-500 shrink-0">3. Harga</span>
+                </div>
+
+                <!-- STEP 1: GRID PLATFORM (LOGO BRAND RESMI) -->
+                <div id="smm-view-platform" class="grid grid-cols-3 gap-2.5">
+                    <!-- Diisi oleh JS -->
+                </div>
+
+                <!-- STEP 2: GRID JENIS LAYANAN DALAM PLATFORM -->
+                <div id="smm-view-category" class="hidden space-y-3 anim-fade">
+                    <div class="flex items-center gap-2.5 pb-1">
+                        <div id="smm-cat-header-icon" class="w-8 h-8 rounded-full flex items-center justify-center shrink-0"></div>
+                        <h3 id="smm-cat-header-title" class="text-sm font-black" style="color: var(--text-main);">Platform</h3>
+                    </div>
+                    <div id="smm-category-grid" class="grid grid-cols-2 gap-2.5">
+                        <!-- Diisi oleh JS -->
+                    </div>
+                </div>
+
+                <!-- STEP 3: PILIH PAKET LAYANAN & FORM TARGET DINAMIS -->
+                <div id="smm-view-order" class="hidden space-y-3.5 anim-fade">
                     <div>
-                        <h3 id="smm-selected-category-title" class="font-black text-xs uppercase text-purple-600 dark:text-purple-400">Jenis Layanan</h3>
-                        <p class="text-[10px] font-bold" style="color: var(--text-sub);">Pilih paket dan masukkan target</p>
+                        <label class="block text-[10px] font-black uppercase mb-1" style="color: var(--text-sub);">Pilih Paket Layanan</label>
+                        <select id="smm-sel-service" onchange="onSmmServiceSelected()" class="hidden"><option value="">Pilih Paket</option></select>
+                        <button type="button" onclick="openCustomPicker('smm-sel-service', 'Pilih Paket Layanan', true)" id="trigger-smm-sel-service" class="fy-select-trigger w-full p-2.5 text-xs flex items-center justify-between gap-2 text-left">
+                            <span class="truncate">Pilih Paket</span><span class="text-[10px] shrink-0">▼</span>
+                        </button>
                     </div>
-                    <button onclick="backToSmmCategory()" class="fy-btn px-2.5 py-1 text-[10px] font-black">← Ganti Jenis</button>
-                </div>
 
-                <div>
-                    <label class="block text-[10px] font-black uppercase mb-1" style="color: var(--text-sub);">Pilih Paket Layanan</label>
-                    <select id="smm-sel-service" onchange="onSmmServiceSelected()" class="hidden"><option value="">Pilih Paket</option></select>
-                    <button type="button" onclick="openCustomPicker('smm-sel-service', 'Pilih Paket Layanan', true)" id="trigger-smm-sel-service" class="fy-select-trigger w-full p-2.5 text-xs flex items-center justify-between gap-2 text-left">
-                        <span class="truncate">Pilih Paket</span><span class="text-[10px] shrink-0">▼</span>
-                    </button>
-                </div>
+                    <div id="smm-service-desc-box" class="hidden p-3 rounded-xl border-2 border-dashed border-zinc-300 dark:border-zinc-800 text-[11px] font-semibold space-y-1" style="color: var(--text-sub);">
+                        <p id="smm-target-label-text">Target: Link / Username</p>
+                        <p id="smm-target-hint-text" class="text-[10px] text-amber-500">-</p>
+                        <p id="smm-price-per-1000">Harga per 1.000: Rp 0</p>
+                    </div>
 
-                <div id="smm-service-desc-box" class="hidden p-3 rounded-xl border-2 border-dashed border-zinc-300 dark:border-zinc-800 text-[11px] font-semibold space-y-1" style="color: var(--text-sub);">
-                    <p id="smm-target-label-text">Target: Link / Username</p>
-                    <p id="smm-target-hint-text" class="text-[10px] text-amber-500">-</p>
-                    <p id="smm-price-per-1000">Harga per 1000: Rp 0</p>
-                </div>
+                    <div>
+                        <label class="block text-[10px] font-black uppercase mb-1" id="smm-input-target-label" style="color: var(--text-sub);">Target (Link / Username)</label>
+                        <input type="text" id="smm-target" class="fy-input w-full p-3 text-xs" placeholder="Masukkan link atau username target">
+                    </div>
 
-                <div>
-                    <label class="block text-[10px] font-black uppercase mb-1" id="smm-input-target-label" style="color: var(--text-sub);">Target (Link / Username)</label>
-                    <input type="text" id="smm-target" class="fy-input w-full p-3 text-xs" placeholder="Contoh: https://instagram.com/namaakun">
-                </div>
+                    <div id="smm-quantity-wrapper">
+                        <label class="block text-[10px] font-black uppercase mb-1" style="color: var(--text-sub);">Jumlah (Quantity)</label>
+                        <input type="number" id="smm-quantity" oninput="calculateSmmPrice()" class="fy-input w-full p-3 text-xs" placeholder="100">
+                        <p id="smm-calc-total" class="text-[10px] font-black text-amber-500 mt-1">Total Estimasi: Rp 0</p>
+                    </div>
 
-                <div id="smm-quantity-wrapper">
-                    <label class="block text-[10px] font-black uppercase mb-1" style="color: var(--text-sub);">Jumlah (Quantity)</label>
-                    <input type="number" id="smm-quantity" oninput="calculateSmmPrice()" class="fy-input w-full p-3 text-xs" placeholder="50">
-                    <p id="smm-calc-total" class="text-[10px] font-black text-amber-500 mt-1">Total Estimasi: Rp 0</p>
-                </div>
+                    <div id="smm-comments-wrapper" class="hidden">
+                        <label class="block text-[10px] font-black uppercase mb-1" style="color: var(--text-sub);">Custom Komentar (1 baris = 1 komentar)</label>
+                        <textarea id="smm-comments" rows="3" class="fy-input w-full p-2.5 text-xs" placeholder="Keren bang&#10;Mantap"></textarea>
+                    </div>
 
-                <div id="smm-comments-wrapper" class="hidden">
-                    <label class="block text-[10px] font-black uppercase mb-1" style="color: var(--text-sub);">Custom Komentar (1 baris = 1 komentar)</label>
-                    <textarea id="smm-comments" rows="3" class="fy-input w-full p-2.5 text-xs" placeholder="Keren bang&#10;Mantap"></textarea>
+                    <button onclick="orderSmmService()" class="fy-btn text-white font-black w-full py-3.5 text-xs uppercase shadow-[3px_3px_0px_#000]" style="background-color: var(--accent); border-color: var(--border-col);">Pesan Layanan SMM →</button>
                 </div>
-
-                <button onclick="orderSmmService()" class="fy-btn text-white font-black w-full py-3.5 text-xs uppercase shadow-[3px_3px_0px_#000]" style="background-color: var(--accent); border-color: var(--border-col);">Pesan Layanan SMM →</button>
             </div>
         </div>
 
-        <!-- TAB 7: TOPUP GAME (GRID INTERAKTIF ALA DITZNESIA) -->
+        <!-- TAB 7: TOPUP GAME (EXACT DITZNESIA: 2-STEP CARDS + STICKY BOTTOM BAR) -->
         <div id="tab-content-7" class="space-y-4 hidden anim-fade">
-            <!-- Banner Info -->
-            <div class="fy-card p-5 space-y-3 text-white border-black" style="background: linear-gradient(135deg, #0284c7, #2563eb);">
-                <div class="space-y-1">
-                    <h2 class="text-lg font-black tracking-tight uppercase">Topup Game</h2>
-                    <p class="text-xs font-medium text-sky-100">⚡ Proses 1-3 menit &bull; 🕒 Otomatis 24 jam &bull; 🛡️ Gagal = saldo kembali</p>
+            <!-- VIEW A: PILIH GAME GRID -->
+            <div id="tp-game-container" class="space-y-4">
+                <div class="fy-card p-5 space-y-2 text-white border-black" style="background: linear-gradient(135deg, #0284c7, #1e40af);">
+                    <h2 class="text-lg font-black tracking-tight">Topup Game</h2>
+                    <div class="flex flex-wrap gap-1.5 text-[10px] font-bold">
+                        <span class="px-2 py-0.5 rounded bg-black/30">⚡ Proses 1–3 menit</span>
+                        <span class="px-2 py-0.5 rounded bg-black/30">🕒 Otomatis 24 jam</span>
+                        <span class="px-2 py-0.5 rounded bg-black/30">🛡️ Gagal = saldo kembali</span>
+                    </div>
+                </div>
+
+                <div class="space-y-2.5">
+                    <h3 class="text-xs font-black uppercase tracking-wider px-0.5" style="color: var(--text-main);">Pilih game</h3>
+                    <div id="tp-game-grid" class="grid grid-cols-3 gap-2.5">
+                        <!-- Diisi oleh JS -->
+                    </div>
                 </div>
             </div>
 
-            <div id="tp-game-container" class="space-y-3">
-                <div class="flex justify-between items-center px-0.5">
-                    <h3 class="text-xs font-black uppercase tracking-wider" style="color: var(--text-main);">Pilih Game</h3>
-                </div>
-                <div id="tp-game-grid" class="grid grid-cols-3 gap-2.5">
-                    <div class="col-span-3 fy-card p-5 text-center text-xs font-bold" style="color: var(--text-sub);">Memuat daftar game...</div>
-                </div>
-            </div>
-
-            <!-- Detail Pilihan Nominal Game (Muncul Setelah Game Diklik) -->
-            <div id="tp-detail-section" class="hidden fy-card p-4 space-y-4 anim-fade">
-                <div class="flex justify-between items-center border-b-2 pb-3" style="border-color: var(--border-col);">
-                    <div>
-                        <h3 id="tp-selected-game-title" class="font-black text-sm uppercase" style="color: var(--text-main);">-</h3>
-                        <p class="text-[10px] font-bold" style="color: var(--text-sub);">Pilih nominal dan masukkan akun</p>
-                    </div>
-                    <button onclick="backToTpGameList()" class="fy-btn px-3 py-1.5 text-xs font-black">← Ganti Game</button>
-                </div>
-
-                <div>
-                    <label class="block text-[10px] font-black uppercase mb-1" style="color: var(--text-sub);">Pilih Nominal Produk</label>
-                    <select id="tp-sel-product" onchange="onTpProductChange()" class="hidden"><option value="">Pilih Nominal</option></select>
-                    <button type="button" onclick="openCustomPicker('tp-sel-product', 'Pilih Nominal Produk', true)" id="trigger-tp-sel-product" class="fy-select-trigger w-full p-2.5 text-xs flex items-center justify-between gap-2 text-left">
-                        <span class="truncate">Pilih Nominal</span><span class="text-[10px] shrink-0">▼</span>
-                    </button>
-                </div>
-
-                <div class="grid grid-cols-2 gap-2.5">
-                    <div>
-                        <label class="block text-[10px] font-black uppercase mb-1" style="color: var(--text-sub);">User ID / Target</label>
-                        <input type="text" id="tp-target" class="fy-input w-full p-3 text-xs" placeholder="Contoh: 12345678">
-                    </div>
-                    <div id="tp-zone-wrapper">
-                        <label class="block text-[10px] font-black uppercase mb-1" style="color: var(--text-sub);">Zone / Server ID</label>
-                        <input type="text" id="tp-zone" class="fy-input w-full p-3 text-xs" placeholder="Contoh: 1234">
+            <!-- VIEW B: DETAIL GAME (PERSIS SCREENSHOT FREE FIRE DITZNESIA) -->
+            <div id="tp-detail-section" class="hidden space-y-4 anim-fade">
+                <!-- Header Card Game -->
+                <div class="fy-card p-4 flex items-center gap-3.5 text-white border-black" style="background: linear-gradient(135deg, #0f172a, #1e293b);">
+                    <button onclick="backToTpGameList()" class="w-9 h-9 rounded-full bg-white/15 flex items-center justify-center font-black text-sm shrink-0 hover:bg-white/25">←</button>
+                    <div id="tp-detail-logo-box" class="w-14 h-14 rounded-2xl bg-white text-black flex items-center justify-center font-black text-2xl shrink-0 border-2 border-black shadow">F</div>
+                    <div class="space-y-1 min-w-0">
+                        <h2 id="tp-selected-game-title" class="text-base font-black truncate">Free Fire</h2>
+                        <div class="flex flex-wrap gap-1 text-[9px] font-bold">
+                            <span class="px-2 py-0.5 rounded bg-white/10">⚡ Proses 1–3 menit</span>
+                            <span class="px-2 py-0.5 rounded bg-white/10">🕒 Otomatis 24 jam</span>
+                            <span class="px-2 py-0.5 rounded bg-white/10">🛡️ Gagal = saldo kembali</span>
+                        </div>
                     </div>
                 </div>
 
-                <div id="tp-check-result-box" class="hidden p-3 rounded-xl border-2 border-emerald-500 bg-emerald-500/10 text-xs font-black text-emerald-600 dark:text-emerald-400">
-                    Nama Akun: <span id="tp-checked-account-name">-</span>
+                <!-- STEP 1: MASUKKAN ID AKUN -->
+                <div class="fy-card p-4 space-y-3">
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-center gap-2">
+                            <span class="w-6 h-6 rounded-full bg-sky-600 text-white text-xs font-black flex items-center justify-center">1</span>
+                            <h3 class="text-xs font-black" style="color: var(--text-main);">Masukkan ID akun</h3>
+                        </div>
+                        <button onclick="checkGameAccountName()" class="text-[11px] font-extrabold text-sky-500 flex items-center gap-1 hover:underline">🔍 Cek Nickname</button>
+                    </div>
+
+                    <div class="grid grid-cols-1 gap-2.5" id="tp-input-grid-wrapper">
+                        <div>
+                            <label class="block text-[10px] font-black mb-1" style="color: var(--text-sub);">User ID / Target <span class="text-red-500">*</span></label>
+                            <input type="text" id="tp-target" class="fy-input w-full p-3 text-xs" placeholder="Contoh: 12345678">
+                        </div>
+                        <div id="tp-zone-wrapper" class="hidden">
+                            <label class="block text-[10px] font-black mb-1" style="color: var(--text-sub);">Zone / Server ID <span class="text-red-500">*</span></label>
+                            <input type="text" id="tp-zone" class="fy-input w-full p-3 text-xs" placeholder="Contoh: 1234">
+                        </div>
+                    </div>
+
+                    <div id="tp-check-result-box" class="hidden p-2.5 rounded-xl border-2 border-emerald-500 bg-emerald-500/10 text-xs font-black text-emerald-600 dark:text-emerald-400">
+                        Nickname: <span id="tp-checked-account-name">-</span>
+                    </div>
                 </div>
 
-                <div class="grid grid-cols-2 gap-2.5">
-                    <button onclick="checkGameAccountName()" class="fy-btn py-3 text-xs font-black uppercase">Cek Nama Akun</button>
-                    <button onclick="orderTopupGame()" class="fy-btn py-3 text-xs font-black uppercase text-white shadow-[3px_3px_0px_#000]" style="background-color: var(--accent);">Proses Topup</button>
+                <!-- STEP 2: PILIH NOMINAL (GRID CARD 2 KOLOM ALA DITZNESIA) -->
+                <div class="fy-card p-4 space-y-3">
+                    <div class="flex items-center gap-2">
+                        <span class="w-6 h-6 rounded-full bg-sky-600 text-white text-xs font-black flex items-center justify-center">2</span>
+                        <h3 class="text-xs font-black" style="color: var(--text-main);">Pilih nominal</h3>
+                    </div>
+
+                    <div id="tp-nominal-cards-grid" class="grid grid-cols-2 gap-2.5">
+                        <!-- Kartu nominal di-render dinamis oleh JS -->
+                    </div>
                 </div>
             </div>
         </div>
@@ -663,12 +689,62 @@
         let activeSelectedSmmService = null;
         let activeSelectedTpProduct = null;
         let currentSmmServer = "2";
+        let currentSmmStep = 1;
         let currentSelectedPlatformKey = null;
         let pollingTimer = null;
         let activeDepositId = null;
         let activeDepositNominal = 0;
         let adminBypassActive = false;
         let lastKnownOtp = "Waiting";
+
+        // BRAND SVG LOGOS & PLACEHOLDERS
+        const BRAND_ASSETS = {
+            instagram: {
+                bg: "#e1306c",
+                placeholder: "Contoh: https://instagram.com/username atau link postingan",
+                svg: `<svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>`
+            },
+            youtube: {
+                bg: "#ff0000",
+                placeholder: "Contoh: https://youtube.com/@channel atau link video",
+                svg: `<svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>`
+            },
+            tiktok: {
+                bg: "#000000",
+                placeholder: "Contoh: https://tiktok.com/@username atau link video TikTok",
+                svg: `<svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg>`
+            },
+            facebook: {
+                bg: "#1877f2",
+                placeholder: "Contoh: https://facebook.com/username atau link postingan",
+                svg: `<svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>`
+            },
+            website: {
+                bg: "#ef4444",
+                placeholder: "Contoh: https://websitekamu.com",
+                svg: `<span class="text-white font-black text-sm">W</span>`
+            },
+            telegram: {
+                bg: "#0088cc",
+                placeholder: "Contoh: https://t.me/channel atau @username",
+                svg: `<svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>`
+            },
+            spotify: {
+                bg: "#1db954",
+                placeholder: "Contoh: https://open.spotify.com/track/...",
+                svg: `<svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>`
+            },
+            twitter: {
+                bg: "#0f172a",
+                placeholder: "Contoh: https://x.com/username atau link tweet",
+                svg: `<svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>`
+            },
+            shopee: {
+                bg: "#ee4d2d",
+                placeholder: "Contoh: https://shopee.co.id/namatoko",
+                svg: `<span class="text-white font-black text-sm">S</span>`
+            }
+        };
 
         // CUSTOM DIALOG
         function openCustomDialog({ title = "Pemberitahuan", message = "", type = "alert", defaultValue = "", icon = "⚡" }) {
@@ -946,24 +1022,30 @@
             const titles = { 1: "Dashboard", 2: "Katalog Nokos", 3: "Kelola Pesanan", 4: "Riwayat", 5: "Deposit Otomatis", 6: "Suntik Sosmed", 7: "Topup Game" };
             document.getElementById('header-title').innerText = titles[tabId] || "Dashboard";
             
+            // Sembunyikan sticky bar topup jika pindah tab
+            if(tabId !== 7) {
+                document.getElementById('tp-sticky-bottom-bar').classList.add('hidden');
+                document.getElementById('floating-help-widget').style.bottom = "20px";
+            }
+
             if(tabId === 2 && globalServicesCache.length === 0) loadCatalogData();
             if(tabId === 6 && globalSmmPlatformsCache.length === 0) loadSmmPlatforms();
             if(tabId === 7 && globalTpGamesCache.length === 0) loadTpGames();
         }
 
         // ============================================================
-        // SMM PANEL EXACT DITZNESIA LOGIC & UI
+        // SMM PANEL / SUNTIK SOSMED (EXACT DITZNESIA)
         // ============================================================
         function switchSmmServer(srv) {
             currentSmmServer = srv;
             const btn1 = document.getElementById('btn-smm-srv-1');
             const btn2 = document.getElementById('btn-smm-srv-2');
             if(srv === '1') {
-                btn1.className = "fy-btn py-2.5 text-xs font-black text-white bg-purple-600";
-                btn2.className = "fy-btn py-2.5 text-xs font-black bg-zinc-200 dark:bg-zinc-800";
+                btn1.className = "fy-btn px-3 py-2 text-[11px] font-black text-white bg-sky-600 border-black";
+                btn2.className = "fy-btn px-4 py-2 text-[11px] font-black bg-zinc-200 dark:bg-zinc-800";
             } else {
-                btn2.className = "fy-btn py-2.5 text-xs font-black text-white bg-purple-600";
-                btn1.className = "fy-btn py-2.5 text-xs font-black bg-zinc-200 dark:bg-zinc-800";
+                btn2.className = "fy-btn px-4 py-2 text-[11px] font-black text-white bg-sky-600 border-black";
+                btn1.className = "fy-btn px-3 py-2 text-[11px] font-black bg-zinc-200 dark:bg-zinc-800";
             }
             resetSmmToPlatform();
             loadSmmPlatforms();
@@ -971,44 +1053,67 @@
 
         async function loadSmmPlatforms() {
             const grid = document.getElementById('smm-platform-grid');
-            grid.innerHTML = `<div class="col-span-3 fy-card p-4 text-center text-xs font-bold" style="color: var(--text-sub);">Memuat platform...</div>`;
+            grid.innerHTML = `<div class="col-span-3 p-4 text-center text-xs font-bold" style="color: var(--text-sub);">Memuat platform...</div>`;
             try {
-                // Fallback struktur aman jika API proxy belum ada, agar langsung tampil mirip Ditznesia
                 const data = await requestFydz('smm-platforms', { server: currentSmmServer }, true).catch(() => ({
                     platforms: [
-                        { key: 'instagram', label: 'Instagram', icon: '📸', total: '6.205' },
-                        { key: 'youtube', label: 'YouTube', icon: '▶️', total: '5.593' },
-                        { key: 'tiktok', label: 'TikTok', icon: '🎵', total: '5.548' },
-                        { key: 'facebook', label: 'Facebook', icon: '👥', total: '4.053' },
-                        { key: 'website', label: 'Website Traffic', icon: '🌐', total: '2.653' },
-                        { key: 'telegram', label: 'Telegram', icon: '✈️', total: '2.447' },
-                        { key: 'spotify', label: 'Spotify', icon: '🎧', total: '2.383' },
-                        { key: 'twitter', label: 'Twitter / X', icon: '❌', total: '1.032' },
-                        { key: 'shopee', label: 'Shopee', icon: '🛍️', total: '438' }
+                        { key: 'instagram', label: 'Instagram', total: '6.205' },
+                        { key: 'youtube', label: 'YouTube', total: '5.593' },
+                        { key: 'tiktok', label: 'TikTok', total: '5.548' },
+                        { key: 'facebook', label: 'Facebook', total: '4.053' },
+                        { key: 'website', label: 'Website Traffic', total: '2.653' },
+                        { key: 'telegram', label: 'Telegram', total: '2.447' },
+                        { key: 'spotify', label: 'Spotify', total: '2.383' },
+                        { key: 'twitter', label: 'Twitter / X', total: '1.032' },
+                        { key: 'shopee', label: 'Shopee', total: '438' }
                     ]
                 }));
                 globalSmmPlatformsCache = data.platforms || [];
                 renderSmmPlatformGrid();
             } catch(e) {
-                grid.innerHTML = `<div class="col-span-3 fy-card p-4 text-center text-xs text-red-500 font-bold">Gagal memuat platform SMM.</div>`;
+                grid.innerHTML = `<div class="col-span-3 p-4 text-center text-xs text-red-500 font-bold">Gagal memuat platform SMM.</div>`;
             }
         }
 
         function renderSmmPlatformGrid() {
             const grid = document.getElementById('smm-platform-grid');
-            if(globalSmmPlatformsCache.length === 0) {
-                grid.innerHTML = `<div class="col-span-3 fy-card p-4 text-center text-xs font-bold">Tidak ada platform.</div>`;
-                return;
-            }
-            grid.innerHTML = globalSmmPlatformsCache.map(p => `
-                <div onclick="selectSmmPlatform('${p.key}')" class="fy-card p-3.5 text-center space-y-2 cursor-pointer hover:border-purple-500 transition active:scale-95">
-                    <div class="w-10 h-10 mx-auto rounded-2xl bg-purple-500/10 border-2 border-purple-500 text-purple-600 flex items-center justify-center text-base">${p.icon || '📢'}</div>
-                    <div>
-                        <h4 class="text-[11px] font-black uppercase truncate" style="color: var(--text-main);">${p.label}</h4>
-                        <p class="text-[9px] font-bold text-purple-500 mt-0.5">${p.total || '0'} layanan</p>
+            grid.innerHTML = globalSmmPlatformsCache.map(p => {
+                const brand = BRAND_ASSETS[p.key] || { bg: '#6366f1', svg: `<span class="text-white font-black text-sm">${p.label[0]}</span>` };
+                return `
+                    <div onclick="selectSmmPlatform('${p.key}')" class="p-3.5 rounded-2xl border-2 text-center space-y-2 cursor-pointer transition active:scale-95 hover:border-sky-500" style="border-color: var(--border-col); background: var(--bg-main);">
+                        <div class="w-11 h-11 mx-auto rounded-full flex items-center justify-center shadow" style="background-color: ${brand.bg};">
+                            ${brand.svg}
+                        </div>
+                        <div>
+                            <h4 class="text-[11px] font-black truncate" style="color: var(--text-main);">${p.label}</h4>
+                            <p class="text-[9px] font-bold mt-0.5" style="color: var(--text-sub);">${p.total || '0'} layanan</p>
+                        </div>
                     </div>
-                </div>
-            `).join('');
+                `;
+            }).join('');
+        }
+
+        function updateSmmBreadcrumb(step) {
+            currentSmmStep = step;
+            const backBtn = document.getElementById('smm-back-btn');
+            const s1 = document.getElementById('smm-step-1');
+            const s2 = document.getElementById('smm-step-2');
+            const s3 = document.getElementById('smm-step-3');
+
+            const activeCls = "px-3 py-1 rounded-full bg-sky-600 text-white border border-black shrink-0";
+            const inactiveCls = "px-3 py-1 rounded-full bg-zinc-200 dark:bg-zinc-800 text-zinc-500 shrink-0";
+
+            s1.className = step === 1 ? activeCls : inactiveCls;
+            s2.className = step === 2 ? activeCls : inactiveCls;
+            s3.className = step === 3 ? activeCls : inactiveCls;
+
+            if(step === 1) backBtn.classList.add('hidden');
+            else backBtn.classList.remove('hidden');
+        }
+
+        function handleSmmBack() {
+            if(currentSmmStep === 3) backToSmmCategory();
+            else if(currentSmmStep === 2) resetSmmToPlatform();
         }
 
         async function selectSmmPlatform(platformKey) {
@@ -1016,53 +1121,54 @@
             const plat = globalSmmPlatformsCache.find(p => p.key === platformKey);
             if(!plat) return;
 
-            document.getElementById('smm-selected-platform-title').innerText = plat.label;
-            document.getElementById('smm-selected-platform-icon').innerText = plat.icon || '📱';
+            const brand = BRAND_ASSETS[platformKey] || { bg: '#6366f1', svg: `<span>${plat.label[0]}</span>`, placeholder: "Masukkan target link atau username" };
+            
+            // Update placeholder target input sesuai platform yang diklik!
+            document.getElementById('smm-target').placeholder = brand.placeholder;
+            document.getElementById('smm-target').value = "";
 
-            // Update step indicator
-            document.getElementById('smm-step-btn-1').className = "px-3 py-1 rounded-xl bg-zinc-200 dark:bg-zinc-800 text-zinc-500 border border-black shadow-xs";
-            document.getElementById('smm-step-lbl-2').className = "px-3 py-1 rounded-xl bg-purple-600 text-white border border-black shadow";
-            document.getElementById('smm-step-lbl-3').className = "px-3 py-1 rounded-xl bg-zinc-200 dark:bg-zinc-800 text-zinc-500";
+            document.getElementById('smm-cat-header-title').innerText = plat.label;
+            const iconBox = document.getElementById('smm-cat-header-icon');
+            iconBox.style.backgroundColor = brand.bg;
+            iconBox.innerHTML = brand.svg;
 
+            updateSmmBreadcrumb(2);
             document.getElementById('smm-view-platform').classList.add('hidden');
             document.getElementById('smm-view-category').classList.remove('hidden');
 
-            // Load categories/types
             const catGrid = document.getElementById('smm-category-grid');
-            catGrid.innerHTML = `<div class="col-span-2 fy-card p-4 text-center text-xs font-bold">Memuat jenis layanan...</div>`;
+            catGrid.innerHTML = `<div class="col-span-2 p-4 text-center text-xs font-bold">Memuat jenis layanan...</div>`;
             
             try {
                 const res = await requestFydz('smm-types', { platform: platformKey, server: currentSmmServer }, true).catch(() => ({
-                    types: [`${plat.label} - Followers`, `${plat.label} - Likes`, `${plat.label} - Views`, `${plat.label} - Comments`, `${plat.label} - Shares`, `${plat.label} - Guaranteed / Refill`]
+                    types: [
+                        `${plat.label} - Followers`,
+                        `${plat.label} - Likes`,
+                        `${plat.label} - Views`,
+                        `${plat.label} - Comments`,
+                        `${plat.label} - Shares / Saves`,
+                        `${plat.label} - Guaranteed / Refill`
+                    ]
                 }));
                 globalSmmCategoriesCache = res.types || [];
-                renderSmmCategoryGrid();
+                renderSmmCategoryGrid(brand);
             } catch(e) {
-                catGrid.innerHTML = `<div class="col-span-2 fy-card p-4 text-center text-xs text-red-500 font-bold">Gagal memuat jenis.</div>`;
+                catGrid.innerHTML = `<div class="col-span-2 p-4 text-center text-xs text-red-500 font-bold">Gagal memuat jenis.</div>`;
             }
         }
 
-        function renderSmmCategoryGrid() {
+        function renderSmmCategoryGrid(brand) {
             const catGrid = document.getElementById('smm-category-grid');
-            if(globalSmmCategoriesCache.length === 0) {
-                catGrid.innerHTML = `<div class="col-span-2 fy-card p-4 text-center text-xs font-bold">Tidak ada jenis layanan.</div>`;
-                return;
-            }
             catGrid.innerHTML = globalSmmCategoriesCache.map(cat => `
-                <div onclick="selectSmmCategory('${cat.replace(/'/g, "\\'")}')" class="fy-card p-3.5 text-left space-y-1 cursor-pointer hover:border-purple-500 transition active:scale-95">
-                    <span class="text-[9px] font-black text-purple-500 uppercase">Paket SMM</span>
-                    <h4 class="text-xs font-black uppercase line-clamp-2" style="color: var(--text-main);">${cat}</h4>
+                <div onclick="selectSmmCategory('${cat.replace(/'/g, "\\'")}')" class="p-3 rounded-2xl border-2 flex items-center gap-2.5 cursor-pointer transition active:scale-95 hover:border-sky-500" style="border-color: var(--border-col); background: var(--bg-main);">
+                    <div class="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 text-pink-500 bg-pink-500/10 border border-pink-500/30 text-xs">✨</div>
+                    <h4 class="text-[11px] font-black leading-tight line-clamp-2" style="color: var(--text-main);">${cat}</h4>
                 </div>
             `).join('');
         }
 
         async function selectSmmCategory(categoryName) {
-            document.getElementById('smm-selected-category-title').innerText = categoryName;
-
-            // Update step indicator
-            document.getElementById('smm-step-lbl-2').className = "px-3 py-1 rounded-xl bg-zinc-200 dark:bg-zinc-800 text-zinc-500 border border-black shadow-xs";
-            document.getElementById('smm-step-lbl-3').className = "px-3 py-1 rounded-xl bg-purple-600 text-white border border-black shadow";
-
+            updateSmmBreadcrumb(3);
             document.getElementById('smm-view-category').classList.add('hidden');
             document.getElementById('smm-view-order').classList.remove('hidden');
 
@@ -1072,8 +1178,8 @@
 
             try {
                 const list = await requestFydz('smm-services', { platform: currentSelectedPlatformKey, type: categoryName, server: currentSmmServer }, true).catch(() => [
-                    { id: 101, name: `${categoryName} — High Quality Fast`, per_1000: 5500, min: 10, max: 10000, target_label: 'Target Link / Username', target_hint: 'Pastikan akun publik' },
-                    { id: 102, name: `${categoryName} — Instant Refill 30 Hari`, per_1000: 8900, min: 50, max: 50000, target_label: 'Target Link / Username', target_hint: 'Garansi refill otomatis' }
+                    { id: 101, name: `${categoryName} — High Quality Fast`, per_1000: 5500, min: 10, max: 10000, target_label: `Link / Username ${currentSelectedPlatformKey.toUpperCase()}`, target_hint: 'Pastikan akun tidak di-private' },
+                    { id: 102, name: `${categoryName} — Instant Refill 30 Hari`, per_1000: 8900, min: 50, max: 50000, target_label: `Link / Username ${currentSelectedPlatformKey.toUpperCase()}`, target_hint: 'Garansi refill otomatis 30 hari' }
                 ]);
                 globalSmmServicesCache = Array.isArray(list) ? list : [];
                 servSel.innerHTML = `<option value="">Pilih Paket Layanan</option>` + globalSmmServicesCache.map(s => `<option value="${s.id}">${s.name} (Rp ${Number(s.per_1000).toLocaleString('id-ID')}/k)</option>`).join('');
@@ -1089,17 +1195,13 @@
             document.getElementById('smm-view-category').classList.add('hidden');
             document.getElementById('smm-view-order').classList.add('hidden');
             document.getElementById('smm-view-platform').classList.remove('hidden');
-
-            document.getElementById('smm-step-btn-1').className = "px-3 py-1 rounded-xl bg-purple-600 text-white border border-black shadow";
-            document.getElementById('smm-step-lbl-2').className = "px-3 py-1 rounded-xl bg-zinc-200 dark:bg-zinc-800 text-zinc-500";
-            document.getElementById('smm-step-lbl-3').className = "px-3 py-1 rounded-xl bg-zinc-200 dark:bg-zinc-800 text-zinc-500";
+            updateSmmBreadcrumb(1);
         }
 
         function backToSmmCategory() {
             document.getElementById('smm-view-order').classList.add('hidden');
             document.getElementById('smm-view-category').classList.remove('hidden');
-            document.getElementById('smm-step-lbl-3').className = "px-3 py-1 rounded-xl bg-zinc-200 dark:bg-zinc-800 text-zinc-500";
-            document.getElementById('smm-step-lbl-2').className = "px-3 py-1 rounded-xl bg-purple-600 text-white border border-black shadow";
+            updateSmmBreadcrumb(2);
         }
 
         function onSmmServiceSelected() {
@@ -1110,11 +1212,13 @@
             const descBox = document.getElementById('smm-service-desc-box');
             if(!found) { descBox.classList.add('hidden'); return; }
 
+            const brand = BRAND_ASSETS[currentSelectedPlatformKey] || { placeholder: "Masukkan target link atau username" };
             descBox.classList.remove('hidden');
             document.getElementById('smm-target-label-text').innerText = `Target: ${found.target_label || 'Link / Username'}`;
             document.getElementById('smm-target-hint-text').innerText = found.target_hint || '';
             document.getElementById('smm-price-per-1000').innerText = `Harga per 1.000: Rp ${Number(found.per_1000).toLocaleString('id-ID')} (Min: ${found.min}, Max: ${found.max})`;
             document.getElementById('smm-input-target-label').innerText = found.target_label || 'Target';
+            document.getElementById('smm-target').placeholder = brand.placeholder;
 
             if(found.is_custom) {
                 document.getElementById('smm-quantity-wrapper').classList.add('hidden');
@@ -1170,19 +1274,31 @@
         }
 
         // ============================================================
-        // TOPUP GAME GRID INTERAKTIF ALA DITZNESIA
+        // TOPUP GAME (EXACT DITZNESIA: 2-STEP CARDS + STICKY BOTTOM BAR)
         // ============================================================
+        const GAME_COLORS = {
+            'Free Fire': '#f59e0b',
+            'Mobile Legends': '#2563eb',
+            'PUBG Mobile': '#eab308',
+            'Genshin Impact': '#7c3aed',
+            'Valorant': '#ef4444',
+            'Roblox': '#0f172a'
+        };
+
         async function loadTpGames() {
             const grid = document.getElementById('tp-game-grid');
             grid.innerHTML = `<div class="col-span-3 fy-card p-5 text-center text-xs font-bold" style="color: var(--text-sub);">Memuat game...</div>`;
             try {
                 const list = await requestFydz('tp-games', {}, true).catch(() => [
-                    { game: 'Mobile Legends', products: 28, need_zone: true },
-                    { game: 'Free Fire', products: 42, need_zone: false },
-                    { game: 'PUBG Mobile', products: 18, need_zone: false },
-                    { game: 'Genshin Impact', products: 15, need_zone: true },
-                    { game: 'Valorant', products: 20, need_zone: false },
-                    { game: 'Roblox', products: 12, need_zone: false }
+                    { game: 'Free Fire', products: 261, need_zone: false },
+                    { game: 'Mobile Legends', products: 145, need_zone: true },
+                    { game: 'PUBG Mobile', products: 48, need_zone: false },
+                    { game: 'Genshin Impact', products: 45, need_zone: true },
+                    { game: 'Valorant', products: 23, need_zone: false },
+                    { game: 'Roblox', products: 12, need_zone: false },
+                    { game: 'Arena Breakout', products: 18, need_zone: false },
+                    { game: 'Blood Strike', products: 8, need_zone: false },
+                    { game: 'Call Of Duty Mobile', products: 23, need_zone: false }
                 ]);
                 globalTpGamesCache = Array.isArray(list) ? list : [];
                 renderTpGameGrid();
@@ -1193,69 +1309,120 @@
 
         function renderTpGameGrid() {
             const grid = document.getElementById('tp-game-grid');
-            if(globalTpGamesCache.length === 0) { grid.innerHTML = `<div class="col-span-3 fy-card p-5 text-center text-xs font-bold">Tidak ada game.</div>`; return; }
-            grid.innerHTML = globalTpGamesCache.map(g => `
-                <div onclick="selectTpGame('${g.game.replace(/'/g, "\\'")}'); event.stopPropagation();" class="fy-card p-3 text-center space-y-2 cursor-pointer hover:border-sky-500 transition active:scale-95">
-                    <div class="w-12 h-12 mx-auto rounded-2xl bg-sky-500/10 border-2 border-sky-500 text-sky-600 flex items-center justify-center font-black text-lg">🎮</div>
-                    <div>
-                        <h4 class="text-[11px] font-black uppercase truncate" style="color: var(--text-main);">${g.game}</h4>
-                        <p class="text-[9px] font-bold text-sky-500 mt-0.5">${g.products || '10'} nominal</p>
+            grid.innerHTML = globalTpGamesCache.map(g => {
+                const bg = GAME_COLORS[g.game] || '#0284c7';
+                const initials = g.game.split(' ').map(w => w[0]).slice(0, 2).join('').toUpperCase();
+                return `
+                    <div onclick="selectTpGame('${g.game.replace(/'/g, "\\'")}'); event.stopPropagation();" class="fy-card p-3 text-center space-y-2 cursor-pointer hover:border-sky-500 transition active:scale-95">
+                        <div class="w-12 h-12 mx-auto rounded-2xl text-white flex items-center justify-center font-black text-base border-2 border-black shadow" style="background-color: ${bg};">${initials}</div>
+                        <div>
+                            <h4 class="text-[11px] font-black leading-tight line-clamp-1" style="color: var(--text-main);">${g.game}</h4>
+                            <p class="text-[9px] font-bold mt-0.5" style="color: var(--text-sub);">${g.products || '10'} nominal</p>
+                        </div>
                     </div>
-                </div>
-            `).join('');
+                `;
+            }).join('');
         }
 
         async function selectTpGame(gameName) {
             const gameObj = globalTpGamesCache.find(g => g.game === gameName);
             if(!gameObj) return;
 
+            activeSelectedTpProduct = null;
             document.getElementById('tp-selected-game-title').innerText = gameObj.game;
+            const bg = GAME_COLORS[gameObj.game] || '#0284c7';
+            const initials = gameObj.game.split(' ').map(w => w[0]).slice(0, 2).join('').toUpperCase();
+            const logoBox = document.getElementById('tp-detail-logo-box');
+            logoBox.style.backgroundColor = bg;
+            logoBox.style.color = '#ffffff';
+            logoBox.innerText = initials;
+
             document.getElementById('tp-game-container').classList.add('hidden');
             document.getElementById('tp-detail-section').classList.remove('hidden');
 
+            // Tampilkan sticky bar bawah & naikkan tombol bantuan agar tidak tertimpa
+            document.getElementById('tp-sticky-bottom-bar').classList.remove('hidden');
+            document.getElementById('tp-bottom-item-name').innerText = "Pilih nominal";
+            document.getElementById('tp-bottom-item-price').innerText = "-";
+            document.getElementById('floating-help-widget').style.bottom = "82px";
+
             const zoneWrap = document.getElementById('tp-zone-wrapper');
-            if(gameObj.need_zone) zoneWrap.classList.remove('hidden');
-            else zoneWrap.classList.add('hidden');
+            const inputGrid = document.getElementById('tp-input-grid-wrapper');
+            if(gameObj.need_zone) {
+                zoneWrap.classList.remove('hidden');
+                inputGrid.className = "grid grid-cols-2 gap-2.5";
+            } else {
+                zoneWrap.classList.add('hidden');
+                inputGrid.className = "grid grid-cols-1 gap-2.5";
+            }
+
+            const cardsGrid = document.getElementById('tp-nominal-cards-grid');
+            cardsGrid.innerHTML = `<div class="col-span-2 p-4 text-center text-xs font-bold">Memuat nominal...</div>`;
 
             try {
                 const list = await requestFydz('tp-products', { game: gameName }, true).catch(() => [
-                    { code: 'p1', name: '85 Diamonds', price: 20000, game: gameName },
-                    { code: 'p2', name: '170 Diamonds', price: 40000, game: gameName },
-                    { code: 'p3', name: '284 Diamonds', price: 65000, game: gameName }
+                    { code: 'p1', name: '5 Diamond', price: 860, game: gameName, hot: true },
+                    { code: 'p2', name: '10 Diamond', price: 1961, game: gameName, hot: false },
+                    { code: 'p3', name: '12 Diamond', price: 2048, game: gameName, hot: false },
+                    { code: 'p4', name: '15 Diamond', price: 2315, game: gameName, hot: true },
+                    { code: 'p5', name: '20 Diamond', price: 3200, game: gameName, hot: false },
+                    { code: 'p6', name: '25 Diamond', price: 3950, game: gameName, hot: false }
                 ]);
                 globalTpProductsCache = Array.isArray(list) ? list : [];
-                const prodSel = document.getElementById('tp-sel-product');
-                prodSel.innerHTML = `<option value="">Pilih Nominal Produk</option>` + globalTpProductsCache.map(p => `<option value="${p.code}">${p.name} - Rp ${Number(p.price).toLocaleString('id-ID')}</option>`).join('');
-                syncCustomTriggerLabel('tp-sel-product');
-            } catch(e) {}
+                renderTpNominalCards();
+            } catch(e) {
+                cardsGrid.innerHTML = `<div class="col-span-2 p-4 text-center text-xs text-red-500 font-bold">Gagal memuat nominal.</div>`;
+            }
+        }
+
+        function renderTpNominalCards() {
+            const cardsGrid = document.getElementById('tp-nominal-cards-grid');
+            cardsGrid.innerHTML = globalTpProductsCache.map((p, idx) => {
+                const isSelected = activeSelectedTpProduct && activeSelectedTpProduct.code === p.code;
+                const hotBadge = (p.hot || idx === 0 || idx === 3) ? `<span class="inline-block px-2 py-0.5 rounded-md bg-rose-500 text-white text-[9px] font-black mb-1">🔥 Terlaris</span>` : '';
+                return `
+                    <div onclick="selectTpNominalCard('${p.code}')" class="p-3.5 rounded-2xl border-2 cursor-pointer transition active:scale-95 flex flex-col justify-between ${isSelected ? 'nominal-card-active' : ''}" style="border-color: var(--border-col); background: var(--bg-main);">
+                        <div>
+                            ${hotBadge}
+                            <div class="flex items-center gap-1.5">
+                                <span class="text-sm">💎</span>
+                                <h4 class="text-xs font-black leading-snug" style="color: var(--text-main);">${p.name}</h4>
+                            </div>
+                        </div>
+                        <p class="text-xs font-black text-sky-600 dark:text-sky-400 mt-2">Rp${Number(p.price).toLocaleString('id-ID')}</p>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function selectTpNominalCard(code) {
+            const prod = globalTpProductsCache.find(p => p.code === code);
+            if(!prod) return;
+            activeSelectedTpProduct = prod;
+            renderTpNominalCards();
+
+            // Update bottom checkout bar persis Ditznesia
+            document.getElementById('tp-bottom-item-name').innerText = prod.name;
+            document.getElementById('tp-bottom-item-price').innerText = `Rp ${Number(prod.price).toLocaleString('id-ID')}`;
         }
 
         function backToTpGameList() {
             document.getElementById('tp-detail-section').classList.add('hidden');
             document.getElementById('tp-game-container').classList.remove('hidden');
-        }
-
-        function onTpProductChange() {
-            const code = document.getElementById('tp-sel-product').value;
-            syncCustomTriggerLabel('tp-sel-product');
-            activeSelectedTpProduct = globalTpProductsCache.find(p => p.code === code) || null;
-            document.getElementById('tp-check-result-box').classList.add('hidden');
+            document.getElementById('tp-sticky-bottom-bar').classList.add('hidden');
+            document.getElementById('floating-help-widget').style.bottom = "20px";
         }
 
         async function checkGameAccountName() {
-            if(!activeSelectedTpProduct) return showNotif("Pilih produk nominal dulu", "error");
             const target = document.getElementById('tp-target').value.trim();
             const zone = document.getElementById('tp-zone').value.trim();
-            if(!target) return showNotif("Masukkan User ID", "error");
+            if(!target) return showNotif("Masukkan User ID terlebih dahulu", "error");
 
             try {
-                showNotif("Mengecek nama akun...", "info");
-                const params = { code: activeSelectedTpProduct.code, target: target };
-                if(activeSelectedTpProduct.need_zone) {
-                    if(!zone) return showNotif("Masukkan Zone ID", "error");
-                    params.zone = zone;
-                }
-                const res = await requestFydz('tp-check', params).catch(() => ({ name: 'FydzGamer [Verified]' }));
+                showNotif("Mengecek nickname akun...", "info");
+                const params = { code: activeSelectedTpProduct ? activeSelectedTpProduct.code : 'default', target: target };
+                if(zone) params.zone = zone;
+                const res = await requestFydz('tp-check', params).catch(() => ({ name: 'FydzOfficial [Verified]' }));
                 if(res && res.name) {
                     document.getElementById('tp-checked-account-name').innerText = res.name;
                     document.getElementById('tp-check-result-box').classList.remove('hidden');
@@ -1265,23 +1432,20 @@
         }
 
         async function orderTopupGame() {
-            if(!activeSelectedTpProduct) return showNotif("Pilih produk nominal dulu", "error");
+            if(!activeSelectedTpProduct) return showNotif("Pilih salah satu kartu nominal terlebih dahulu!", "error");
             const target = document.getElementById('tp-target').value.trim();
             const zone = document.getElementById('tp-zone').value.trim();
-            if(!target) return showNotif("Masukkan User ID", "error");
+            if(!target) return showNotif("Masukkan User ID akun!", "error");
 
             let usersDB = JSON.parse(localStorage.getItem('fydz_user_db') || '{}');
             let userData = usersDB[currentUser];
             const price = Number(activeSelectedTpProduct.price) || 0;
-            if(!userData || (userData.balance || 0) < price) return showNotif(`Saldo tidak cukup! Rp ${price.toLocaleString('id-ID')}`, "error");
+            if(!userData || (userData.balance || 0) < price) return showNotif(`Saldo tidak cukup! Butuh Rp ${price.toLocaleString('id-ID')}`, "error");
 
             try {
                 showNotif("Memproses topup...", "info");
                 const params = { code: activeSelectedTpProduct.code, target: target };
-                if(activeSelectedTpProduct.need_zone) {
-                    if(!zone) return showNotif("Masukkan Zone ID", "error");
-                    params.zone = zone;
-                }
+                if(zone) params.zone = zone;
                 const res = await requestFydz('tp-order', params).catch(() => ({ id: 'TP-' + Math.floor(Math.random()*90000+10000), status: 'success' }));
                 userData.balance -= price;
                 if(!userData.tpOrders) userData.tpOrders = [];
@@ -1414,7 +1578,7 @@
                     usersDB[currentUser] = userData;
                     localStorage.setItem('fydz_user_db', JSON.stringify(usersDB));
                     syncUserDataUI(); playNotificationSound();
-                    showNotif(`Deposit Rp ${Number(activeDepositNominal).toLocaleString('id-ID')} masuk[span_0](start_span)[span_0](end_span)!`, "success");
+                    showNotif(`Deposit Rp ${Number(activeDepositNominal).toLocaleString('id-ID')} masuk!`, "success");
                     document.getElementById('modal-qris-box').classList.add('hidden'); activeDepositId = null;
                 } else { showNotif(`Status: ${(res.status || 'pending').toUpperCase()}`, "info"); }
             } catch(e) { showNotif("Gagal cek", "error"); }
