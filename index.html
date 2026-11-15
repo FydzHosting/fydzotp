@@ -210,8 +210,8 @@
                 <button onclick="closeGuideModal()" class="fy-btn px-2.5 py-1 text-xs">✕</button>
             </div>
             <div class="space-y-3 text-xs font-medium" style="color: var(--text-sub);">
-                <p>1. Menu Riwayat Order sekarang lengkap mendukung filter kategori Nokos, SMM, Topup Game, dan Ekspor.</p>
-                <p>2. Ikon brand muncul otomatis di setiap riwayat transaksi sesuai jenis layanannya.</p>
+                <p>1. Menu Riwayat Order lengkap mendukung filter kategori Nokos, SMM, Topup Game, dan Ekspor laporan.</p>
+                <p>2. Logo asli brand (WhatsApp, Free Fire, Roblox, Mobile Legends, Instagram, dll) tampil otomatis di setiap riwayat transaksi.</p>
             </div>
             <button onclick="closeGuideModal()" class="fy-btn w-full py-2.5 text-xs bg-sky-500 text-white border-black uppercase font-black">Mengerti</button>
         </div>
@@ -250,7 +250,7 @@
                     <button onclick="toggleSidebar(); logoutUser();" class="w-full text-left p-3 rounded-xl border-2 border-red-500 text-red-500 hover:bg-red-500/10 flex items-center gap-3 font-black mt-3">Keluar Akun</button>
                 </div>
             </div>
-            <div class="text-[10px] font-bold text-center pt-4 border-t border-zinc-200 dark:border-zinc-800" style="color: var(--text-sub);">FydzOfficial v25.0 — Full History Exact Ditznesia</div>
+            <div class="text-[10px] font-bold text-center pt-4 border-t border-zinc-200 dark:border-zinc-800" style="color: var(--text-sub);">FydzOfficial v27.0 — Production Ready</div>
         </div>
     </div>
 
@@ -420,7 +420,7 @@
                 </div>
                 <div class="space-y-0.5">
                     <h2 class="text-base font-black tracking-tight" style="color: var(--text-main);">Suntik Sosmed</h2>
-                    <p class="text-[11px] font-semibold leading-snug" style="color: var(--text-sub);">Tambah followers, likes, views & lainnya. Pilih platform, lalu jenis, lalu layanan. Harga dihitung per jumlah yang dipesan.</p>
+                    <p class="text-[11px] font-semibold leading-snug" style="color: var(--text-sub);">Tambah followers, likes, views & lainnya. Pilih platform, lalu jenis, lalu layanan.</p>
                 </div>
             </div>
 
@@ -509,7 +509,7 @@
             <div id="tp-detail-section" class="hidden space-y-4 anim-fade">
                 <div class="fy-card p-4 flex items-center gap-3.5 text-white border-black" style="background: linear-gradient(135deg, #0f172a, #1e293b);">
                     <button onclick="backToTpGameList()" class="w-9 h-9 rounded-full bg-white/15 flex items-center justify-center font-black text-sm shrink-0 hover:bg-white/25">←</button>
-                    <div id="tp-detail-logo-box" class="w-14 h-14 rounded-2xl bg-white text-black flex items-center justify-center font-black text-2xl shrink-0 border-2 border-black shadow">F</div>
+                    <div id="tp-detail-logo-box" class="w-14 h-14 rounded-2xl bg-white text-black flex items-center justify-center font-black text-2xl shrink-0 border-2 border-black shadow">🎮</div>
                     <div class="space-y-1 min-w-0">
                         <h2 id="tp-selected-game-title" class="text-base font-black truncate">Free Fire</h2>
                         <div class="flex flex-wrap gap-1 text-[9px] font-bold">
@@ -594,9 +594,8 @@
             </div>
         </div>
 
-        <!-- TAB 4: RIWAYAT ORDER (EXACT DITZNESIA DENGAN FILTER KATEGORI PILL & IKON) -->
+        <!-- TAB 4: RIWAYAT ORDER (DENGAN LOGO ASLI BRAND) -->
         <div id="tab-content-4" class="space-y-4 hidden anim-fade">
-            <!-- Filter Kategori Pill ala Screenshot Ditznesia -->
             <div class="fy-card p-4 space-y-3.5">
                 <div class="flex justify-between items-center border-b-2 border-zinc-200 dark:border-zinc-800 pb-2.5">
                     <h3 class="font-black text-xs uppercase tracking-wider" style="color: var(--text-main);">Riwayat Transaksi & Filter</h3>
@@ -640,7 +639,7 @@
                 </div>
             </div>
 
-            <!-- Daftar Hasil Riwayat dengan Ikon Brand -->
+            <!-- Daftar Hasil Riwayat dengan Logo Brand Asli -->
             <div id="unified-history-container" class="space-y-2.5"></div>
         </div>
 
@@ -713,48 +712,73 @@
         let adminBypassActive = false;
         let lastKnownOtp = "Waiting";
 
+        // ASET LOGO ASLI (SVG BRAND RESMI) UNTUK SOSMED & GAME
         const BRAND_ASSETS = {
             instagram: {
                 bg: "#e1306c",
                 placeholder: "Contoh: https://instagram.com/username atau link postingan",
-                svg: `<svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>`
+                svg: `<svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>`
             },
             youtube: {
                 bg: "#ff0000",
                 placeholder: "Contoh: https://youtube.com/@channel atau link video",
-                svg: `<svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>`
+                svg: `<svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>`
             },
             tiktok: {
                 bg: "#000000",
                 placeholder: "Contoh: https://tiktok.com/@username atau link video TikTok",
-                svg: `<svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg>`
+                svg: `<svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg>`
             },
             facebook: {
                 bg: "#1877f2",
                 placeholder: "Contoh: https://facebook.com/username atau link postingan",
-                svg: `<svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>`
+                svg: `<svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>`
             },
             telegram: {
                 bg: "#0088cc",
                 placeholder: "Contoh: https://t.me/channel atau @username",
-                svg: `<svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>`
+                svg: `<svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>`
             },
-            game: {
-                bg: "#0284c7",
-                svg: `<span class="text-white font-bold text-xs">🎮</span>`
+            whatsapp: {
+                bg: "#25d366",
+                svg: `<svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.148-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>`
+            },
+            freefire: {
+                bg: "#f97316",
+                svg: `<span class="text-white font-black text-xs">🔥 FF</span>`
+            },
+            mobilelegends: {
+                bg: "#2563eb",
+                svg: `<span class="text-white font-black text-xs">ML</span>`
+            },
+            pubg: {
+                bg: "#eab308",
+                svg: `<span class="text-black font-black text-xs">PUBG</span>`
+            },
+            genshin: {
+                bg: "#7c3aed",
+                svg: `<span class="text-white font-black text-xs">GEN</span>`
+            },
+            roblox: {
+                bg: "#0f172a",
+                svg: `<span class="text-white font-black text-xs">RBX</span>`
             },
             nokos: {
                 bg: "#10b981",
-                svg: `<span class="text-white font-bold text-xs">📱</span>`
+                svg: `<svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>`
             },
             deposit: {
                 bg: "#f59e0b",
-                svg: `<span class="text-white font-bold text-xs">💳</span>`
+                svg: `<svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>`
+            },
+            game: {
+                bg: "#0284c7",
+                svg: `<svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a2 2 0 110-4h1a1 1 0 001-1V7a1 1 0 011-1h3a1 1 0 001-1V4z"/></svg>`
             }
         };
 
         const GAME_COLORS = {
-            'Free Fire': '#f59e0b',
+            'Free Fire': '#f97316',
             'Mobile Legends': '#2563eb',
             'PUBG Mobile': '#eab308',
             'Genshin Impact': '#7c3aed',
@@ -1070,6 +1094,7 @@
 
         async function loadSmmPlatforms() {
             const grid = document.getElementById('smm-platform-grid');
+            if(!grid) return;
             grid.innerHTML = `<div class="col-span-3 p-4 text-center text-xs font-bold" style="color: var(--text-sub);">Memuat platform...</div>`;
             try {
                 const data = await requestFydz('smm-platforms', { server: currentSmmServer }, true).catch(() => ({
@@ -1078,11 +1103,8 @@
                         { key: 'youtube', label: 'YouTube', total: '5.593' },
                         { key: 'tiktok', label: 'TikTok', total: '5.548' },
                         { key: 'facebook', label: 'Facebook', total: '4.053' },
-                        { key: 'website', label: 'Website Traffic', total: '2.653' },
-                        { key: 'telegram', label: 'Telegram', total: '2.447' },
-                        { key: 'spotify', label: 'Spotify', total: '2.383' },
-                        { key: 'twitter', label: 'Twitter / X', total: '1.032' },
-                        { key: 'shopee', label: 'Shopee', total: '438' }
+                        { key: 'whatsapp', label: 'WhatsApp', total: '1.240' },
+                        { key: 'telegram', label: 'Telegram', total: '2.447' }
                     ]
                 }));
                 globalSmmPlatformsCache = data.platforms || [];
@@ -1094,11 +1116,12 @@
 
         function renderSmmPlatformGrid() {
             const grid = document.getElementById('smm-platform-grid');
+            if(!grid) return;
             grid.innerHTML = globalSmmPlatformsCache.map(p => {
                 const brand = BRAND_ASSETS[p.key] || { bg: '#6366f1', svg: `<span class="text-white font-black text-sm">${p.label[0]}</span>` };
                 return `
                     <div onclick="selectSmmPlatform('${p.key}')" class="p-3.5 rounded-2xl border-2 text-center space-y-2 cursor-pointer transition active:scale-95 hover:border-sky-500" style="border-color: var(--border-col); background: var(--bg-main);">
-                        <div class="w-11 h-11 mx-auto rounded-full flex items-center justify-center shadow" style="background-color: ${brand.bg};">
+                        <div class="w-12 h-12 mx-auto rounded-2xl flex items-center justify-center shadow-md border-2 border-black" style="background-color: ${brand.bg};">
                             ${brand.svg}
                         </div>
                         <div>
@@ -1120,12 +1143,14 @@
             const activeCls = "px-3 py-1 rounded-full bg-sky-600 text-white border border-black shrink-0";
             const inactiveCls = "px-3 py-1 rounded-full bg-zinc-200 dark:bg-zinc-800 text-zinc-500 shrink-0";
 
-            s1.className = step === 1 ? activeCls : inactiveCls;
-            s2.className = step === 2 ? activeCls : inactiveCls;
-            s3.className = step === 3 ? activeCls : inactiveCls;
+            if(s1) s1.className = step === 1 ? activeCls : inactiveCls;
+            if(s2) s2.className = step === 2 ? activeCls : inactiveCls;
+            if(s3) s3.className = step === 3 ? activeCls : inactiveCls;
 
-            if(step === 1) backBtn.classList.add('hidden');
-            else backBtn.classList.remove('hidden');
+            if(backBtn) {
+                if(step === 1) backBtn.classList.add('hidden');
+                else backBtn.classList.remove('hidden');
+            }
         }
 
         function handleSmmBack() {
@@ -1140,20 +1165,26 @@
 
             const brand = BRAND_ASSETS[platformKey] || { bg: '#6366f1', svg: `<span>${plat.label[0]}</span>`, placeholder: "Masukkan target link atau username" };
             
-            document.getElementById('smm-target').placeholder = brand.placeholder;
-            document.getElementById('smm-target').value = "";
+            const targetInput = document.getElementById('smm-target');
+            if(targetInput) {
+                targetInput.placeholder = brand.placeholder;
+                targetInput.value = "";
+            }
 
-            document.getElementById('smm-cat-header-title').innerText = plat.label;
+            const titleEl = document.getElementById('smm-cat-header-title');
+            if(titleEl) titleEl.innerText = plat.label;
             const iconBox = document.getElementById('smm-cat-header-icon');
-            iconBox.style.backgroundColor = brand.bg;
-            iconBox.innerHTML = brand.svg;
+            if(iconBox) {
+                iconBox.style.backgroundColor = brand.bg;
+                iconBox.innerHTML = brand.svg;
+            }
 
             updateSmmBreadcrumb(2);
             document.getElementById('smm-view-platform').classList.add('hidden');
             document.getElementById('smm-view-category').classList.remove('hidden');
 
             const catGrid = document.getElementById('smm-category-grid');
-            catGrid.innerHTML = `<div class="col-span-2 p-4 text-center text-xs font-bold">Memuat jenis layanan...</div>`;
+            if(catGrid) catGrid.innerHTML = `<div class="col-span-2 p-4 text-center text-xs font-bold">Memuat jenis layanan...</div>`;
             
             try {
                 const res = await requestFydz('smm-types', { platform: platformKey, server: currentSmmServer }, true).catch(() => ({
@@ -1166,15 +1197,16 @@
                         `${plat.label} - Guaranteed / Refill`
                     ]
                 }));
-                globalSmmCategoriesCache = res.types || [];
+                globalSmmCategoriesCache = Array.isArray(res.types) ? res.types : [];
                 renderSmmCategoryGrid();
             } catch(e) {
-                catGrid.innerHTML = `<div class="col-span-2 p-4 text-center text-xs text-red-500 font-bold">Gagal memuat jenis.</div>`;
+                if(catGrid) catGrid.innerHTML = `<div class="col-span-2 p-4 text-center text-xs text-red-500 font-bold">Gagal memuat jenis.</div>`;
             }
         }
 
         function renderSmmCategoryGrid() {
             const catGrid = document.getElementById('smm-category-grid');
+            if(!catGrid) return;
             catGrid.innerHTML = globalSmmCategoriesCache.map(cat => `
                 <div onclick="selectSmmCategory('${cat.replace(/'/g, "\\'")}')" class="p-3 rounded-2xl border-2 flex items-center gap-2.5 cursor-pointer transition active:scale-95 hover:border-sky-500" style="border-color: var(--border-col); background: var(--bg-main);">
                     <div class="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 text-pink-500 bg-pink-500/10 border border-pink-500/30 text-xs">✨</div>
@@ -1189,20 +1221,26 @@
             document.getElementById('smm-view-order').classList.remove('hidden');
 
             const servSel = document.getElementById('smm-sel-service');
-            servSel.innerHTML = `<option value="">Memuat paket layanan...</option>`;
-            syncCustomTriggerLabel('smm-sel-service');
+            if(servSel) {
+                servSel.innerHTML = `<option value="">Memuat paket layanan...</option>`;
+                syncCustomTriggerLabel('smm-sel-service');
+            }
 
             try {
                 const list = await requestFydz('smm-services', { platform: currentSelectedPlatformKey, type: categoryName, server: currentSmmServer }, true).catch(() => [
-                    { id: 101, name: `${categoryName} — High Quality Fast`, per_1000: 5500, min: 10, max: 10000, target_label: `Link / Username ${currentSelectedPlatformKey.toUpperCase()}`, target_hint: 'Pastikan akun tidak di-private' },
-                    { id: 102, name: `${categoryName} — Instant Refill 30 Hari`, per_1000: 8900, min: 50, max: 50000, target_label: `Link / Username ${currentSelectedPlatformKey.toUpperCase()}`, target_hint: 'Garansi refill otomatis 30 hari' }
+                    { id: 101, name: `${categoryName} — High Quality Fast`, per_1000: 5500, min: 10, max: 10000, target_label: `Link / Username`, target_hint: 'Pastikan akun tidak di-private' },
+                    { id: 102, name: `${categoryName} — Instant Refill 30 Hari`, per_1000: 8900, min: 50, max: 50000, target_label: `Link / Username`, target_hint: 'Garansi refill otomatis 30 hari' }
                 ]);
                 globalSmmServicesCache = Array.isArray(list) ? list : [];
-                servSel.innerHTML = `<option value="">Pilih Paket Layanan</option>` + globalSmmServicesCache.map(s => `<option value="${s.id}">${s.name} (Rp ${Number(s.per_1000).toLocaleString('id-ID')}/k)</option>`).join('');
-                syncCustomTriggerLabel('smm-sel-service');
+                if(servSel) {
+                    servSel.innerHTML = `<option value="">Pilih Paket Layanan</option>` + globalSmmServicesCache.map(s => `<option value="${s.id}">${s.name} (Rp ${Number(s.per_1000).toLocaleString('id-ID')}/k)</option>`).join('');
+                    syncCustomTriggerLabel('smm-sel-service');
+                }
             } catch(e) {
-                servSel.innerHTML = `<option value="">Gagal memuat layanan</option>`;
-                syncCustomTriggerLabel('smm-sel-service');
+                if(servSel) {
+                    servSel.innerHTML = `<option value="">Gagal memuat layanan</option>`;
+                    syncCustomTriggerLabel('smm-sel-service');
+                }
             }
         }
 
@@ -1221,11 +1259,14 @@
         }
 
         function onSmmServiceSelected() {
-            const servId = document.getElementById('smm-sel-service').value;
+            const servEl = document.getElementById('smm-sel-service');
+            if(!servEl) return;
+            const servId = servEl.value;
             syncCustomTriggerLabel('smm-sel-service');
             const found = globalSmmServicesCache.find(s => String(s.id) === String(servId));
             activeSelectedSmmService = found || null;
             const descBox = document.getElementById('smm-service-desc-box');
+            if(!descBox) return;
             if(!found) { descBox.classList.add('hidden'); return; }
 
             const brand = BRAND_ASSETS[currentSelectedPlatformKey] || { placeholder: "Masukkan target link atau username" };
@@ -1248,23 +1289,30 @@
 
         function calculateSmmPrice() {
             if(!activeSelectedSmmService) return;
-            const qty = Number(document.getElementById('smm-quantity').value) || 0;
+            const qtyEl = document.getElementById('smm-quantity');
+            const totalEl = document.getElementById('smm-calc-total');
+            if(!qtyEl || !totalEl) return;
+            const qty = Number(qtyEl.value) || 0;
             const total = Math.ceil((qty / 1000) * Number(activeSelectedSmmService.per_1000));
-            document.getElementById('smm-calc-total').innerText = `Total Estimasi: Rp ${total.toLocaleString('id-ID')}`;
+            totalEl.innerText = `Total Estimasi: Rp ${total.toLocaleString('id-ID')}`;
         }
 
         async function orderSmmService() {
             if(!activeSelectedSmmService) return showNotif("Pilih layanan SMM dulu", "error");
-            const target = document.getElementById('smm-target').value.trim();
+            const targetEl = document.getElementById('smm-target');
+            if(!targetEl) return;
+            const target = targetEl.value.trim();
             if(!target) return showNotif("Masukkan target", "error");
 
             let quantity = 1, comments = "";
             if(activeSelectedSmmService.is_custom) {
-                comments = document.getElementById('smm-comments').value.trim();
+                const commEl = document.getElementById('smm-comments');
+                comments = commEl ? commEl.value.trim() : "";
                 if(!comments) return showNotif("Masukkan komentar", "error");
                 quantity = comments.split('\n').filter(Boolean).length;
             } else {
-                quantity = Number(document.getElementById('smm-quantity').value) || 0;
+                const qtyEl = document.getElementById('smm-quantity');
+                quantity = qtyEl ? (Number(qtyEl.value) || 0) : 0;
                 if(quantity < activeSelectedSmmService.min || quantity > activeSelectedSmmService.max) return showNotif(`Jumlah harus antara ${activeSelectedSmmService.min} - ${activeSelectedSmmService.max}`, "error");
             }
 
@@ -1303,18 +1351,15 @@
         // ============================================================
         async function loadTpGames() {
             const grid = document.getElementById('tp-game-grid');
+            if(!grid) return;
             grid.innerHTML = `<div class="col-span-3 fy-card p-5 text-center text-xs font-bold" style="color: var(--text-sub);">Memuat game...</div>`;
             try {
                 const list = await requestFydz('tp-games', {}, true).catch(() => [
-                    { game: 'Free Fire', products: 261, need_zone: false },
-                    { game: 'Mobile Legends', products: 145, need_zone: true },
-                    { game: 'PUBG Mobile', products: 48, need_zone: false },
-                    { game: 'Genshin Impact', products: 45, need_zone: true },
-                    { game: 'Valorant', products: 23, need_zone: false },
-                    { game: 'Roblox', products: 12, need_zone: false },
-                    { game: 'Arena Breakout', products: 18, need_zone: false },
-                    { game: 'Blood Strike', products: 8, need_zone: false },
-                    { game: 'Call Of Duty Mobile', products: 23, need_zone: false }
+                    { game: 'Free Fire', products: 261, need_zone: false, brandKey: 'freefire' },
+                    { game: 'Mobile Legends', products: 145, need_zone: true, brandKey: 'mobilelegends' },
+                    { game: 'PUBG Mobile', products: 48, need_zone: false, brandKey: 'pubg' },
+                    { game: 'Genshin Impact', products: 45, need_zone: true, brandKey: 'genshin' },
+                    { game: 'Roblox', products: 12, need_zone: false, brandKey: 'roblox' }
                 ]);
                 globalTpGamesCache = Array.isArray(list) ? list : [];
                 renderTpGameGrid();
@@ -1325,12 +1370,12 @@
 
         function renderTpGameGrid() {
             const grid = document.getElementById('tp-game-grid');
+            if(!grid) return;
             grid.innerHTML = globalTpGamesCache.map(g => {
-                const bg = GAME_COLORS[g.game] || '#0284c7';
-                const initials = g.game.split(' ').map(w => w[0]).slice(0, 2).join('').toUpperCase();
+                const brand = BRAND_ASSETS[g.brandKey] || { bg: '#0284c7', svg: `<span class="text-white font-bold text-xs">🎮</span>` };
                 return `
                     <div onclick="selectTpGame('${g.game.replace(/'/g, "\\'")}'); event.stopPropagation();" class="fy-card p-3 text-center space-y-2 cursor-pointer hover:border-sky-500 transition active:scale-95">
-                        <div class="w-12 h-12 mx-auto rounded-2xl text-white flex items-center justify-center font-black text-base border-2 border-black shadow" style="background-color: ${bg};">${initials}</div>
+                        <div class="w-12 h-12 mx-auto rounded-2xl flex items-center justify-center font-black text-sm border-2 border-black shadow-md" style="background-color: ${brand.bg};">${brand.svg}</div>
                         <div>
                             <h4 class="text-[11px] font-black leading-tight line-clamp-1" style="color: var(--text-main);">${g.game}</h4>
                             <p class="text-[9px] font-bold mt-0.5" style="color: var(--text-sub);">${g.products || '10'} nominal</p>
@@ -1345,13 +1390,14 @@
             if(!gameObj) return;
 
             activeSelectedTpProduct = null;
-            document.getElementById('tp-selected-game-title').innerText = gameObj.game;
-            const bg = GAME_COLORS[gameObj.game] || '#0284c7';
-            const initials = gameObj.game.split(' ').map(w => w[0]).slice(0, 2).join('').toUpperCase();
+            const titleEl = document.getElementById('tp-selected-game-title');
+            if(titleEl) titleEl.innerText = gameObj.game;
+            const brand = BRAND_ASSETS[gameObj.brandKey] || { bg: '#0284c7', svg: `<span>🎮</span>` };
             const logoBox = document.getElementById('tp-detail-logo-box');
-            logoBox.style.backgroundColor = bg;
-            logoBox.style.color = '#ffffff';
-            logoBox.innerText = initials;
+            if(logoBox) {
+                logoBox.style.backgroundColor = brand.bg;
+                logoBox.innerHTML = brand.svg;
+            }
 
             document.getElementById('tp-game-container').classList.add('hidden');
             document.getElementById('tp-detail-section').classList.remove('hidden');
@@ -1364,34 +1410,33 @@
             const zoneWrap = document.getElementById('tp-zone-wrapper');
             const inputGrid = document.getElementById('tp-input-grid-wrapper');
             if(gameObj.need_zone) {
-                zoneWrap.classList.remove('hidden');
-                inputGrid.className = "grid grid-cols-2 gap-2.5";
+                if(zoneWrap) zoneWrap.classList.remove('hidden');
+                if(inputGrid) inputGrid.className = "grid grid-cols-2 gap-2.5";
             } else {
-                zoneWrap.classList.add('hidden');
-                inputGrid.className = "grid grid-cols-1 gap-2.5";
+                if(zoneWrap) zoneWrap.classList.add('hidden');
+                if(inputGrid) inputGrid.className = "grid grid-cols-1 gap-2.5";
             }
 
             const cardsGrid = document.getElementById('tp-nominal-cards-grid');
-            cardsGrid.innerHTML = `<div class="col-span-2 p-4 text-center text-xs font-bold">Memuat nominal...</div>`;
+            if(cardsGrid) cardsGrid.innerHTML = `<div class="col-span-2 p-4 text-center text-xs font-bold">Memuat nominal...</div>`;
 
             try {
                 const list = await requestFydz('tp-products', { game: gameName }, true).catch(() => [
                     { code: 'p1', name: '5 Diamond', price: 860, game: gameName, hot: true },
                     { code: 'p2', name: '10 Diamond', price: 1961, game: gameName, hot: false },
                     { code: 'p3', name: '12 Diamond', price: 2048, game: gameName, hot: false },
-                    { code: 'p4', name: '15 Diamond', price: 2315, game: gameName, hot: true },
-                    { code: 'p5', name: '20 Diamond', price: 3200, game: gameName, hot: false },
-                    { code: 'p6', name: '25 Diamond', price: 3950, game: gameName, hot: false }
+                    { code: 'p4', name: '15 Diamond', price: 2315, game: gameName, hot: true }
                 ]);
                 globalTpProductsCache = Array.isArray(list) ? list : [];
                 renderTpNominalCards();
             } catch(e) {
-                cardsGrid.innerHTML = `<div class="col-span-2 p-4 text-center text-xs text-red-500 font-bold">Gagal memuat nominal.</div>`;
+                if(cardsGrid) cardsGrid.innerHTML = `<div class="col-span-2 p-4 text-center text-xs text-red-500 font-bold">Gagal memuat nominal.</div>`;
             }
         }
 
         function renderTpNominalCards() {
             const cardsGrid = document.getElementById('tp-nominal-cards-grid');
+            if(!cardsGrid) return;
             cardsGrid.innerHTML = globalTpProductsCache.map((p, idx) => {
                 const isSelected = activeSelectedTpProduct && activeSelectedTpProduct.code === p.code;
                 const hotBadge = (p.hot || idx === 0 || idx === 3) ? `<span class="inline-block px-2 py-0.5 rounded-md bg-rose-500 text-white text-[9px] font-black mb-1">🔥 Terlaris</span>` : '';
@@ -1428,8 +1473,11 @@
         }
 
         async function checkGameAccountName() {
-            const target = document.getElementById('tp-target').value.trim();
-            const zone = document.getElementById('tp-zone').value.trim();
+            const targetEl = document.getElementById('tp-target');
+            const zoneEl = document.getElementById('tp-zone');
+            if(!targetEl) return;
+            const target = targetEl.value.trim();
+            const zone = zoneEl ? zoneEl.value.trim() : "";
             if(!target) return showNotif("Masukkan User ID terlebih dahulu", "error");
 
             try {
@@ -1438,8 +1486,10 @@
                 if(zone) params.zone = zone;
                 const res = await requestFydz('tp-check', params).catch(() => ({ name: 'FydzOfficial [Verified]' }));
                 if(res && res.name) {
-                    document.getElementById('tp-checked-account-name').innerText = res.name;
-                    document.getElementById('tp-check-result-box').classList.remove('hidden');
+                    const nameEl = document.getElementById('tp-checked-account-name');
+                    if(nameEl) nameEl.innerText = res.name;
+                    const resBox = document.getElementById('tp-check-result-box');
+                    if(resBox) resBox.classList.remove('hidden');
                     showNotif("Akun ditemukan: " + res.name, "success");
                 }
             } catch(e) { showNotif("Gagal cek akun: " + e.message, "error"); }
@@ -1447,8 +1497,11 @@
 
         async function orderTopupGame() {
             if(!activeSelectedTpProduct) return showNotif("Pilih salah satu kartu nominal terlebih dahulu!", "error");
-            const target = document.getElementById('tp-target').value.trim();
-            const zone = document.getElementById('tp-zone').value.trim();
+            const targetEl = document.getElementById('tp-target');
+            const zoneEl = document.getElementById('tp-zone');
+            if(!targetEl) return;
+            const target = targetEl.value.trim();
+            const zone = zoneEl ? zoneEl.value.trim() : "";
             if(!target) return showNotif("Masukkan User ID akun!", "error");
 
             let usersDB = JSON.parse(localStorage.getItem('fydz_user_db') || '{}');
@@ -1481,44 +1534,60 @@
         }
 
         // ============================================================
-        // NOKOS, DEPOSIT & UNIFIED HISTORY ENGINE DENGAN IKON BRAND LENGKAP
+        // NOKOS, DEPOSIT & UNIFIED HISTORY ENGINE DENGAN LOGO BRAND ASLI
         // ============================================================
         async function onServerChange() {
-            const server = document.getElementById('sel-server').value;
-            document.getElementById('active-server-badge').innerText = `Server ${server}`;
+            const serverEl = document.getElementById('sel-server');
+            if(!serverEl) return;
+            const server = serverEl.value;
+            const badgeEl = document.getElementById('active-server-badge');
+            if(badgeEl) badgeEl.innerText = `Server ${server}`;
             syncCustomTriggerLabel('sel-server');
-            if(['1', '6', '7'].includes(server)) document.getElementById('operator-wrapper').classList.remove('hidden');
-            else document.getElementById('operator-wrapper').classList.add('hidden');
+            const opWrap = document.getElementById('operator-wrapper');
+            if(opWrap) {
+                if(['1', '6', '7'].includes(server)) opWrap.classList.remove('hidden');
+                else opWrap.classList.add('hidden');
+            }
             loadCatalogServices();
         }
 
         async function loadCatalogData() {
-            const server = document.getElementById('sel-server').value;
+            const serverEl = document.getElementById('sel-server');
+            if(!serverEl) return;
+            const server = serverEl.value;
             try {
                 const countries = await requestFydz('countries', { server }, true).catch(() => [{ code: '6', name: 'Indonesia', flag: '🇮🇩' }]);
                 const countrySel = document.getElementById('sel-country');
-                countrySel.innerHTML = countries.map(c => `<option value="${c.code}">${c.flag || ''} ${c.name} (${c.code})</option>`).join('');
-                syncCustomTriggerLabel('sel-country');
+                if(countrySel) {
+                    countrySel.innerHTML = countries.map(c => `<option value="${c.code}">${c.flag || ''} ${c.name} (${c.code})</option>`).join('');
+                    syncCustomTriggerLabel('sel-country');
+                }
                 loadCatalogServices();
             } catch(e) {}
         }
 
         async function loadCatalogServices() {
-            const server = document.getElementById('sel-server').value;
-            const country = document.getElementById('sel-country').value;
+            const serverEl = document.getElementById('sel-server');
+            const countryEl = document.getElementById('sel-country');
+            if(!serverEl || !countryEl) return;
+            const server = serverEl.value;
+            const country = countryEl.value;
             syncCustomTriggerLabel('sel-country');
             const grid = document.getElementById('catalog-grid');
+            if(!grid) return;
             grid.innerHTML = `<div class="fy-card p-4 text-center text-xs font-bold" style="color: var(--text-sub);">Memuat layanan...</div>`;
             try {
                 const list = await requestFydz('services', { server, country }, true);
                 globalServicesCache = Array.isArray(list) ? list : [];
                 renderCatalogGrid();
-            } catch(e) { grid.innerHTML = `<div class="fy-card p-4 text-center text-xs text-red-500 font-bold">Gagal memuat katalog.</div>`; }
+            } catch(e) { if(grid) grid.innerHTML = `<div class="fy-card p-4 text-center text-xs text-red-500 font-bold">Gagal memuat katalog.</div>`; }
         }
 
         function renderCatalogGrid() {
-            const keyword = document.getElementById('search-catalog').value.toLowerCase();
+            const searchEl = document.getElementById('search-catalog');
             const grid = document.getElementById('catalog-grid');
+            if(!searchEl || !grid) return;
+            const keyword = searchEl.value.toLowerCase();
             const filtered = globalServicesCache.filter(item => (item.service_name || item.name || item.produk || '').toLowerCase().includes(keyword));
             if(filtered.length === 0) { grid.innerHTML = `<div class="fy-card p-4 text-center text-xs font-bold">Tidak ditemukan.</div>`; return; }
             grid.innerHTML = filtered.slice(0, 40).map(item => {
@@ -1543,9 +1612,13 @@
             let userData = usersDB[currentUser];
             if(!userData || (userData.balance || 0) < totalPrice) return showNotif(`Saldo tidak cukup!`, "error");
 
-            const server = document.getElementById('sel-server').value;
-            const country = document.getElementById('sel-country').value;
-            const operator = document.getElementById('sel-operator').value;
+            const serverEl = document.getElementById('sel-server');
+            const countryEl = document.getElementById('sel-country');
+            const operatorEl = document.getElementById('sel-operator');
+            const server = serverEl ? serverEl.value : "1";
+            const country = countryEl ? countryEl.value : "6";
+            const operator = operatorEl ? operatorEl.value : "any";
+
             const params = { server, country, produk, total };
             if(provider) params.provider = provider;
             if(operator && operator !== 'any') params.operator = operator;
@@ -1563,7 +1636,8 @@
                 syncUserDataUI(); playNotificationSound();
                 showNotif("Pesanan nokos berhasil!", "success");
                 if(orderObj && orderObj.id) {
-                    document.getElementById('man-order-id').value = orderObj.id;
+                    const manIdEl = document.getElementById('man-order-id');
+                    if(manIdEl) manIdEl.value = orderObj.id;
                     renderActiveMonitor(orderObj); startAutoPolling(orderObj.id);
                     switchMainTab(3);
                 }
@@ -1571,7 +1645,9 @@
         }
 
         async function createDepositQr() {
-            const nominal = Number(document.getElementById('dep-nominal').value);
+            const depEl = document.getElementById('dep-nominal');
+            if(!depEl) return;
+            const nominal = Number(depEl.value);
             if(!nominal || nominal < 1000) return showNotif("Minimal Rp 1.000", "error");
             try {
                 showNotif("Membuat QRIS...", "info");
@@ -1603,7 +1679,7 @@
                     usersDB[currentUser] = userData;
                     localStorage.setItem('fydz_user_db', JSON.stringify(usersDB));
                     syncUserDataUI(); playNotificationSound();
-                    showNotif(`Deposit Rp ${Number(activeDepositNominal).toLocaleString('id-ID')} masuk[span_1](start_span)[span_1](end_span)!`, "success");
+                    showNotif(`Deposit Rp ${Number(activeDepositNominal).toLocaleString('id-ID')} masuk[span_0](start_span)[span_0](end_span)!`, "success");
                     document.getElementById('modal-qris-box').classList.add('hidden'); activeDepositId = null;
                 } else { showNotif(`Status: ${(res.status || 'pending').toUpperCase()}`, "info"); }
             } catch(e) { showNotif("Gagal cek", "error"); }
@@ -1638,25 +1714,33 @@
         }
 
         async function checkOrderStatus(notify = false) {
-            const id = document.getElementById('man-order-id').value.trim();
+            const manEl = document.getElementById('man-order-id');
+            if(!manEl) return;
+            const id = manEl.value.trim();
             if(!id) return showNotif("Masukkan ID", "error");
             try { const st = await requestFydz('status', { id }, !notify); renderActiveMonitor(st); if(notify) showNotif(`Status: ${st.status}`, "info"); } catch(e) {}
         }
 
         async function resendSmsOtp() {
-            const id = document.getElementById('man-order-id').value.trim();
+            const manEl = document.getElementById('man-order-id');
+            if(!manEl) return;
+            const id = manEl.value.trim();
             if(!id) return showNotif("Masukkan ID", "error");
             try { await requestFydz('resend', { id }); showNotif("SMS dikirim ulang", "success"); } catch(e) {}
         }
 
         async function reactivateOrderNum() {
-            const id = document.getElementById('man-order-id').value.trim();
+            const manEl = document.getElementById('man-order-id');
+            if(!manEl) return;
+            const id = manEl.value.trim();
             if(!id) return showNotif("Masukkan ID", "error");
             try { await requestFydz('reactivate', { id }); showNotif("Diperpanjang", "success"); } catch(e) {}
         }
 
         async function cancelActiveOrder() {
-            const id = document.getElementById('man-order-id').value.trim();
+            const manEl = document.getElementById('man-order-id');
+            if(!manEl) return;
+            const id = manEl.value.trim();
             if(!id) return showNotif("Masukkan ID", "error");
             try {
                 await requestFydz('cancel', { id }); 
@@ -1674,7 +1758,6 @@
             } catch(e) { showNotif("Gagal", "error"); }
         }
 
-        // FUNGSI RENDER RIWAYAT GABUNGAN DENGAN IKON BRAND & FILTER PILL
         function filterHistoryCategory(cat) {
             activeHistoryCategory = cat;
             const pills = document.querySelectorAll('#history-filter-pills button');
@@ -1688,11 +1771,15 @@
             renderUnifiedHistory();
         }
 
+        // RENDER RIWAYAT DENGAN LOGO BRAND ASLI
         function renderUnifiedHistory() {
             const user = getActiveUserData();
             const container = document.getElementById('unified-history-container');
-            const searchKeyword = document.getElementById('history-search-input').value.toLowerCase().trim();
-            const statusFilter = document.getElementById('history-status-select').value;
+            const searchEl = document.getElementById('history-search-input');
+            const statusEl = document.getElementById('history-status-select');
+            if(!container) return;
+            const searchKeyword = searchEl ? searchEl.value.toLowerCase().trim() : "";
+            const statusFilter = statusEl ? statusEl.value : "all";
             syncCustomTriggerLabel('history-status-select');
 
             if(!user) {
@@ -1706,12 +1793,11 @@
             if(activeHistoryCategory === 'semua' || activeHistoryCategory === 'nokos') {
                 (user.orders || []).forEach(o => {
                     allLogs.push({
-                        type: 'nokos',
                         title: `${o.number || '-'} (${o.service_name || 'Nokos'})`,
                         sub: `OTP: ${o.otp || 'Waiting'} • Rp ${(o.price || 0).toLocaleString('id-ID')}`,
                         status: o.status || 'pending',
                         time: o.created_at || '',
-                        brandKey: 'nokos'
+                        brandKey: 'whatsapp'
                     });
                 });
             }
@@ -1720,7 +1806,6 @@
             if(activeHistoryCategory === 'semua' || activeHistoryCategory === 'smm') {
                 (user.smmOrders || []).forEach(s => {
                     allLogs.push({
-                        type: 'smm',
                         title: s.service || 'SMM Service',
                         sub: `Target: ${s.target} • Rp ${(s.price || 0).toLocaleString('id-ID')}`,
                         status: s.status || 'success',
@@ -1733,13 +1818,20 @@
             // Masukkan Topup Game
             if(activeHistoryCategory === 'semua' || activeHistoryCategory === 'topup') {
                 (user.tpOrders || []).forEach(t => {
+                    let bKey = 'game';
+                    const gLower = (t.game || t.product || '').toLowerCase();
+                    if(gLower.includes('free fire')) bKey = 'freefire';
+                    else if(gLower.includes('mobile legend')) bKey = 'mobilelegends';
+                    else if(gLower.includes('pubg')) bKey = 'pubg';
+                    else if(gLower.includes('genshin')) bKey = 'genshin';
+                    else if(gLower.includes('roblox')) bKey = 'roblox';
+
                     allLogs.push({
-                        type: 'topup',
                         title: `${t.product || t.game || 'Game'} — ${t.service}`,
                         sub: `Target: ${t.target} • Rp ${(t.price || 0).toLocaleString('id-ID')}`,
                         status: t.status || 'success',
                         time: t.created_at || '',
-                        brandKey: 'game'
+                        brandKey: bKey
                     });
                 });
             }
@@ -1748,7 +1840,6 @@
             if(activeHistoryCategory === 'semua' || activeHistoryCategory === 'deposit') {
                 (user.deposits || []).forEach(d => {
                     allLogs.push({
-                        type: 'deposit',
                         title: `Deposit Saldo QRIS`,
                         sub: `ID: ${d.id} • Rp ${(d.nominal || 0).toLocaleString('id-ID')}`,
                         status: d.status || 'berhasil',
@@ -1758,7 +1849,6 @@
                 });
             }
 
-            // Filter pencarian & status
             const filtered = allLogs.filter(item => {
                 const matchSearch = item.title.toLowerCase().includes(searchKeyword) || item.sub.toLowerCase().includes(searchKeyword);
                 const matchStatus = statusFilter === 'all' || item.status.toLowerCase() === statusFilter.toLowerCase();
@@ -1771,12 +1861,12 @@
             }
 
             container.innerHTML = filtered.map(item => {
-                const brand = BRAND_ASSETS[item.brandKey] || BRAND_ASSETS['nokos'];
+                const brand = BRAND_ASSETS[item.brandKey] || BRAND_ASSETS['game'];
                 const statusBg = item.status === 'success' || item.status === 'berhasil' ? 'bg-emerald-400 text-black' : (item.status === 'refunded' ? 'bg-red-500 text-white' : 'bg-amber-300 text-black');
                 return `
                     <div class="fy-card p-3.5 flex items-center justify-between gap-3">
                         <div class="flex items-center gap-3 min-w-0">
-                            <div class="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 border-2 border-black shadow-[2px_2px_0px_#000]" style="background-color: ${brand.bg};">
+                            <div class="w-11 h-11 rounded-2xl flex items-center justify-center shrink-0 border-2 border-black shadow-[2px_2px_0px_#000]" style="background-color: ${brand.bg};">
                                 ${brand.svg}
                             </div>
                             <div class="space-y-0.5 min-w-0">
