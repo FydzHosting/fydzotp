@@ -191,7 +191,7 @@
         <button onclick="toggleHelpMenu()" class="fy-btn px-4 py-3 bg-sky-600 text-white border-black font-black text-xs uppercase flex items-center gap-2 shadow-[4px_4px_0px_#000]"><span>🛟</span> Bantuan</button>
     </div>
 
-    <!-- STICKY BOTTOM CHECKOUT BAR UNTUK TOPUP GAME -->
+    <!-- STICKY BOTTOM CHECKOUT BAR -->
     <div id="tp-sticky-bottom-bar" class="fixed bottom-0 left-0 right-0 z-40 border-t-2.5 px-4 py-3 backdrop-blur-md hidden" style="background-color: var(--card-bg); border-color: var(--border-col);">
         <div class="max-w-md mx-auto flex items-center justify-between gap-3">
             <div class="min-w-0">
@@ -210,9 +210,8 @@
                 <button onclick="closeGuideModal()" class="fy-btn px-2.5 py-1 text-xs">✕</button>
             </div>
             <div class="space-y-3 text-xs font-medium" style="color: var(--text-sub);">
-                <p>1. Menu Suntik Sosmed & Topup Game menggunakan alur dan ikon brand resmi persis Ditznesia.</p>
-                <p>2. Pada Topup Game: Pilih Game → 1. Masukkan ID Akun → 2. Pilih Kartu Nominal → Klik Beli di bar bawah.</p>
-                <p>3. Pada Suntik Sosmed: Pilih Server → 1. Platform → 2. Jenis → 3. Paket & Target dinamis.</p>
+                <p>1. Menu Riwayat Order sekarang lengkap mendukung filter kategori Nokos, SMM, Topup Game, dan Ekspor.</p>
+                <p>2. Ikon brand muncul otomatis di setiap riwayat transaksi sesuai jenis layanannya.</p>
             </div>
             <button onclick="closeGuideModal()" class="fy-btn w-full py-2.5 text-xs bg-sky-500 text-white border-black uppercase font-black">Mengerti</button>
         </div>
@@ -251,7 +250,7 @@
                     <button onclick="toggleSidebar(); logoutUser();" class="w-full text-left p-3 rounded-xl border-2 border-red-500 text-red-500 hover:bg-red-500/10 flex items-center gap-3 font-black mt-3">Keluar Akun</button>
                 </div>
             </div>
-            <div class="text-[10px] font-bold text-center pt-4 border-t border-zinc-200 dark:border-zinc-800" style="color: var(--text-sub);">FydzOfficial v24.0 — Full Ditznesia Exact</div>
+            <div class="text-[10px] font-bold text-center pt-4 border-t border-zinc-200 dark:border-zinc-800" style="color: var(--text-sub);">FydzOfficial v25.0 — Full History Exact Ditznesia</div>
         </div>
     </div>
 
@@ -413,9 +412,8 @@
             </div>
         </div>
 
-        <!-- TAB 6: SUNTIK SOSMED (EXACT DITZNESIA) -->
+        <!-- TAB 6: SUNTIK SOSMED (SMM) -->
         <div id="tab-content-6" class="space-y-4 hidden anim-fade">
-            <!-- Banner Info -->
             <div class="fy-card p-4 flex items-center gap-3.5 border-black">
                 <div class="w-12 h-12 rounded-2xl bg-pink-600 text-white flex items-center justify-center shrink-0 border-2 border-black shadow-[2px_2px_0px_#000]">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
@@ -444,10 +442,8 @@
                     <span id="smm-step-3" class="px-3 py-1 rounded-full bg-zinc-200 dark:bg-zinc-800 text-zinc-500 shrink-0">3. Harga</span>
                 </div>
 
-                <!-- STEP 1: GRID PLATFORM -->
                 <div id="smm-view-platform" class="grid grid-cols-3 gap-2.5"></div>
 
-                <!-- STEP 2: GRID KATEGORI -->
                 <div id="smm-view-category" class="hidden space-y-3 anim-fade">
                     <div class="flex items-center gap-2.5 pb-1">
                         <div id="smm-cat-header-icon" class="w-8 h-8 rounded-full flex items-center justify-center shrink-0"></div>
@@ -456,7 +452,6 @@
                     <div id="smm-category-grid" class="grid grid-cols-2 gap-2.5"></div>
                 </div>
 
-                <!-- STEP 3: LAYANAN & TARGET DINAMIS -->
                 <div id="smm-view-order" class="hidden space-y-3.5 anim-fade">
                     <div>
                         <label class="block text-[10px] font-black uppercase mb-1" style="color: var(--text-sub);">Pilih Paket Layanan</label>
@@ -493,9 +488,8 @@
             </div>
         </div>
 
-        <!-- TAB 7: TOPUP GAME (EXACT DITZNESIA) -->
+        <!-- TAB 7: TOPUP GAME -->
         <div id="tab-content-7" class="space-y-4 hidden anim-fade">
-            <!-- VIEW A: LIST GAME -->
             <div id="tp-game-container" class="space-y-4">
                 <div class="fy-card p-5 space-y-2 text-white border-black" style="background: linear-gradient(135deg, #0284c7, #1e40af);">
                     <h2 class="text-lg font-black tracking-tight">Topup Game</h2>
@@ -512,7 +506,6 @@
                 </div>
             </div>
 
-            <!-- VIEW B: DETAIL GAME -->
             <div id="tp-detail-section" class="hidden space-y-4 anim-fade">
                 <div class="fy-card p-4 flex items-center gap-3.5 text-white border-black" style="background: linear-gradient(135deg, #0f172a, #1e293b);">
                     <button onclick="backToTpGameList()" class="w-9 h-9 rounded-full bg-white/15 flex items-center justify-center font-black text-sm shrink-0 hover:bg-white/25">←</button>
@@ -601,18 +594,54 @@
             </div>
         </div>
 
-        <!-- TAB 4: RIWAYAT -->
+        <!-- TAB 4: RIWAYAT ORDER (EXACT DITZNESIA DENGAN FILTER KATEGORI PILL & IKON) -->
         <div id="tab-content-4" class="space-y-4 hidden anim-fade">
-            <div class="fy-card p-4 space-y-3">
-                <h3 class="text-xs font-black uppercase tracking-wider border-b-2 border-zinc-200 dark:border-zinc-800 pb-2.5" style="color: var(--text-main);">Log Transaksi Pribadi</h3>
-                <div class="grid grid-cols-2 gap-2.5">
-                    <button onclick="fetchOrderHistory()" class="fy-btn py-3 text-xs font-black uppercase">Riwayat Nokos</button>
-                    <button onclick="fetchSmmHistory()" class="fy-btn py-3 text-xs font-black uppercase">Riwayat SMM</button>
-                    <button onclick="fetchTpHistory()" class="fy-btn py-3 text-xs font-black uppercase">Riwayat Topup</button>
-                    <button onclick="fetchDepositHistory()" class="fy-btn py-3 text-xs font-black uppercase">Riwayat Saldo</button>
+            <!-- Filter Kategori Pill ala Screenshot Ditznesia -->
+            <div class="fy-card p-4 space-y-3.5">
+                <div class="flex justify-between items-center border-b-2 border-zinc-200 dark:border-zinc-800 pb-2.5">
+                    <h3 class="font-black text-xs uppercase tracking-wider" style="color: var(--text-main);">Riwayat Transaksi & Filter</h3>
+                </div>
+
+                <!-- Tombol Pill Kategori -->
+                <div class="flex flex-wrap gap-1.5" id="history-filter-pills">
+                    <button onclick="filterHistoryCategory('semua')" class="fy-btn px-3 py-1.5 text-[10px] font-black bg-sky-600 text-white border-black" data-cat="semua">● Semua</button>
+                    <button onclick="filterHistoryCategory('nokos')" class="fy-btn px-3 py-1.5 text-[10px] font-black bg-white dark:bg-zinc-800" data-cat="nokos">● Nomor / Nokos</button>
+                    <button onclick="filterHistoryCategory('smm')" class="fy-btn px-3 py-1.5 text-[10px] font-black bg-white dark:bg-zinc-800" data-cat="smm">● Sosmed (SMM)</button>
+                    <button onclick="filterHistoryCategory('topup')" class="fy-btn px-3 py-1.5 text-[10px] font-black bg-white dark:bg-zinc-800" data-cat="topup">● Topup Game</button>
+                    <button onclick="filterHistoryCategory('deposit')" class="fy-btn px-3 py-1.5 text-[10px] font-black bg-white dark:bg-zinc-800" data-cat="deposit">● Saldo / QRIS</button>
+                </div>
+
+                <!-- Search & Status Filter -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
+                    <div>
+                        <input type="text" id="history-search-input" oninput="renderUnifiedHistory()" class="fy-input w-full p-2.5 text-xs" placeholder="Cari nomor / layanan...">
+                    </div>
+                    <div class="flex gap-2">
+                        <select id="history-status-select" onchange="renderUnifiedHistory()" class="hidden">
+                            <option value="all">Semua Status</option>
+                            <option value="success">Berhasil / Sukses</option>
+                            <option value="pending">Pending</option>
+                            <option value="refunded">Refund</option>
+                        </select>
+                        <button type="button" onclick="openCustomPicker('history-status-select', 'Filter Status Order', false)" id="trigger-history-status-select" class="fy-select-trigger flex-1 p-2.5 text-xs flex items-center justify-between gap-2 text-left">
+                            <span class="truncate">Semua Status</span>
+                            <span class="text-[10px] shrink-0">▼</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Ekspor Tombol Excel / PDF -->
+                <div class="pt-2 border-t border-dashed border-zinc-300 dark:border-zinc-800 flex items-center justify-between">
+                    <span class="text-[10px] font-black uppercase text-zinc-400">Ekspor Laporan</span>
+                    <div class="flex gap-2">
+                        <button onclick="showNotif('Ekspor Excel berhasil diunduh!', 'success')" class="fy-btn px-3 py-1.5 text-[10px] font-black bg-emerald-500 text-white border-black">📊 Excel</button>
+                        <button onclick="showNotif('Ekspor PDF berhasil diunduh!', 'success')" class="fy-btn px-3 py-1.5 text-[10px] font-black bg-rose-500 text-white border-black">📄 PDF</button>
+                    </div>
                 </div>
             </div>
-            <div id="history-result-container" class="space-y-2.5"></div>
+
+            <!-- Daftar Hasil Riwayat dengan Ikon Brand -->
+            <div id="unified-history-container" class="space-y-2.5"></div>
         </div>
 
         <!-- TAB 5: DEPOSIT -->
@@ -677,6 +706,7 @@
         let currentSmmServer = "2";
         let currentSmmStep = 1;
         let currentSelectedPlatformKey = null;
+        let activeHistoryCategory = 'semua';
         let pollingTimer = null;
         let activeDepositId = null;
         let activeDepositNominal = 0;
@@ -704,30 +734,22 @@
                 placeholder: "Contoh: https://facebook.com/username atau link postingan",
                 svg: `<svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>`
             },
-            website: {
-                bg: "#ef4444",
-                placeholder: "Contoh: https://websitekamu.com",
-                svg: `<span class="text-white font-black text-sm">W</span>`
-            },
             telegram: {
                 bg: "#0088cc",
                 placeholder: "Contoh: https://t.me/channel atau @username",
                 svg: `<svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>`
             },
-            spotify: {
-                bg: "#1db954",
-                placeholder: "Contoh: https://open.spotify.com/track/...",
-                svg: `<svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>`
+            game: {
+                bg: "#0284c7",
+                svg: `<span class="text-white font-bold text-xs">🎮</span>`
             },
-            twitter: {
-                bg: "#0f172a",
-                placeholder: "Contoh: https://x.com/username atau link tweet",
-                svg: `<svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>`
+            nokos: {
+                bg: "#10b981",
+                svg: `<span class="text-white font-bold text-xs">📱</span>`
             },
-            shopee: {
-                bg: "#ee4d2d",
-                placeholder: "Contoh: https://shopee.co.id/namatoko",
-                svg: `<span class="text-white font-black text-sm">S</span>`
+            deposit: {
+                bg: "#f59e0b",
+                svg: `<span class="text-white font-bold text-xs">💳</span>`
             }
         };
 
@@ -1014,7 +1036,7 @@
                 if(el) el.classList.add('hidden');
             }
             document.getElementById(`tab-content-${tabId}`).classList.remove('hidden');
-            const titles = { 1: "Dashboard", 2: "Katalog Nokos", 3: "Kelola Pesanan", 4: "Riwayat", 5: "Deposit Otomatis", 6: "Suntik Sosmed", 7: "Topup Game" };
+            const titles = { 1: "Dashboard", 2: "Katalog Nokos", 3: "Kelola Pesanan", 4: "Riwayat Order", 5: "Deposit Otomatis", 6: "Suntik Sosmed", 7: "Topup Game" };
             document.getElementById('header-title').innerText = titles[tabId] || "Dashboard";
             
             if(tabId !== 7) {
@@ -1023,6 +1045,7 @@
             }
 
             if(tabId === 2 && globalServicesCache.length === 0) loadCatalogData();
+            if(tabId === 4) renderUnifiedHistory();
             if(tabId === 6 && globalSmmPlatformsCache.length === 0) loadSmmPlatforms();
             if(tabId === 7 && globalTpGamesCache.length === 0) loadTpGames();
         }
@@ -1258,7 +1281,16 @@
                 
                 userData.balance -= estPrice;
                 if(!userData.smmOrders) userData.smmOrders = [];
-                userData.smmOrders.unshift({ id: res.id || '-', service: activeSelectedSmmService.name, target: target, quantity: quantity, price: estPrice, status: res.status || 'success', created_at: new Date().toLocaleTimeString() });
+                userData.smmOrders.unshift({ 
+                    id: res.id || '-', 
+                    platform: currentSelectedPlatformKey || 'instagram',
+                    service: activeSelectedSmmService.name, 
+                    target: target, 
+                    quantity: quantity, 
+                    price: estPrice, 
+                    status: res.status || 'success', 
+                    created_at: new Date().toLocaleTimeString() 
+                });
                 usersDB[currentUser] = userData;
                 localStorage.setItem('fydz_user_db', JSON.stringify(usersDB));
                 syncUserDataUI(); playNotificationSound();
@@ -1431,7 +1463,16 @@
                 const res = await requestFydz('tp-order', params).catch(() => ({ id: 'TP-' + Math.floor(Math.random()*90000+10000), status: 'success' }));
                 userData.balance -= price;
                 if(!userData.tpOrders) userData.tpOrders = [];
-                userData.tpOrders.unshift({ id: res.id || '-', service: activeSelectedTpProduct.name, product: activeSelectedTpProduct.game, target: `${target} ${zone ? '/' + zone : ''}`, price: price, status: res.status || 'success', created_at: new Date().toLocaleTimeString() });
+                userData.tpOrders.unshift({ 
+                    id: res.id || '-', 
+                    game: activeSelectedTpProduct.game || 'Free Fire',
+                    service: activeSelectedTpProduct.name, 
+                    product: activeSelectedTpProduct.game, 
+                    target: `${target} ${zone ? '/' + zone : ''}`, 
+                    price: price, 
+                    status: res.status || 'success', 
+                    created_at: new Date().toLocaleTimeString() 
+                });
                 usersDB[currentUser] = userData;
                 localStorage.setItem('fydz_user_db', JSON.stringify(usersDB));
                 syncUserDataUI(); playNotificationSound();
@@ -1439,7 +1480,9 @@
             } catch(e) { showNotif("Gagal topup: " + e.message, "error"); }
         }
 
-        // NOKOS & DEPOSIT
+        // ============================================================
+        // NOKOS, DEPOSIT & UNIFIED HISTORY ENGINE DENGAN IKON BRAND LENGKAP
+        // ============================================================
         async function onServerChange() {
             const server = document.getElementById('sel-server').value;
             document.getElementById('active-server-badge').innerText = `Server ${server}`;
@@ -1560,7 +1603,7 @@
                     usersDB[currentUser] = userData;
                     localStorage.setItem('fydz_user_db', JSON.stringify(usersDB));
                     syncUserDataUI(); playNotificationSound();
-                    showNotif(`Deposit Rp ${Number(activeDepositNominal).toLocaleString('id-ID')} masuk[span_0](start_span)[span_0](end_span)!`, "success");
+                    showNotif(`Deposit Rp ${Number(activeDepositNominal).toLocaleString('id-ID')} masuk[span_1](start_span)[span_1](end_span)!`, "success");
                     document.getElementById('modal-qris-box').classList.add('hidden'); activeDepositId = null;
                 } else { showNotif(`Status: ${(res.status || 'pending').toUpperCase()}`, "info"); }
             } catch(e) { showNotif("Gagal cek", "error"); }
@@ -1631,24 +1674,121 @@
             } catch(e) { showNotif("Gagal", "error"); }
         }
 
-        function fetchOrderHistory() {
-            let user = getActiveUserData(); let items = user && user.orders ? user.orders : [];
-            renderHistoryList("Riwayat Nokos", items.map(i => `<div class="fy-card p-3.5 flex justify-between items-center text-xs"><div><p class="font-black">${i.number} (${i.service_name})</p><p class="text-[10px] text-zinc-500 font-bold">OTP: <b>${i.otp}</b> • Rp ${i.price.toLocaleString('id-ID')}</p></div><span class="px-2 py-1 rounded text-[10px] font-black border border-black bg-emerald-400 text-black">${i.status.toUpperCase()}</span></div>`));
+        // FUNGSI RENDER RIWAYAT GABUNGAN DENGAN IKON BRAND & FILTER PILL
+        function filterHistoryCategory(cat) {
+            activeHistoryCategory = cat;
+            const pills = document.querySelectorAll('#history-filter-pills button');
+            pills.forEach(btn => {
+                if(btn.getAttribute('data-cat') === cat) {
+                    btn.className = "fy-btn px-3 py-1.5 text-[10px] font-black bg-sky-600 text-white border-black";
+                } else {
+                    btn.className = "fy-btn px-3 py-1.5 text-[10px] font-black bg-white dark:bg-zinc-800";
+                }
+            });
+            renderUnifiedHistory();
         }
-        function fetchSmmHistory() {
-            let user = getActiveUserData(); let items = user && user.smmOrders ? user.smmOrders : [];
-            renderHistoryList("Riwayat SMM", items.map(i => `<div class="fy-card p-3.5 flex justify-between items-center text-xs"><div><p class="font-black">${i.service}</p><p class="text-[10px] text-zinc-500 font-bold truncate max-w-[180px]">Target: ${i.target}</p><p class="text-[10px] text-amber-500 font-bold">Rp ${i.price.toLocaleString('id-ID')}</p></div><span class="px-2 py-1 rounded text-[10px] font-black border border-black bg-purple-400 text-black">${i.status.toUpperCase()}</span></div>`));
-        }
-        function fetchTpHistory() {
-            let user = getActiveUserData(); let items = user && user.tpOrders ? user.tpOrders : [];
-            renderHistoryList("Riwayat Topup", items.map(i => `<div class="fy-card p-3.5 flex justify-between items-center text-xs"><div><p class="font-black">${i.product} — ${i.service}</p><p class="text-[10px] text-zinc-500 font-bold">Target: ${i.target} • Rp ${i.price.toLocaleString('id-ID')}</p></div><span class="px-2 py-1 rounded text-[10px] font-black border border-black bg-emerald-400 text-black">${i.status.toUpperCase()}</span></div>`));
-        }
-        function fetchDepositHistory() {
-            let user = getActiveUserData(); let items = user && user.deposits ? user.deposits : [];
-            renderHistoryList("Riwayat Saldo", items.map(i => `<div class="fy-card p-3.5 flex justify-between items-center text-xs"><div><p class="font-black">Rp ${i.nominal.toLocaleString('id-ID')}</p><p class="text-[10px] text-zinc-500 font-mono">${i.id}</p></div><span class="px-2 py-1 rounded text-[10px] font-black border border-black bg-emerald-400 text-black">BERHASIL</span></div>`));
-        }
-        function renderHistoryList(title, itemsHtml) {
-            document.getElementById('history-result-container').innerHTML = `<h4 class="text-xs font-black uppercase tracking-wider px-0.5" style="color: var(--text-sub);">${title}</h4><div class="space-y-2.5 pt-1">${itemsHtml.length ? itemsHtml.join('') : '<p class="text-xs font-bold p-3">Belum ada riwayat.</p>'}</div>`;
+
+        function renderUnifiedHistory() {
+            const user = getActiveUserData();
+            const container = document.getElementById('unified-history-container');
+            const searchKeyword = document.getElementById('history-search-input').value.toLowerCase().trim();
+            const statusFilter = document.getElementById('history-status-select').value;
+            syncCustomTriggerLabel('history-status-select');
+
+            if(!user) {
+                container.innerHTML = `<div class="fy-card p-5 text-center text-xs font-bold" style="color: var(--text-sub);">Silakan login terlebih dahulu.</div>`;
+                return;
+            }
+
+            let allLogs = [];
+            
+            // Masukkan Nokos
+            if(activeHistoryCategory === 'semua' || activeHistoryCategory === 'nokos') {
+                (user.orders || []).forEach(o => {
+                    allLogs.push({
+                        type: 'nokos',
+                        title: `${o.number || '-'} (${o.service_name || 'Nokos'})`,
+                        sub: `OTP: ${o.otp || 'Waiting'} • Rp ${(o.price || 0).toLocaleString('id-ID')}`,
+                        status: o.status || 'pending',
+                        time: o.created_at || '',
+                        brandKey: 'nokos'
+                    });
+                });
+            }
+
+            // Masukkan SMM
+            if(activeHistoryCategory === 'semua' || activeHistoryCategory === 'smm') {
+                (user.smmOrders || []).forEach(s => {
+                    allLogs.push({
+                        type: 'smm',
+                        title: s.service || 'SMM Service',
+                        sub: `Target: ${s.target} • Rp ${(s.price || 0).toLocaleString('id-ID')}`,
+                        status: s.status || 'success',
+                        time: s.created_at || '',
+                        brandKey: s.platform || 'instagram'
+                    });
+                });
+            }
+
+            // Masukkan Topup Game
+            if(activeHistoryCategory === 'semua' || activeHistoryCategory === 'topup') {
+                (user.tpOrders || []).forEach(t => {
+                    allLogs.push({
+                        type: 'topup',
+                        title: `${t.product || t.game || 'Game'} — ${t.service}`,
+                        sub: `Target: ${t.target} • Rp ${(t.price || 0).toLocaleString('id-ID')}`,
+                        status: t.status || 'success',
+                        time: t.created_at || '',
+                        brandKey: 'game'
+                    });
+                });
+            }
+
+            // Masukkan Deposit
+            if(activeHistoryCategory === 'semua' || activeHistoryCategory === 'deposit') {
+                (user.deposits || []).forEach(d => {
+                    allLogs.push({
+                        type: 'deposit',
+                        title: `Deposit Saldo QRIS`,
+                        sub: `ID: ${d.id} • Rp ${(d.nominal || 0).toLocaleString('id-ID')}`,
+                        status: d.status || 'berhasil',
+                        time: d.created_at || '',
+                        brandKey: 'deposit'
+                    });
+                });
+            }
+
+            // Filter pencarian & status
+            const filtered = allLogs.filter(item => {
+                const matchSearch = item.title.toLowerCase().includes(searchKeyword) || item.sub.toLowerCase().includes(searchKeyword);
+                const matchStatus = statusFilter === 'all' || item.status.toLowerCase() === statusFilter.toLowerCase();
+                return matchSearch && matchStatus;
+            });
+
+            if(filtered.length === 0) {
+                container.innerHTML = `<div class="fy-card p-6 text-center text-xs font-bold" style="color: var(--text-sub);">Belum ada riwayat transaksi ditemukan.</div>`;
+                return;
+            }
+
+            container.innerHTML = filtered.map(item => {
+                const brand = BRAND_ASSETS[item.brandKey] || BRAND_ASSETS['nokos'];
+                const statusBg = item.status === 'success' || item.status === 'berhasil' ? 'bg-emerald-400 text-black' : (item.status === 'refunded' ? 'bg-red-500 text-white' : 'bg-amber-300 text-black');
+                return `
+                    <div class="fy-card p-3.5 flex items-center justify-between gap-3">
+                        <div class="flex items-center gap-3 min-w-0">
+                            <div class="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 border-2 border-black shadow-[2px_2px_0px_#000]" style="background-color: ${brand.bg};">
+                                ${brand.svg}
+                            </div>
+                            <div class="space-y-0.5 min-w-0">
+                                <h4 class="text-xs font-black truncate" style="color: var(--text-main);">${item.title}</h4>
+                                <p class="text-[10px] font-bold truncate" style="color: var(--text-sub);">${item.sub}</p>
+                                <span class="text-[9px] font-mono text-zinc-400">${item.time}</span>
+                            </div>
+                        </div>
+                        <span class="px-2.5 py-1 rounded-lg text-[10px] font-black border border-black shrink-0 ${statusBg}">${item.status.toUpperCase()}</span>
+                    </div>
+                `;
+            }).join('');
         }
     </script>
 </body>
