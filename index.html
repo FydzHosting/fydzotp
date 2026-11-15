@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>FydzOTP — Panel User</title>
+    <title>FydzOfficial — All-in-One Digital Store</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
@@ -38,7 +38,7 @@
             color: var(--text-main);
             background-image: linear-gradient(to right, var(--bg-grid) 1px, transparent 1px), linear-gradient(to bottom, var(--bg-grid) 1px, transparent 1px);
             background-size: 24px 24px;
-            padding-bottom: 70px;
+            padding-bottom: 80px;
             transition: background-color 0.2s ease, color 0.2s ease;
         }
 
@@ -59,9 +59,7 @@
             color: var(--text-main);
             transition: all 0.08s ease;
         }
-        .dark .fy-btn {
-            background: #1c1c24;
-        }
+        .dark .fy-btn { background: #1c1c24; }
         .fy-btn:active {
             transform: translate(2px, 2px);
             box-shadow: 1px 1px 0px var(--shadow-col);
@@ -80,7 +78,6 @@
             box-shadow: 3px 3px 0px var(--accent);
         }
 
-        /* Custom Trigger pengganti <select> bawaan Chrome */
         .fy-select-trigger {
             background: var(--card-bg);
             border: 2.5px solid var(--border-col);
@@ -89,22 +86,10 @@
             font-weight: 800;
             box-shadow: 2px 2px 0px var(--shadow-col);
             cursor: pointer;
-            transition: all 0.1s ease;
-        }
-        .fy-select-trigger:active {
-            transform: translate(1.5px, 1.5px);
-            box-shadow: 0px 0px 0px var(--shadow-col);
         }
 
-        /* Animasi Pop-Up & Sheet Kustom */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(4px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes popScale {
-            from { opacity: 0; transform: scale(0.94) translateY(8px); }
-            to { opacity: 1; transform: scale(1) translateY(0); }
-        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes popScale { from { opacity: 0; transform: scale(0.94) translateY(8px); } to { opacity: 1; transform: scale(1) translateY(0); } }
         .anim-fade { animation: fadeIn 0.2s ease-out forwards; }
         .anim-pop { animation: popScale 0.18s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
 
@@ -118,15 +103,11 @@
     <!-- MODAL MAINTENANCE GLOBAL -->
     <div id="maintenance-screen" class="fixed inset-0 z-50 bg-zinc-950 flex items-center justify-center p-6 text-center hidden">
         <div class="fy-card max-w-sm w-full p-6 space-y-4 bg-zinc-900 border-amber-500 text-white shadow-[6px_6px_0px_#f59e0b]">
-            <div class="w-16 h-16 bg-amber-500 text-black border-2 border-black rounded-2xl mx-auto flex items-center justify-center text-2xl font-black">
-                🛠️
-            </div>
+            <div class="w-16 h-16 bg-amber-500 text-black border-2 border-black rounded-2xl mx-auto flex items-center justify-center text-2xl font-black">🛠️</div>
             <h2 class="text-xl font-black uppercase tracking-tight text-amber-400">Sedang Pemeliharaan</h2>
-            <p id="maintenance-msg-text" class="text-xs text-zinc-300 font-semibold">Website sedang dalam perbaikan sistem atau pembaruan fitur. Silakan kembali beberapa saat lagi.</p>
+            <p id="maintenance-msg-text" class="text-xs text-zinc-300 font-semibold">Website sedang dalam perbaikan sistem atau pembaruan fitur.</p>
             <div id="admin-bypass-box" class="pt-2 hidden">
-                <button onclick="bypassMaintenance()" class="fy-btn w-full py-3 text-xs bg-amber-500 text-black border-black font-black uppercase">
-                    Masuk Sebagai Admin (Bypass)
-                </button>
+                <button onclick="bypassMaintenance()" class="fy-btn w-full py-3 text-xs bg-amber-500 text-black border-black font-black uppercase">Masuk Sebagai Admin (Bypass)</button>
             </div>
         </div>
     </div>
@@ -138,10 +119,9 @@
                 <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
             </div>
             <div class="space-y-1">
-                <h2 class="text-xl font-black uppercase tracking-tight" style="color: var(--text-main);">Masuk FydzOTP</h2>
+                <h2 class="text-xl font-black uppercase tracking-tight" style="color: var(--text-main);">Masuk FydzOfficial</h2>
                 <p class="text-xs font-semibold" style="color: var(--text-sub);">Masukkan username dan PIN akun kamu untuk melanjutkan.</p>
             </div>
-
             <div class="space-y-3 text-left">
                 <div>
                     <label class="block text-[10px] font-black uppercase mb-1" style="color: var(--text-main);">Username</label>
@@ -152,10 +132,7 @@
                     <input type="password" id="auth-pin" class="fy-input w-full p-3 text-xs" placeholder="••••">
                 </div>
             </div>
-
-            <button onclick="handleUserLogin()" class="fy-btn w-full py-3.5 text-xs uppercase tracking-wider text-white font-black shadow-[3px_3px_0px_#000]" style="background-color: var(--accent); border-color: var(--border-col);">
-                Masuk / Buat Akun Otomatis →
-            </button>
+            <button onclick="handleUserLogin()" class="fy-btn w-full py-3.5 text-xs uppercase tracking-wider text-white font-black shadow-[3px_3px_0px_#000]" style="background-color: var(--accent); border-color: var(--border-col);">Masuk / Buat Akun Otomatis →</button>
             <p class="text-[10px] font-bold text-zinc-400">Akun baru otomatis mendapatkan saldo awal Rp 0.</p>
         </div>
     </div>
@@ -163,7 +140,7 @@
     <!-- TOAST NOTIFICATION -->
     <div id="toast-container" class="fixed top-3 left-0 right-0 z-[70] flex flex-col items-center gap-2 px-4 pointer-events-none"></div>
 
-    <!-- CUSTOM PICKER MODAL (PENGGANTI DROPDOWN/RADIO BAWAAN CHROME) -->
+    <!-- CUSTOM PICKER MODAL -->
     <div id="custom-picker-modal" class="fixed inset-0 z-[80] bg-black/75 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 hidden" onclick="closeCustomPicker()">
         <div class="fy-card w-full max-w-md rounded-b-none sm:rounded-3xl p-5 space-y-3.5 max-h-[82vh] flex flex-col anim-pop" style="background-color: var(--card-bg); border-color: var(--border-col);" onclick="event.stopPropagation()">
             <div class="flex justify-between items-center border-b-2 pb-3" style="border-color: var(--border-col);">
@@ -173,27 +150,23 @@
                 </div>
                 <button onclick="closeCustomPicker()" class="fy-btn px-2.5 py-1 text-xs font-black">✕</button>
             </div>
-
             <div id="picker-search-wrap" class="hidden">
-                <input type="text" id="picker-search-input" oninput="filterCustomPickerOptions()" class="fy-input w-full p-3 text-xs" placeholder="Ketik untuk mencari negara / layanan...">
+                <input type="text" id="picker-search-input" oninput="filterCustomPickerOptions()" class="fy-input w-full p-3 text-xs" placeholder="Ketik untuk mencari...">
             </div>
-
             <div id="picker-options-list" class="flex-1 overflow-y-auto space-y-2 pr-1"></div>
         </div>
     </div>
 
-    <!-- CUSTOM DIALOG MODAL (PENGGANTI ALERT / CONFIRM / PROMPT CHROME) -->
+    <!-- CUSTOM DIALOG MODAL -->
     <div id="custom-dialog-modal" class="fixed inset-0 z-[90] bg-black/80 backdrop-blur-xs flex items-center justify-center p-4 hidden">
         <div class="fy-card max-w-sm w-full p-6 space-y-4 text-center anim-pop" style="background-color: var(--card-bg); border-color: var(--border-col);">
-            <div id="dialog-icon-box" class="w-14 h-14 rounded-2xl border-2 mx-auto flex items-center justify-center text-2xl font-black shadow-[3px_3px_0px_var(--shadow-col)]" style="background-color: var(--accent); border-color: var(--border-col); color: #fff;">
-                ⚡
-            </div>
+            <div id="dialog-icon-box" class="w-14 h-14 rounded-2xl border-2 mx-auto flex items-center justify-center text-2xl font-black shadow-[3px_3px_0px_var(--shadow-col)]" style="background-color: var(--accent); border-color: var(--border-col); color: #fff;">⚡</div>
             <div class="space-y-1.5">
                 <h3 id="dialog-title" class="text-base font-black uppercase tracking-tight" style="color: var(--text-main);">Pemberitahuan</h3>
                 <p id="dialog-message" class="text-xs font-semibold leading-relaxed" style="color: var(--text-sub);">-</p>
             </div>
             <div id="dialog-prompt-wrap" class="hidden text-left">
-                <input type="text" id="dialog-prompt-input" class="fy-input w-full p-3 text-xs" placeholder="Masukkan teks di sini...">
+                <input type="text" id="dialog-prompt-input" class="fy-input w-full p-3 text-xs" placeholder="Masukkan teks...">
             </div>
             <div id="dialog-buttons-wrap" class="grid grid-cols-1 gap-2.5 pt-1"></div>
         </div>
@@ -206,31 +179,23 @@
                 <span class="text-[10px] font-black uppercase text-amber-500">Pusat Bantuan</span>
                 <button onclick="toggleHelpMenu()" class="text-xs font-bold px-1">✕</button>
             </div>
-            <a href="https://wa.me/6283120264665" target="_blank" class="w-full text-left p-2 rounded-xl bg-emerald-500/10 border-2 border-emerald-500 text-emerald-600 dark:text-emerald-400 text-xs font-black flex items-center gap-2 hover:bg-emerald-500/20">
-                <span>🟢</span> WhatsApp (+6283)
-            </a>
-            <button onclick="openGuideModal()" class="w-full text-left p-2 rounded-xl bg-sky-500/10 border-2 border-sky-500 text-sky-600 dark:text-sky-400 text-xs font-black flex items-center gap-2 hover:bg-sky-500/20">
-                <span>📖</span> Lihat Panduan
-            </button>
+            <a href="https://wa.me/6283120264665" target="_blank" class="w-full text-left p-2 rounded-xl bg-emerald-500/10 border-2 border-emerald-500 text-emerald-600 dark:text-emerald-400 text-xs font-black flex items-center gap-2 hover:bg-emerald-500/20"><span>🟢</span> WhatsApp</a>
+            <button onclick="openGuideModal()" class="w-full text-left p-2 rounded-xl bg-sky-500/10 border-2 border-sky-500 text-sky-600 dark:text-sky-400 text-xs font-black flex items-center gap-2 hover:bg-sky-500/20"><span>📖</span> Panduan</button>
         </div>
-
-        <button onclick="toggleHelpMenu()" class="fy-btn px-4 py-3 bg-sky-600 text-white border-black font-black text-xs uppercase flex items-center gap-2 shadow-[4px_4px_0px_#000]">
-            <span class="text-base">🛟</span> Bantuan
-        </button>
+        <button onclick="toggleHelpMenu()" class="fy-btn px-4 py-3 bg-sky-600 text-white border-black font-black text-xs uppercase flex items-center gap-2 shadow-[4px_4px_0px_#000]"><span>🛟</span> Bantuan</button>
     </div>
 
-    <!-- MODAL PANDUAN (GUIDE) -->
+    <!-- MODAL PANDUAN -->
     <div id="guide-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 hidden">
         <div class="fy-card max-w-sm w-full p-5 space-y-4 bg-white dark:bg-zinc-900 border-black anim-pop">
             <div class="flex justify-between items-center border-b-2 border-zinc-200 dark:border-zinc-800 pb-3">
-                <h3 class="font-black text-sm uppercase text-sky-500">Panduan Penggunaan FydzOTP</h3>
+                <h3 class="font-black text-sm uppercase text-sky-500">Panduan FydzOfficial</h3>
                 <button onclick="closeGuideModal()" class="fy-btn px-2.5 py-1 text-xs">✕</button>
             </div>
             <div class="space-y-3 text-xs font-medium" style="color: var(--text-sub);">
-                <p>1. <b>Login Akun:</b> Masukkan username dan PIN kamu. Akun otomatis terdaftar dengan dompet saldo mandiri.</p>
-                <p>2. <b>Deposit Saldo:</b> Masuk ke menu Deposit QRIS, masukkan nominal, scan QRIS, dan saldo masuk otomatis.</p>
-                <p>3. <b>Order Nokos:</b> Pilih server dan layanan di katalog. Sistem aman dari saldo minus (Strict Balance Lock).</p>
-                <p>4. <b>Notifikasi & OTP:</b> Kode OTP masuk otomatis dengan suara notifikasi "Ting!" pada menu Kelola Pesanan.</p>
+                <p>1. Pilih menu Topup Game atau SMM Panel dengan tampilan Grid interaktif persis ala Ditznesia.</p>
+                <p>2. Klik game atau platform pilihanmu untuk langsung memunculkan daftar nominal/layanan.</p>
+                <p>3. Saldo terisolasi per akun dan deposit QRIS otomatis aktif.</p>
             </div>
             <button onclick="closeGuideModal()" class="fy-btn w-full py-2.5 text-xs bg-sky-500 text-white border-black uppercase font-black">Mengerti</button>
         </div>
@@ -238,7 +203,7 @@
 
     <!-- SIDEBAR DRAWER -->
     <div id="sidebar-drawer" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm hidden transition-opacity" onclick="toggleSidebar()">
-        <div class="absolute left-0 top-0 bottom-0 w-72 p-5 space-y-6 flex flex-col justify-between" style="background-color: var(--card-bg); border-right: 3px solid var(--border-col);" onclick="event.stopPropagation()">
+        <div class="absolute left-0 top-0 bottom-0 w-72 p-5 space-y-6 flex flex-col justify-between overflow-y-auto" style="background-color: var(--card-bg); border-right: 3px solid var(--border-col);" onclick="event.stopPropagation()">
             <div class="space-y-5">
                 <div class="flex justify-between items-center border-b-2 border-zinc-200 dark:border-zinc-800 pb-4">
                     <div class="flex items-center gap-2.5">
@@ -252,49 +217,24 @@
                 </div>
                 
                 <div class="space-y-2 text-xs font-bold">
-                    <button onclick="toggleSidebar(); switchMainTab(1);" class="w-full text-left p-3 rounded-xl border-2 border-transparent hover:border-black flex items-center gap-3" style="color: var(--text-main);">
-                        <svg class="w-4 h-4 text-amber-500" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
-                        Dashboard Utama
-                    </button>
-                    <button onclick="toggleSidebar(); switchMainTab(2);" class="w-full text-left p-3 rounded-xl border-2 border-transparent hover:border-black flex items-center gap-3" style="color: var(--text-main);">
-                        <svg class="w-4 h-4 text-sky-500" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
-                        Katalog Layanan Nokos
-                    </button>
-                    <button onclick="toggleSidebar(); switchMainTab(3);" class="w-full text-left p-3 rounded-xl border-2 border-transparent hover:border-black flex items-center gap-3" style="color: var(--text-main);">
-                        <svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
-                        Kelola Pesanan & OTP
-                    </button>
-                    <button onclick="toggleSidebar(); switchMainTab(4);" class="w-full text-left p-3 rounded-xl border-2 border-transparent hover:border-black flex items-center gap-3" style="color: var(--text-main);">
-                        <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                        Riwayat Transaksi
-                    </button>
-                    <button onclick="toggleSidebar(); switchMainTab(5);" class="w-full text-left p-3 rounded-xl border-2 border-transparent hover:border-black flex items-center gap-3" style="color: var(--text-main);">
-                        <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
-                        Deposit Saldo QRIS
-                    </button>
+                    <button onclick="toggleSidebar(); switchMainTab(1);" class="w-full text-left p-3 rounded-xl border-2 border-transparent hover:border-black flex items-center gap-3" style="color: var(--text-main);">Dashboard Utama</button>
+                    <button onclick="toggleSidebar(); switchMainTab(2);" class="w-full text-left p-3 rounded-xl border-2 border-transparent hover:border-black flex items-center gap-3" style="color: var(--text-main);">Katalog Nokos OTP</button>
+                    <button onclick="toggleSidebar(); switchMainTab(6);" class="w-full text-left p-3 rounded-xl border-2 border-transparent hover:border-black flex items-center gap-3" style="color: var(--text-main);">SMM Panel (Suntik Sosmed)</button>
+                    <button onclick="toggleSidebar(); switchMainTab(7);" class="w-full text-left p-3 rounded-xl border-2 border-transparent hover:border-black flex items-center gap-3" style="color: var(--text-main);">Topup Game Voucher</button>
+                    <button onclick="toggleSidebar(); switchMainTab(3);" class="w-full text-left p-3 rounded-xl border-2 border-transparent hover:border-black flex items-center gap-3" style="color: var(--text-main);">Kelola Pesanan Nokos</button>
+                    <button onclick="toggleSidebar(); switchMainTab(4);" class="w-full text-left p-3 rounded-xl border-2 border-transparent hover:border-black flex items-center gap-3" style="color: var(--text-main);">Riwayat Transaksi</button>
+                    <button onclick="toggleSidebar(); switchMainTab(5);" class="w-full text-left p-3 rounded-xl border-2 border-transparent hover:border-black flex items-center gap-3" style="color: var(--text-main);">Deposit Saldo QRIS</button>
 
-                    <!-- MENU ADMIN -->
                     <div id="admin-only-menu" class="hidden pt-2 border-t-2 border-dashed border-zinc-300 dark:border-zinc-800 space-y-2">
                         <p class="text-[9px] font-black uppercase text-amber-500 px-1">🔒 Panel Kontrol Admin</p>
-                        <button onclick="toggleSidebar(); openAdminControlModal();" class="w-full text-left p-3 rounded-xl border-2 border-amber-500 text-amber-500 hover:bg-amber-500/10 flex items-center gap-3 font-black">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                            Pengaturan Admin (Maint & Broadcast)
-                        </button>
-                        <button onclick="toggleSidebar(); resetLocalDataAccount();" class="w-full text-left p-3 rounded-xl border-2 border-red-500 text-red-500 hover:bg-red-500/10 flex items-center gap-3 font-black">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
-                            Reset Seluruh Database Sistem
-                        </button>
+                        <button onclick="toggleSidebar(); openAdminControlModal();" class="w-full text-left p-3 rounded-xl border-2 border-amber-500 text-amber-500 hover:bg-amber-500/10 flex items-center gap-3 font-black">Pengaturan Admin</button>
+                        <button onclick="toggleSidebar(); resetLocalDataAccount();" class="w-full text-left p-3 rounded-xl border-2 border-red-500 text-red-500 hover:bg-red-500/10 flex items-center gap-3 font-black">Reset Database</button>
                     </div>
 
-                    <button onclick="toggleSidebar(); logoutUser();" class="w-full text-left p-3 rounded-xl border-2 border-red-500 text-red-500 hover:bg-red-500/10 flex items-center gap-3 font-black mt-3">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
-                        Keluar Akun
-                    </button>
+                    <button onclick="toggleSidebar(); logoutUser();" class="w-full text-left p-3 rounded-xl border-2 border-red-500 text-red-500 hover:bg-red-500/10 flex items-center gap-3 font-black mt-3">Keluar Akun</button>
                 </div>
             </div>
-            <div class="text-[10px] font-bold text-center pt-4 border-t border-zinc-200 dark:border-zinc-800" style="color: var(--text-sub);">
-                FydzOTP v18.0 — Full Custom UI
-            </div>
+            <div class="text-[10px] font-bold text-center pt-4 border-t border-zinc-200 dark:border-zinc-800" style="color: var(--text-sub);">FydzOfficial v21.0 — Ditznesia Style UI</div>
         </div>
     </div>
 
@@ -305,24 +245,19 @@
                 <h3 class="font-black text-sm uppercase text-amber-500">Panel Kontrol Admin</h3>
                 <button onclick="closeAdminControlModal()" class="fy-btn px-2.5 py-1 text-xs">✕</button>
             </div>
-
             <div class="space-y-4 text-xs">
                 <div class="space-y-1.5 p-3 rounded-xl border-2 border-amber-400 bg-amber-500/10">
-                    <label class="block font-black uppercase text-amber-600">Status Maintenance Website</label>
+                    <label class="block font-black uppercase text-amber-600">Status Maintenance</label>
                     <div class="flex gap-2">
-                        <button onclick="setMaintenanceStatus(true)" id="btn-maint-on" class="fy-btn flex-1 py-2 font-black">ON (Aktif)</button>
-                        <button onclick="setMaintenanceStatus(false)" id="btn-maint-off" class="fy-btn flex-1 py-2 font-black">OFF (Normal)</button>
+                        <button onclick="setMaintenanceStatus(true)" id="btn-maint-on" class="fy-btn flex-1 py-2 font-black">ON</button>
+                        <button onclick="setMaintenanceStatus(false)" id="btn-maint-off" class="fy-btn flex-1 py-2 font-black">OFF</button>
                     </div>
                 </div>
-
                 <div class="space-y-1.5">
-                    <label class="block font-black uppercase" style="color: var(--text-main);">Pesan Broadcast Mengambang</label>
-                    <textarea id="input-broadcast-msg" rows="3" class="fy-input w-full p-2.5 text-xs" placeholder="Tulis pengumuman penting di sini..."></textarea>
+                    <label class="block font-black uppercase" style="color: var(--text-main);">Pesan Broadcast</label>
+                    <textarea id="input-broadcast-msg" rows="3" class="fy-input w-full p-2.5 text-xs" placeholder="Tulis pengumuman..."></textarea>
                 </div>
-
-                <button onclick="saveAdminSettings()" class="fy-btn w-full py-3 bg-amber-500 text-black border-black font-black uppercase">
-                    Simpan & Terbitkan Perubahan
-                </button>
+                <button onclick="saveAdminSettings()" class="fy-btn w-full py-3 bg-amber-500 text-black border-black font-black uppercase">Simpan Perubahan</button>
             </div>
         </div>
     </div>
@@ -341,18 +276,15 @@
             </div>
             
             <div class="flex items-center gap-2">
-                <button onclick="toggleTheme()" class="fy-btn px-3 py-2 text-xs font-black" title="Ganti Mode Terang / Gelap">
-                    🌓
-                </button>
+                <button onclick="toggleTheme()" class="fy-btn px-3 py-2 text-xs font-black" title="Ganti Mode">🌓</button>
                 <button onclick="switchMainTab(5)" class="fy-btn px-3 py-2 text-xs font-black flex items-center gap-1.5" style="color: var(--accent);">
-                    <svg class="w-4 h-4 inline" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
                     <span id="header-balance">Rp 0</span> +
                 </button>
             </div>
         </div>
     </header>
 
-    <!-- BANNER BROADCAST MENGAMBANG DI ATAS -->
+    <!-- BANNER BROADCAST -->
     <div id="broadcast-banner" class="hidden max-w-md mx-auto px-4 pt-3">
         <div class="fy-card p-3 bg-amber-400 text-black border-black flex items-start gap-2.5 shadow-[3px_3px_0px_#000]">
             <span class="text-base">📢</span>
@@ -368,22 +300,23 @@
         <div id="tab-content-1" class="space-y-4 anim-fade">
             <div class="fy-card p-5 space-y-3 text-white border-black" style="background-color: #0284c7;">
                 <div class="space-y-1">
-                    <h2 id="banner-welcome-text" class="text-xl font-black tracking-tight">Halo @USER Selamat datang di FydzOTP</h2>
-                    <p class="text-xs font-medium text-sky-100">Kelola saldo akun pribadi dan order nomor virtual dengan cepat dan aman.</p>
+                    <h2 id="banner-welcome-text" class="text-xl font-black tracking-tight">Halo @USER</h2>
+                    <p class="text-xs font-medium text-sky-100">Pusat layanan digital: Nokos OTP, SMM Panel, & Topup Game ala Ditznesia.</p>
                 </div>
-                <button onclick="switchMainTab(2)" class="fy-btn bg-white text-zinc-950 font-black w-full py-3.5 text-xs uppercase tracking-wider shadow-[3px_3px_0px_#000] border-black flex items-center justify-center gap-2">
-                    <svg class="w-4 h-4 text-sky-600" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
-                    Buka Katalog Nokos
-                </button>
+                <div class="grid grid-cols-3 gap-2 pt-1">
+                    <button onclick="switchMainTab(2)" class="fy-btn bg-white text-zinc-950 font-black py-2.5 text-[10px] uppercase border-black">Nokos</button>
+                    <button onclick="switchMainTab(6)" class="fy-btn bg-white text-zinc-950 font-black py-2.5 text-[10px] uppercase border-black">SMM Panel</button>
+                    <button onclick="switchMainTab(7)" class="fy-btn bg-white text-zinc-950 font-black py-2.5 text-[10px] uppercase border-black">Topup Game</button>
+                </div>
             </div>
 
             <div class="grid grid-cols-2 gap-3">
                 <div class="fy-card p-4 space-y-1">
-                    <p class="text-[10px] font-black uppercase tracking-wider flex items-center gap-1.5" style="color: var(--text-sub);">Saldo Anda</p>
+                    <p class="text-[10px] font-black uppercase tracking-wider" style="color: var(--text-sub);">Saldo Anda</p>
                     <h3 id="dash-balance" class="text-lg font-black text-emerald-500">Rp 0</h3>
                 </div>
                 <div class="fy-card p-4 space-y-1">
-                    <p class="text-[10px] font-black uppercase tracking-wider flex items-center gap-1.5" style="color: var(--text-sub);">Total Order</p>
+                    <p class="text-[10px] font-black uppercase tracking-wider" style="color: var(--text-sub);">Total Order</p>
                     <h3 id="stat-total-order" class="text-lg font-black" style="color: var(--text-main);">0</h3>
                 </div>
             </div>
@@ -400,18 +333,17 @@
             </div>
         </div>
 
-        <!-- TAB 2: KATALOG -->
+        <!-- TAB 2: KATALOG NOKOS -->
         <div id="tab-content-2" class="space-y-4 hidden anim-fade">
             <div class="fy-card p-4 space-y-3.5">
                 <div class="flex justify-between items-center border-b-2 border-zinc-200 dark:border-zinc-800 pb-2.5">
-                    <h3 class="text-xs font-black uppercase tracking-wider" style="color: var(--text-main);">Konfigurasi Server</h3>
+                    <h3 class="text-xs font-black uppercase tracking-wider" style="color: var(--text-main);">Konfigurasi Server Nokos</h3>
                     <span id="active-server-badge" class="text-[10px] font-black px-2 py-0.5 rounded border border-black bg-amber-200 text-black">Server 1</span>
                 </div>
 
                 <div class="grid grid-cols-2 gap-2.5">
                     <div>
                         <label class="block text-[10px] font-black uppercase mb-1" style="color: var(--text-sub);">Server Gateway</label>
-                        <!-- Select asli disembunyikan, diganti Custom Picker Trigger otomatis -->
                         <select id="sel-server" onchange="onServerChange()" class="hidden">
                             <option value="1">Server 1 (Operator)</option>
                             <option value="2">Server 2 (Provider)</option>
@@ -455,7 +387,7 @@
 
             <div class="space-y-2.5">
                 <div class="flex justify-between items-center px-0.5">
-                    <h3 class="text-xs font-black uppercase tracking-wider" style="color: var(--text-main);">Daftar Layanan</h3>
+                    <h3 class="text-xs font-black uppercase tracking-wider" style="color: var(--text-main);">Daftar Layanan Nokos</h3>
                     <button onclick="loadCatalogServices()" class="text-xs font-extrabold hover:underline" style="color: var(--accent);">Refresh</button>
                 </div>
                 <div id="catalog-grid" class="space-y-2.5">
@@ -464,7 +396,142 @@
             </div>
         </div>
 
-        <!-- TAB 3: KELOLA PESANAN & OTP -->
+        <!-- TAB 6: SMM PANEL (GRID INTERAKTIF ALA DITZNESIA) -->
+        <div id="tab-content-6" class="space-y-4 hidden anim-fade">
+            <!-- Banner Info -->
+            <div class="fy-card p-5 space-y-3 text-white border-black" style="background: linear-gradient(135deg, #7c3aed, #4f46e5);">
+                <div class="space-y-1">
+                    <h2 class="text-lg font-black tracking-tight uppercase">Smm Panel Sosmed</h2>
+                    <p class="text-xs font-medium text-purple-100">Tambah followers, likes, views & lainnya untuk Instagram, TikTok, YouTube, dll.</p>
+                </div>
+                <div class="flex flex-wrap gap-2 pt-1 text-[10px] font-black">
+                    <span class="px-2.5 py-1 rounded-lg bg-black/30 border border-white/20">⚡ Proses Otomatis</span>
+                    <span class="px-2.5 py-1 rounded-lg bg-black/30 border border-white/20">🛡️ Bergaransi / Refill</span>
+                </div>
+            </div>
+
+            <div id="smm-platform-container" class="space-y-3">
+                <div class="flex justify-between items-center px-0.5">
+                    <h3 class="text-xs font-black uppercase tracking-wider" style="color: var(--text-main);">Pilih Platform Sosmed</h3>
+                </div>
+                <div id="smm-platform-grid" class="grid grid-cols-2 gap-3">
+                    <div class="fy-card p-4 text-center text-xs font-bold" style="color: var(--text-sub);">Memuat platform...</div>
+                </div>
+            </div>
+
+            <!-- Detail Pilihan Platform & Layanan (Muncul Setelah Platform Diklik) -->
+            <div id="smm-detail-section" class="hidden fy-card p-4 space-y-4 anim-fade">
+                <div class="flex justify-between items-center border-b-2 pb-3" style="border-color: var(--border-col);">
+                    <div>
+                        <h3 id="smm-selected-platform-title" class="font-black text-sm uppercase" style="color: var(--text-main);">-</h3>
+                        <p class="text-[10px] font-bold" style="color: var(--text-sub);">Pilih jenis dan paket layanan</p>
+                    </div>
+                    <button onclick="backToSmmPlatformList()" class="fy-btn px-3 py-1.5 text-xs font-black">← Ganti Platform</button>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2.5">
+                    <div>
+                        <label class="block text-[10px] font-black uppercase mb-1" style="color: var(--text-sub);">Jenis Layanan</label>
+                        <select id="smm-sel-type" onchange="loadSmmServicesByPlatform()" class="hidden"><option value="">Pilih Jenis</option></select>
+                        <button type="button" onclick="openCustomPicker('smm-sel-type', 'Pilih Jenis Layanan', false)" id="trigger-smm-sel-type" class="fy-select-trigger w-full p-2.5 text-xs flex items-center justify-between gap-2 text-left">
+                            <span class="truncate">Pilih Jenis</span><span class="text-[10px] shrink-0">▼</span>
+                        </button>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-black uppercase mb-1" style="color: var(--text-sub);">Paket Layanan</label>
+                        <select id="smm-sel-service" onchange="onSmmServiceSelected()" class="hidden"><option value="">Pilih Paket</option></select>
+                        <button type="button" onclick="openCustomPicker('smm-sel-service', 'Pilih Paket Layanan', true)" id="trigger-smm-sel-service" class="fy-select-trigger w-full p-2.5 text-xs flex items-center justify-between gap-2 text-left">
+                            <span class="truncate">Pilih Paket</span><span class="text-[10px] shrink-0">▼</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div id="smm-service-desc-box" class="hidden p-3 rounded-xl border-2 border-dashed border-zinc-300 dark:border-zinc-800 text-[11px] font-semibold space-y-1" style="color: var(--text-sub);">
+                    <p id="smm-target-label-text">Target: Link / Username</p>
+                    <p id="smm-target-hint-text" class="text-[10px] text-amber-500">-</p>
+                    <p id="smm-price-per-1000">Harga per 1000: Rp 0</p>
+                </div>
+
+                <div>
+                    <label class="block text-[10px] font-black uppercase mb-1" id="smm-input-target-label" style="color: var(--text-sub);">Target (Link / Username)</label>
+                    <input type="text" id="smm-target" class="fy-input w-full p-3 text-xs" placeholder="Contoh: https://instagram.com/namaakun">
+                </div>
+
+                <div id="smm-quantity-wrapper">
+                    <label class="block text-[10px] font-black uppercase mb-1" style="color: var(--text-sub);">Jumlah (Quantity)</label>
+                    <input type="number" id="smm-quantity" oninput="calculateSmmPrice()" class="fy-input w-full p-3 text-xs" placeholder="50">
+                    <p id="smm-calc-total" class="text-[10px] font-black text-amber-500 mt-1">Total Estimasi: Rp 0</p>
+                </div>
+
+                <div id="smm-comments-wrapper" class="hidden">
+                    <label class="block text-[10px] font-black uppercase mb-1" style="color: var(--text-sub);">Custom Komentar (1 baris = 1 komentar)</label>
+                    <textarea id="smm-comments" rows="3" class="fy-input w-full p-2.5 text-xs" placeholder="Keren bang&#10;Mantap"></textarea>
+                </div>
+
+                <button onclick="orderSmmService()" class="fy-btn text-white font-black w-full py-3.5 text-xs uppercase shadow-[3px_3px_0px_#000]" style="background-color: var(--accent); border-color: var(--border-col);">Pesan Layanan SMM →</button>
+            </div>
+        </div>
+
+        <!-- TAB 7: TOPUP GAME (GRID INTERAKTIF ALA DITZNESIA) -->
+        <div id="tab-content-7" class="space-y-4 hidden anim-fade">
+            <!-- Banner Info -->
+            <div class="fy-card p-5 space-y-3 text-white border-black" style="background: linear-gradient(135deg, #0284c7, #2563eb);">
+                <div class="space-y-1">
+                    <h2 class="text-lg font-black tracking-tight uppercase">Topup Game</h2>
+                    <p class="text-xs font-medium text-sky-100">⚡ Proses 1-3 menit &bull; 🕒 Otomatis 24 jam &bull; 🛡️ Gagal = saldo kembali</p>
+                </div>
+            </div>
+
+            <div id="tp-game-container" class="space-y-3">
+                <div class="flex justify-between items-center px-0.5">
+                    <h3 class="text-xs font-black uppercase tracking-wider" style="color: var(--text-main);">Pilih Game</h3>
+                </div>
+                <div id="tp-game-grid" class="grid grid-cols-3 gap-2.5">
+                    <div class="col-span-3 fy-card p-5 text-center text-xs font-bold" style="color: var(--text-sub);">Memuat daftar game...</div>
+                </div>
+            </div>
+
+            <!-- Detail Pilihan Nominal Game (Muncul Setelah Game Diklik) -->
+            <div id="tp-detail-section" class="hidden fy-card p-4 space-y-4 anim-fade">
+                <div class="flex justify-between items-center border-b-2 pb-3" style="border-color: var(--border-col);">
+                    <div>
+                        <h3 id="tp-selected-game-title" class="font-black text-sm uppercase" style="color: var(--text-main);">-</h3>
+                        <p class="text-[10px] font-bold" style="color: var(--text-sub);">Pilih nominal dan masukkan akun</p>
+                    </div>
+                    <button onclick="backToTpGameList()" class="fy-btn px-3 py-1.5 text-xs font-black">← Ganti Game</button>
+                </div>
+
+                <div>
+                    <label class="block text-[10px] font-black uppercase mb-1" style="color: var(--text-sub);">Pilih Nominal Produk</label>
+                    <select id="tp-sel-product" onchange="onTpProductChange()" class="hidden"><option value="">Pilih Nominal</option></select>
+                    <button type="button" onclick="openCustomPicker('tp-sel-product', 'Pilih Nominal Produk', true)" id="trigger-tp-sel-product" class="fy-select-trigger w-full p-2.5 text-xs flex items-center justify-between gap-2 text-left">
+                        <span class="truncate">Pilih Nominal</span><span class="text-[10px] shrink-0">▼</span>
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2.5">
+                    <div>
+                        <label class="block text-[10px] font-black uppercase mb-1" style="color: var(--text-sub);">User ID / Target</label>
+                        <input type="text" id="tp-target" class="fy-input w-full p-3 text-xs" placeholder="Contoh: 12345678">
+                    </div>
+                    <div id="tp-zone-wrapper">
+                        <label class="block text-[10px] font-black uppercase mb-1" style="color: var(--text-sub);">Zone / Server ID</label>
+                        <input type="text" id="tp-zone" class="fy-input w-full p-3 text-xs" placeholder="Contoh: 1234">
+                    </div>
+                </div>
+
+                <div id="tp-check-result-box" class="hidden p-3 rounded-xl border-2 border-emerald-500 bg-emerald-500/10 text-xs font-black text-emerald-600 dark:text-emerald-400">
+                    Nama Akun: <span id="tp-checked-account-name">-</span>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2.5">
+                    <button onclick="checkGameAccountName()" class="fy-btn py-3 text-xs font-black uppercase">Cek Nama Akun</button>
+                    <button onclick="orderTopupGame()" class="fy-btn py-3 text-xs font-black uppercase text-white shadow-[3px_3px_0px_#000]" style="background-color: var(--accent);">Proses Topup</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 3: KELOLA PESANAN NOKOS -->
         <div id="tab-content-3" class="space-y-4 hidden anim-fade">
             <div class="fy-card p-4 space-y-3.5">
                 <h3 class="text-xs font-black uppercase tracking-wider border-b-2 border-zinc-200 dark:border-zinc-800 pb-2.5" style="color: var(--text-main);">Manajemen Pesanan & OTP</h3>
@@ -507,7 +574,9 @@
             <div class="fy-card p-4 space-y-3">
                 <h3 class="text-xs font-black uppercase tracking-wider border-b-2 border-zinc-200 dark:border-zinc-800 pb-2.5" style="color: var(--text-main);">Log Transaksi Pribadi</h3>
                 <div class="grid grid-cols-2 gap-2.5">
-                    <button onclick="fetchOrderHistory()" class="fy-btn py-3 text-xs font-black uppercase">Riwayat Order</button>
+                    <button onclick="fetchOrderHistory()" class="fy-btn py-3 text-xs font-black uppercase">Riwayat Nokos</button>
+                    <button onclick="fetchSmmHistory()" class="fy-btn py-3 text-xs font-black uppercase">Riwayat SMM</button>
+                    <button onclick="fetchTpHistory()" class="fy-btn py-3 text-xs font-black uppercase">Riwayat Topup</button>
                     <button onclick="fetchDepositHistory()" class="fy-btn py-3 text-xs font-black uppercase">Riwayat Saldo</button>
                 </div>
             </div>
@@ -520,18 +589,15 @@
                 <div class="border-b-2 border-zinc-200 dark:border-zinc-800 pb-3">
                     <h3 class="font-black text-sm uppercase tracking-wider" style="color: var(--text-main);">Deposit Saldo QRIS Otomatis</h3>
                 </div>
-
                 <div class="p-4 rounded-xl border-2 border-emerald-500 bg-emerald-500/10 space-y-1">
                     <div class="flex items-center gap-2 font-black text-emerald-600 text-xs">⚡ Sistem Deposit Otomatis</div>
                     <p class="text-[11px] font-semibold" style="color: var(--text-sub);">Scan QRIS dan saldo masuk otomatis setelah pembayaran terdeteksi!</p>
                 </div>
-
                 <div class="space-y-3.5 text-xs">
                     <div class="space-y-1.5">
                         <label class="block text-[10px] font-black uppercase" style="color: var(--text-main);">Nominal (Rp)</label>
                         <input type="number" id="dep-nominal" value="20000" class="fy-input w-full p-3.5 text-xs" placeholder="20000">
                     </div>
-
                     <div class="grid grid-cols-3 gap-2">
                         <button onclick="setNominal(10000)" class="fy-btn py-2.5 text-[11px] font-black">Rp 10.000</button>
                         <button onclick="setNominal(20000)" class="fy-btn py-2.5 text-[11px] font-black">Rp 20.000</button>
@@ -540,20 +606,14 @@
                         <button onclick="setNominal(200000)" class="fy-btn py-2.5 text-[11px] font-black">Rp 200.000</button>
                         <button onclick="setNominal(500000)" class="fy-btn py-2.5 text-[11px] font-black">Rp 500.000</button>
                     </div>
-
-                    <button id="btn-gen-qris" onclick="createDepositQr()" class="fy-btn text-white font-black w-full py-3.5 text-xs uppercase shadow-[3px_3px_0px_#000]" style="background-color: var(--accent); border-color: var(--border-col);">
-                        Generate QRIS Otomatis
-                    </button>
-
+                    <button id="btn-gen-qris" onclick="createDepositQr()" class="fy-btn text-white font-black w-full py-3.5 text-xs uppercase shadow-[3px_3px_0px_#000]" style="background-color: var(--accent); border-color: var(--border-col);">Generate QRIS Otomatis</button>
                     <div id="modal-qris-box" class="hidden p-5 rounded-2xl border-2 border-black bg-zinc-950 text-center space-y-4 anim-fade shadow-[4px_4px_0px_#000]">
                         <div class="space-y-1">
                             <p class="font-black text-emerald-400 text-xs uppercase tracking-wider">QRIS Pembayaran Dibuat</p>
                             <p id="qris-total" class="font-black text-lg text-white">Rp 0</p>
                             <p class="text-[10px] text-zinc-400 font-mono" id="qris-dep-id">ID: -</p>
                         </div>
-                        
                         <div id="qrcode-container" class="p-3 bg-white border-2 border-black inline-block rounded-xl shadow-[3px_3px_0px_#000] mx-auto"></div>
-
                         <div class="space-y-2">
                             <button onclick="checkDepositStatus()" class="fy-btn w-full py-3 text-xs font-black bg-emerald-400 text-black border-black uppercase">🔄 Cek Status Pembayaran</button>
                             <button onclick="cancelActiveDeposit()" class="fy-btn w-full py-2.5 text-[10px] font-bold bg-red-600 text-white border-black">Batalkan Deposit</button>
@@ -575,28 +635,28 @@
 
         let currentUser = null;
         let globalServicesCache = [];
+        let globalSmmPlatformsCache = [];
+        let globalSmmServicesCache = [];
+        let globalTpGamesCache = [];
+        let globalTpProductsCache = [];
+        let activeSelectedSmmService = null;
+        let activeSelectedTpProduct = null;
         let pollingTimer = null;
         let activeDepositId = null;
         let activeDepositNominal = 0;
         let adminBypassActive = false;
         let lastKnownOtp = "Waiting";
 
-        // ============================================================
-        // 1. CUSTOM DIALOG ENGINE (GANTI TOTAL ALERT / CONFIRM / PROMPT CHROME)
-        // ============================================================
+        // CUSTOM DIALOG
         function openCustomDialog({ title = "Pemberitahuan", message = "", type = "alert", defaultValue = "", icon = "⚡" }) {
             return new Promise((resolve) => {
                 const modal = document.getElementById('custom-dialog-modal');
-                const titleEl = document.getElementById('dialog-title');
-                const msgEl = document.getElementById('dialog-message');
-                const iconBox = document.getElementById('dialog-icon-box');
+                document.getElementById('dialog-title').innerText = title;
+                document.getElementById('dialog-message').innerText = message;
+                document.getElementById('dialog-icon-box').innerText = icon;
                 const promptWrap = document.getElementById('dialog-prompt-wrap');
                 const promptInput = document.getElementById('dialog-prompt-input');
                 const btnWrap = document.getElementById('dialog-buttons-wrap');
-
-                titleEl.innerText = title;
-                msgEl.innerText = message;
-                iconBox.innerText = icon;
 
                 if (type === 'prompt') {
                     promptWrap.classList.remove('hidden');
@@ -606,15 +666,10 @@
                 }
 
                 btnWrap.innerHTML = '';
-
-                const closeWith = (val) => {
-                    modal.classList.add('hidden');
-                    resolve(val);
-                };
+                const closeWith = (val) => { modal.classList.add('hidden'); resolve(val); };
 
                 if (type === 'confirm' || type === 'prompt') {
                     btnWrap.className = "grid grid-cols-2 gap-2.5 pt-1";
-                    
                     const btnCancel = document.createElement('button');
                     btnCancel.className = "fy-btn py-3 text-xs uppercase font-black bg-zinc-200 dark:bg-zinc-800";
                     btnCancel.innerText = "Batal";
@@ -626,8 +681,7 @@
                     btnOk.innerText = type === 'confirm' ? "Ya, Lanjut" : "Kirim";
                     btnOk.onclick = () => closeWith(type === 'confirm' ? true : promptInput.value);
 
-                    btnWrap.appendChild(btnCancel);
-                    btnWrap.appendChild(btnOk);
+                    btnWrap.appendChild(btnCancel); btnWrap.appendChild(btnOk);
                 } else {
                     btnWrap.className = "grid grid-cols-1 gap-2.5 pt-1";
                     const btnOk = document.createElement('button');
@@ -637,26 +691,16 @@
                     btnOk.onclick = () => closeWith(true);
                     btnWrap.appendChild(btnOk);
                 }
-
                 modal.classList.remove('hidden');
                 if (type === 'prompt') setTimeout(() => promptInput.focus(), 50);
             });
         }
 
-        // Override fungsi bawaan browser agar tidak pernah muncul popup "Halaman ini menyatakan"
-        window.alert = function(msg) {
-            return openCustomDialog({ title: "Informasi FydzOTP", message: String(msg), type: "alert", icon: "📢" });
-        };
-        window.confirm = function(msg) {
-            return openCustomDialog({ title: "Konfirmasi Tindakan", message: String(msg), type: "confirm", icon: "⚠️" });
-        };
-        window.prompt = function(msg, def = "") {
-            return openCustomDialog({ title: "Masukkan Data", message: String(msg), type: "prompt", defaultValue: def, icon: "✏️" });
-        };
+        window.alert = function(msg) { return openCustomDialog({ title: "Informasi", message: String(msg), type: "alert", icon: "📢" }); };
+        window.confirm = function(msg) { return openCustomDialog({ title: "Konfirmasi", message: String(msg), type: "confirm", icon: "⚠️" }); };
+        window.prompt = function(msg, def = "") { return openCustomDialog({ title: "Input Data", message: String(msg), type: "prompt", defaultValue: def, icon: "✏️" }); };
 
-        // ============================================================
-        // 2. CUSTOM PICKER ENGINE (GANTI TOTAL DROPDOWN RADIO CHROME)
-        // ============================================================
+        // CUSTOM PICKER
         let currentPickerSelectId = null;
         let currentPickerItems = [];
 
@@ -665,257 +709,133 @@
             const trig = document.getElementById(`trigger-${selectId}`);
             if (!sel || !trig) return;
             const selectedOpt = sel.options[sel.selectedIndex];
-            const labelText = selectedOpt ? selectedOpt.text : "Pilih...";
-            trig.querySelector('span').innerText = labelText;
+            trig.querySelector('span').innerText = selectedOpt ? selectedOpt.text : "Pilih...";
         }
 
         function openCustomPicker(selectId, title, enableSearch = false) {
             const sel = document.getElementById(selectId);
             if (!sel) return;
-
             currentPickerSelectId = selectId;
             document.getElementById('picker-modal-title').innerText = title;
-
             const searchWrap = document.getElementById('picker-search-wrap');
             const searchInput = document.getElementById('picker-search-input');
-            if (enableSearch) {
-                searchWrap.classList.remove('hidden');
-                searchInput.value = '';
-            } else {
-                searchWrap.classList.add('hidden');
-            }
+            if (enableSearch) { searchWrap.classList.remove('hidden'); searchInput.value = ''; }
+            else { searchWrap.classList.add('hidden'); }
 
-            currentPickerItems = Array.from(sel.options).map(opt => ({
-                value: opt.value,
-                text: opt.text,
-                selected: opt.selected
-            }));
-
+            currentPickerItems = Array.from(sel.options).map(opt => ({ value: opt.value, text: opt.text, selected: opt.selected }));
             renderCustomPickerOptions(currentPickerItems);
             document.getElementById('custom-picker-modal').classList.remove('hidden');
             if (enableSearch) setTimeout(() => searchInput.focus(), 80);
         }
 
-        function closeCustomPicker() {
-            document.getElementById('custom-picker-modal').classList.add('hidden');
-            currentPickerSelectId = null;
-        }
-
+        function closeCustomPicker() { document.getElementById('custom-picker-modal').classList.add('hidden'); currentPickerSelectId = null; }
         function filterCustomPickerOptions() {
             const q = document.getElementById('picker-search-input').value.toLowerCase().trim();
-            const filtered = currentPickerItems.filter(item => item.text.toLowerCase().includes(q));
-            renderCustomPickerOptions(filtered);
+            renderCustomPickerOptions(currentPickerItems.filter(item => item.text.toLowerCase().includes(q)));
         }
 
         function renderCustomPickerOptions(items) {
             const listEl = document.getElementById('picker-options-list');
-            if (items.length === 0) {
-                listEl.innerHTML = `<div class="p-6 text-center text-xs font-bold" style="color: var(--text-sub);">Pilihan tidak ditemukan.</div>`;
-                return;
-            }
-
+            if (items.length === 0) { listEl.innerHTML = `<div class="p-6 text-center text-xs font-bold" style="color: var(--text-sub);">Tidak ditemukan.</div>`; return; }
             listEl.innerHTML = items.map(item => {
                 const isSel = item.selected;
-                const activeStyle = isSel
-                    ? `background-color: var(--accent); color: #ffffff; border-color: var(--border-col);`
-                    : `background-color: var(--bg-main); color: var(--text-main); border-color: var(--border-col);`;
-
-                const radioDot = isSel
-                    ? `<span class="w-5 h-5 rounded-full border-2 border-black bg-white flex items-center justify-center shrink-0"><span class="w-2.5 h-2.5 rounded-full bg-black"></span></span>`
-                    : `<span class="w-5 h-5 rounded-full border-2 border-current opacity-50 shrink-0"></span>`;
-
-                const safeVal = item.value.replace(/'/g, "\\'");
-                return `
-                    <button type="button" onclick="selectCustomPickerValue('${safeVal}')" class="w-full p-3.5 rounded-2xl border-2 text-xs font-extrabold flex items-center justify-between gap-3 text-left transition active:scale-[0.99]" style="${activeStyle}">
-                        <span class="truncate">${item.text}</span>
-                        ${radioDot}
-                    </button>
-                `;
+                const activeStyle = isSel ? `background-color: var(--accent); color: #fff; border-color: var(--border-col);` : `background-color: var(--bg-main); color: var(--text-main); border-color: var(--border-col);`;
+                const radioDot = isSel ? `<span class="w-5 h-5 rounded-full border-2 border-black bg-white flex items-center justify-center shrink-0"><span class="w-2.5 h-2.5 rounded-full bg-black"></span></span>` : `<span class="w-5 h-5 rounded-full border-2 border-current opacity-50 shrink-0"></span>`;
+                return `<button type="button" onclick="selectCustomPickerValue('${item.value.replace(/'/g, "\\'")}')" class="w-full p-3.5 rounded-2xl border-2 text-xs font-extrabold flex items-center justify-between gap-3 text-left transition active:scale-[0.99]" style="${activeStyle}"><span class="truncate">${item.text}</span>${radioDot}</button>`;
             }).join('');
         }
 
         function selectCustomPickerValue(val) {
             if (!currentPickerSelectId) return;
             const sel = document.getElementById(currentPickerSelectId);
-            if (sel) {
-                sel.value = val;
-                syncCustomTriggerLabel(currentPickerSelectId);
-                sel.dispatchEvent(new Event('change'));
-            }
+            if (sel) { sel.value = val; syncCustomTriggerLabel(currentPickerSelectId); sel.dispatchEvent(new Event('change')); }
             closeCustomPicker();
         }
 
-        // ============================================================
-        // 3. WEB AUDIO API UNTUK BUNYI NOTIFIKASI "TING!"
-        // ============================================================
         function playNotificationSound() {
             try {
                 const AudioContext = window.AudioContext || window.webkitAudioContext;
                 if(!AudioContext) return;
                 const ctx = new AudioContext();
-                
                 const osc = ctx.createOscillator();
                 const gain = ctx.createGain();
-                
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(800, ctx.currentTime);
+                osc.type = 'sine'; osc.frequency.setValueAtTime(800, ctx.currentTime);
                 osc.frequency.exponentialRampToValueAtTime(400, ctx.currentTime + 0.15);
-                
                 gain.gain.setValueAtTime(0.3, ctx.currentTime);
                 gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.15);
-                
-                osc.connect(gain);
-                gain.connect(ctx.destination);
-                
-                osc.start();
-                osc.stop(ctx.currentTime + 0.15);
+                osc.connect(gain); gain.connect(ctx.destination);
+                osc.start(); osc.stop(ctx.currentTime + 0.15);
             } catch(e) {}
         }
 
-        // TOGGLE MENU BANTUAN & PANDUAN
-        function toggleHelpMenu() {
-            document.getElementById('help-popup-menu').classList.toggle('hidden');
-        }
+        function toggleHelpMenu() { document.getElementById('help-popup-menu').classList.toggle('hidden'); }
+        function openGuideModal() { document.getElementById('help-popup-menu').classList.add('hidden'); document.getElementById('guide-modal').classList.remove('hidden'); }
+        function closeGuideModal() { document.getElementById('guide-modal').classList.add('hidden'); }
 
-        function openGuideModal() {
-            document.getElementById('help-popup-menu').classList.add('hidden');
-            document.getElementById('guide-modal').classList.remove('hidden');
-        }
-
-        function closeGuideModal() {
-            document.getElementById('guide-modal').classList.add('hidden');
-        }
-
-        // CEK STATUS MAINTENANCE SAAT HALAMAN DIMUAT
         (function checkGlobalSystemStatus() {
             const maintStatus = localStorage.getItem('fydz_maint_status') === 'true';
             const broadcastMsg = localStorage.getItem('fydz_broadcast_msg') || '';
             const activeUser = localStorage.getItem('fydz_active_user');
-
             if (broadcastMsg.trim() !== "") {
                 document.getElementById('broadcast-text-content').innerText = broadcastMsg;
                 document.getElementById('broadcast-banner').classList.remove('hidden');
             }
-
             if (maintStatus && activeUser !== ADMIN_USER && !adminBypassActive) {
                 document.getElementById('maintenance-screen').classList.remove('hidden');
-                if (activeUser) {
-                    document.getElementById('maintenance-msg-text').innerText = `Halo @${activeUser}, website sedang dalam pemeliharaan sistem.`;
-                }
             } else if (maintStatus && activeUser === ADMIN_USER) {
                 document.getElementById('maintenance-screen').classList.remove('hidden');
                 document.getElementById('admin-bypass-box').classList.remove('hidden');
             }
         })();
 
-        function bypassMaintenance() {
-            adminBypassActive = true;
-            document.getElementById('maintenance-screen').classList.add('hidden');
-            showNotif("Bypass Admin Aktif", "success");
-        }
-
-        function dismissBroadcast() {
-            document.getElementById('broadcast-banner').classList.add('hidden');
-        }
+        function bypassMaintenance() { adminBypassActive = true; document.getElementById('maintenance-screen').classList.add('hidden'); showNotif("Bypass Admin Aktif", "success"); }
+        function dismissBroadcast() { document.getElementById('broadcast-banner').classList.add('hidden'); }
 
         function handleUserLogin() {
             const username = document.getElementById('auth-username').value.trim().toUpperCase();
             const pin = document.getElementById('auth-pin').value.trim();
-
-            if(!username || !pin) return showNotif("Masukkan username dan PIN terlebih dahulu!", "error");
-
-            if(username === ADMIN_USER && pin !== ADMIN_PIN) {
-                return showNotif("PIN Admin salah!", "error");
-            }
+            if(!username || !pin) return showNotif("Masukkan username dan PIN!", "error");
+            if(username === ADMIN_USER && pin !== ADMIN_PIN) return showNotif("PIN Admin salah!", "error");
 
             let usersDB = JSON.parse(localStorage.getItem('fydz_user_db') || '{}');
             if(!usersDB[username]) {
-                usersDB[username] = { pin: pin, balance: 0, totalOrder: 0, totalDeposit: 0, orders: [], deposits: [] };
-            } else if(usersDB[username].pin !== pin) {
-                return showNotif("PIN salah untuk username tersebut!", "error");
-            }
+                usersDB[username] = { pin: pin, balance: 0, totalOrder: 0, totalDeposit: 0, orders: [], smmOrders: [], tpOrders: [], deposits: [] };
+            } else if(usersDB[username].pin !== pin) { return showNotif("PIN salah!", "error"); }
 
             localStorage.setItem('fydz_user_db', JSON.stringify(usersDB));
             localStorage.setItem('fydz_active_user', username);
             currentUser = username;
-
             document.getElementById('auth-modal').classList.add('hidden');
-            
-            const maintStatus = localStorage.getItem('fydz_maint_status') === 'true';
-            if (maintStatus && username !== ADMIN_USER) {
-                document.getElementById('maintenance-screen').classList.remove('hidden');
-                document.getElementById('maintenance-msg-text').innerText = `Halo @${username}, website sedang dalam pemeliharaan sistem.`;
-                return;
-            }
-
-            applyUserRoleUI(username);
-            syncUserDataUI();
+            applyUserRoleUI(username); syncUserDataUI();
             showNotif(`Selamat datang, ${username}!`, "success");
-            loadCatalogData();
+            loadCatalogData(); loadSmmPlatforms(); loadTpGames();
         }
 
-        function logoutUser() {
-            localStorage.removeItem('fydz_active_user');
-            location.reload();
-        }
-
+        function logoutUser() { localStorage.removeItem('fydz_active_user'); location.reload(); }
         async function resetLocalDataAccount() {
             if(currentUser !== ADMIN_USER) return showNotif("Akses ditolak!", "error");
-            const ok = await confirm("PERINGATAN ADMIN: Reset seluruh database sistem? Semua data user dan saldo lokal akan dihapus.");
-            if(ok) {
-                localStorage.removeItem('fydz_user_db');
-                localStorage.removeItem('fydz_active_user');
-                location.reload();
-            }
+            if(await confirm("Reset seluruh database sistem?")) { localStorage.removeItem('fydz_user_db'); location.reload(); }
         }
 
         function openAdminControlModal() {
             if(currentUser !== ADMIN_USER) return showNotif("Akses ditolak!", "error");
-            const maintStatus = localStorage.getItem('fydz_maint_status') === 'true';
             document.getElementById('input-broadcast-msg').value = localStorage.getItem('fydz_broadcast_msg') || '';
-            if(maintStatus) {
-                document.getElementById('btn-maint-on').className = "fy-btn flex-1 py-2 font-black bg-amber-500 text-black border-black";
-                document.getElementById('btn-maint-off').className = "fy-btn flex-1 py-2 font-black bg-white text-zinc-900 border-black";
-            } else {
-                document.getElementById('btn-maint-on').className = "fy-btn flex-1 py-2 font-black bg-white text-zinc-900 border-black";
-                document.getElementById('btn-maint-off').className = "fy-btn flex-1 py-2 font-black bg-emerald-400 text-black border-black";
-            }
             document.getElementById('admin-control-modal').classList.remove('hidden');
         }
-
-        function closeAdminControlModal() {
-            document.getElementById('admin-control-modal').classList.add('hidden');
-        }
-
-        function setMaintenanceStatus(status) {
-            localStorage.setItem('fydz_maint_status', status);
-            if(status) {
-                document.getElementById('btn-maint-on').className = "fy-btn flex-1 py-2 font-black bg-amber-500 text-black border-black";
-                document.getElementById('btn-maint-off').className = "fy-btn flex-1 py-2 font-black bg-white text-zinc-900 border-black";
-                showNotif("Maintenance diaktifkan!", "success");
-            } else {
-                document.getElementById('btn-maint-on').className = "fy-btn flex-1 py-2 font-black bg-white text-zinc-900 border-black";
-                document.getElementById('btn-maint-off').className = "fy-btn flex-1 py-2 font-black bg-emerald-400 text-black border-black";
-                showNotif("Maintenance dimatikan!", "success");
-            }
-        }
-
+        function closeAdminControlModal() { document.getElementById('admin-control-modal').classList.add('hidden'); }
+        function setMaintenanceStatus(status) { localStorage.setItem('fydz_maint_status', status); showNotif("Maintenance diperbarui", "success"); }
         function saveAdminSettings() {
             localStorage.setItem('fydz_broadcast_msg', document.getElementById('input-broadcast-msg').value.trim());
-            showNotif("Pengaturan disimpan!", "success");
-            closeAdminControlModal();
-            setTimeout(() => location.reload(), 1000);
+            showNotif("Disimpan!", "success"); closeAdminControlModal(); setTimeout(() => location.reload(), 1000);
         }
 
         (function() {
             const active = localStorage.getItem('fydz_active_user');
             if(active) {
                 currentUser = active;
-                const maintStatus = localStorage.getItem('fydz_maint_status') === 'true';
-                if (maintStatus && active !== ADMIN_USER && !adminBypassActive) return;
                 document.getElementById('auth-modal').classList.add('hidden');
-                applyUserRoleUI(active);
-                syncUserDataUI();
+                applyUserRoleUI(active); syncUserDataUI();
+                loadSmmPlatforms(); loadTpGames();
             }
         })();
 
@@ -928,23 +848,10 @@
         function applyUserRoleUI(username) {
             document.getElementById('sidebar-username').innerText = username;
             document.getElementById('header-user-tag').innerText = `User: ${username}`;
-            document.getElementById('banner-welcome-text').innerText = `Halo @${username} Selamat datang di FydzOTP`;
-
+            document.getElementById('banner-welcome-text').innerText = `Halo @${username}`;
             const adminMenu = document.getElementById('admin-only-menu');
-            const roleText = document.getElementById('sidebar-role-text');
-            const badgeIcon = document.getElementById('sidebar-badge-icon');
-
-            if(username === ADMIN_USER) {
-                adminMenu.classList.remove('hidden');
-                roleText.innerText = "👑 Administrator Utama";
-                roleText.className = "text-[9px] font-bold text-amber-400";
-                badgeIcon.style.backgroundColor = "#ff5722";
-            } else {
-                adminMenu.classList.add('hidden');
-                roleText.innerText = "Member Aktif";
-                roleText.className = "text-[9px] font-bold text-emerald-500";
-                badgeIcon.style.backgroundColor = "var(--accent)";
-            }
+            if(username === ADMIN_USER) adminMenu.classList.remove('hidden');
+            else adminMenu.classList.add('hidden');
         }
 
         function syncUserDataUI() {
@@ -953,30 +860,20 @@
             const bal = (user.balance || 0).toLocaleString('id-ID');
             document.getElementById('header-balance').innerText = `Rp ${bal}`;
             document.getElementById('dash-balance').innerText = `Rp ${bal}`;
-            document.getElementById('stat-total-order').innerText = user.totalOrder || 0;
+            document.getElementById('stat-total-order').innerText = (user.totalOrder || 0) + (user.smmOrders?.length || 0) + (user.tpOrders?.length || 0);
             renderLeaderboard();
         }
 
         function renderLeaderboard() {
             let usersDB = JSON.parse(localStorage.getItem('fydz_user_db') || '{}');
             let list = Object.keys(usersDB).map(name => ({
-                name: name,
-                orders: usersDB[name].totalOrder || 0,
-                deposit: usersDB[name].totalDeposit || 0
-            })).sort((a, b) => b.orders - a.orders || b.deposit - a.deposit);
-
+                name: name, orders: (usersDB[name].totalOrder || 0) + (usersDB[name].smmOrders?.length || 0) + (usersDB[name].tpOrders?.length || 0), deposit: usersDB[name].totalDeposit || 0
+            })).sort((a, b) => b.orders - a.orders);
             const container = document.getElementById('top-user-list');
-            if(list.length === 0) {
-                container.innerHTML = `<p class="text-xs font-bold text-center p-2" style="color: var(--text-sub);">Belum ada data user.</p>`;
-                return;
-            }
-
+            if(list.length === 0) { container.innerHTML = `<p class="text-xs font-bold text-center" style="color: var(--text-sub);">Belum ada user.</p>`; return; }
             container.innerHTML = list.slice(0, 5).map((u, idx) => `
                 <div class="p-3 rounded-xl border-2 border-amber-400 bg-amber-500/10 flex items-center justify-between text-xs">
-                    <div>
-                        <span class="font-black">#${idx + 1} ${u.name}</span>
-                        <p class="text-[10px] text-zinc-500 font-bold">Total Deposit: Rp ${u.deposit.toLocaleString('id-ID')}</p>
-                    </div>
+                    <div><span class="font-black">#${idx + 1} ${u.name}</span><p class="text-[10px] text-zinc-500 font-bold">Deposit: Rp ${u.deposit.toLocaleString('id-ID')}</p></div>
                     <span class="font-extrabold text-amber-600 bg-amber-400/20 px-2 py-1 rounded-lg border border-amber-400">${u.orders} order</span>
                 </div>
             `).join('');
@@ -999,17 +896,13 @@
             setTimeout(() => toast.remove(), 3000);
         }
 
-        function copyToClipboard(text) {
-            navigator.clipboard.writeText(text).then(() => showNotif("Berhasil disalin", "success"));
-        }
+        function copyToClipboard(text) { navigator.clipboard.writeText(text).then(() => showNotif("Berhasil disalin", "success")); }
 
         async function requestFydz(endpoint, params = {}, silent = false) {
             const cleanEndpoint = endpoint.startsWith('/') ? endpoint.slice(1) : endpoint;
             const url = new URL(`${window.location.origin}${_PROXY_URL}/${cleanEndpoint}`);
             url.searchParams.append('apikey', _SECRET_KEY);
-            for (const [k, v] of Object.entries(params)) {
-                if (v !== undefined && v !== "") url.searchParams.append(k, v);
-            }
+            for (const [k, v] of Object.entries(params)) { if (v !== undefined && v !== "") url.searchParams.append(k, v); }
             try {
                 const res = await fetch(url.toString());
                 const data = await res.json();
@@ -1022,20 +915,281 @@
         }
 
         function switchMainTab(tabId) {
-            for(let i=1; i<=5; i++) document.getElementById(`tab-content-${i}`).classList.add('hidden');
+            for(let i=1; i<=7; i++) {
+                const el = document.getElementById(`tab-content-${i}`);
+                if(el) el.classList.add('hidden');
+            }
             document.getElementById(`tab-content-${tabId}`).classList.remove('hidden');
-            const titles = { 1: "Dashboard", 2: "Katalog Nokos", 3: "Kelola Pesanan", 4: "Riwayat", 5: "Deposit Otomatis" };
+            const titles = { 1: "Dashboard", 2: "Katalog Nokos", 3: "Kelola Pesanan", 4: "Riwayat", 5: "Deposit Otomatis", 6: "SMM Panel", 7: "Topup Game" };
             document.getElementById('header-title').innerText = titles[tabId] || "Dashboard";
+            
             if(tabId === 2 && globalServicesCache.length === 0) loadCatalogData();
+            if(tabId === 6 && globalSmmPlatformsCache.length === 0) loadSmmPlatforms();
+            if(tabId === 7 && globalTpGamesCache.length === 0) loadTpGames();
         }
 
+        // ============================================================
+        // SMM PANEL GRID INTERAKTIF ALA DITZNESIA
+        // ============================================================
+        async function loadSmmPlatforms() {
+            const grid = document.getElementById('smm-platform-grid');
+            grid.innerHTML = `<div class="col-span-2 fy-card p-4 text-center text-xs font-bold" style="color: var(--text-sub);">Memuat platform...</div>`;
+            try {
+                const data = await requestFydz('smm-platforms', {}, true);
+                globalSmmPlatformsCache = data.platforms || [];
+                renderSmmPlatformGrid();
+            } catch(e) {
+                grid.innerHTML = `<div class="col-span-2 fy-card p-4 text-center text-xs text-red-500 font-bold">Gagal memuat platform SMM.</div>`;
+            }
+        }
+
+        function renderSmmPlatformGrid() {
+            const grid = document.getElementById('smm-platform-grid');
+            if(globalSmmPlatformsCache.length === 0) {
+                grid.innerHTML = `<div class="col-span-2 fy-card p-4 text-center text-xs font-bold">Tidak ada platform.</div>`;
+                return;
+            }
+            grid.innerHTML = globalSmmPlatformsCache.map(p => `
+                <div onclick="selectSmmPlatform('${p.key}')" class="fy-card p-4 text-center space-y-2 cursor-pointer hover:border-purple-500 transition">
+                    <div class="w-12 h-12 mx-auto rounded-2xl bg-purple-500/10 border-2 border-purple-500 text-purple-600 flex items-center justify-center font-black text-lg">📢</div>
+                    <div>
+                        <h4 class="text-xs font-black uppercase truncate" style="color: var(--text-main);">${p.label}</h4>
+                        <p class="text-[10px] font-bold text-purple-500 mt-0.5">${p.total} layanan</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        async function selectSmmPlatform(platformKey) {
+            const plat = globalSmmPlatformsCache.find(p => p.key === platformKey);
+            if(!plat) return;
+
+            document.getElementById('smm-selected-platform-title').innerText = plat.label;
+            document.getElementById('smm-platform-container').classList.add('hidden');
+            document.getElementById('smm-detail-section').classList.remove('hidden');
+
+            const typeSel = document.getElementById('smm-sel-type');
+            typeSel.innerHTML = `<option value="">Pilih Jenis</option>` + plat.types.map(t => `<option value="${t}">${t}</option>`).join('');
+            syncCustomTriggerLabel('smm-sel-type');
+
+            // Reset service
+            document.getElementById('smm-sel-service').innerHTML = `<option value="">Pilih Paket</option>`;
+            syncCustomTriggerLabel('smm-sel-service');
+            document.getElementById('smm-service-desc-box').classList.add('hidden');
+        }
+
+        function backToSmmPlatformList() {
+            document.getElementById('smm-detail-section').classList.add('hidden');
+            document.getElementById('smm-platform-container').classList.remove('hidden');
+        }
+
+        async function loadSmmServicesByPlatform() {
+            const platformEl = globalSmmPlatformsCache.find(p => p.label === document.getElementById('smm-selected-platform-title').innerText || p.key);
+            const platform = platformEl ? platformEl.key : 'instagram';
+            const type = document.getElementById('smm-sel-type').value;
+            syncCustomTriggerLabel('smm-sel-type');
+
+            const servSel = document.getElementById('smm-sel-service');
+            if(!type) { servSel.innerHTML = `<option value="">Pilih Paket</option>`; syncCustomTriggerLabel('smm-sel-service'); return; }
+
+            try {
+                const list = await requestFydz('smm-services', { platform, type }, true);
+                globalSmmServicesCache = Array.isArray(list) ? list : [];
+                servSel.innerHTML = `<option value="">Pilih Paket Layanan</option>` + globalSmmServicesCache.map(s => `<option value="${s.id}">${s.name} (Rp ${s.per_1000.toLocaleString('id-ID')}/k)</option>`).join('');
+                syncCustomTriggerLabel('smm-sel-service');
+            } catch(e) {
+                servSel.innerHTML = `<option value="">Gagal memuat layanan</option>`;
+                syncCustomTriggerLabel('smm-sel-service');
+            }
+        }
+
+        function onSmmServiceSelected() {
+            const servId = document.getElementById('smm-sel-service').value;
+            syncCustomTriggerLabel('smm-sel-service');
+            const found = globalSmmServicesCache.find(s => String(s.id) === String(servId));
+            activeSelectedSmmService = found || null;
+            const descBox = document.getElementById('smm-service-desc-box');
+            if(!found) { descBox.classList.add('hidden'); return; }
+
+            descBox.classList.remove('hidden');
+            document.getElementById('smm-target-label-text').innerText = `Target: ${found.target_label || 'Link / Username'}`;
+            document.getElementById('smm-target-hint-text').innerText = found.target_hint || '';
+            document.getElementById('smm-price-per-1000').innerText = `Harga per 1.000: Rp ${Number(found.per_1000).toLocaleString('id-ID')} (Min: ${found.min}, Max: ${found.max})`;
+            document.getElementById('smm-input-target-label').innerText = found.target_label || 'Target';
+
+            if(found.is_custom) {
+                document.getElementById('smm-quantity-wrapper').classList.add('hidden');
+                document.getElementById('smm-comments-wrapper').classList.remove('hidden');
+            } else {
+                document.getElementById('smm-quantity-wrapper').classList.remove('hidden');
+                document.getElementById('smm-comments-wrapper').classList.add('hidden');
+            }
+            calculateSmmPrice();
+        }
+
+        function calculateSmmPrice() {
+            if(!activeSelectedSmmService) return;
+            const qty = Number(document.getElementById('smm-quantity').value) || 0;
+            const total = Math.ceil((qty / 1000) * Number(activeSelectedSmmService.per_1000));
+            document.getElementById('smm-calc-total').innerText = `Total Estimasi: Rp ${total.toLocaleString('id-ID')}`;
+        }
+
+        async function orderSmmService() {
+            if(!activeSelectedSmmService) return showNotif("Pilih layanan SMM dulu", "error");
+            const target = document.getElementById('smm-target').value.trim();
+            if(!target) return showNotif("Masukkan target", "error");
+
+            let quantity = 1, comments = "";
+            if(activeSelectedSmmService.is_custom) {
+                comments = document.getElementById('smm-comments').value.trim();
+                if(!comments) return showNotif("Masukkan komentar", "error");
+                quantity = comments.split('\n').filter(Boolean).length;
+            } else {
+                quantity = Number(document.getElementById('smm-quantity').value) || 0;
+                if(quantity < activeSelectedSmmService.min || quantity > activeSelectedSmmService.max) return showNotif(`Jumlah harus antara ${activeSelectedSmmService.min} - ${activeSelectedSmmService.max}`, "error");
+            }
+
+            const estPrice = Math.ceil((quantity / 1000) * Number(activeSelectedSmmService.per_1000));
+            let usersDB = JSON.parse(localStorage.getItem('fydz_user_db') || '{}');
+            let userData = usersDB[currentUser];
+            if(!userData || (userData.balance || 0) < estPrice) return showNotif(`Saldo tidak cukup! Rp ${estPrice.toLocaleString('id-ID')}`, "error");
+
+            try {
+                showNotif("Memproses order SMM...", "info");
+                const params = { service_id: activeSelectedSmmService.id, target: target, quantity: quantity };
+                if(activeSelectedSmmService.is_custom) params.comments = comments;
+                const res = await requestFydz('smm-order', params);
+                
+                userData.balance -= estPrice;
+                if(!userData.smmOrders) userData.smmOrders = [];
+                userData.smmOrders.unshift({ id: res.id || '-', service: activeSelectedSmmService.name, target: target, quantity: quantity, price: estPrice, status: res.status || 'pending', created_at: new Date().toLocaleTimeString() });
+                usersDB[currentUser] = userData;
+                localStorage.setItem('fydz_user_db', JSON.stringify(usersDB));
+                syncUserDataUI(); playNotificationSound();
+                showNotif("Order SMM berhasil!", "success");
+            } catch(e) { showNotif("Gagal order SMM: " + e.message, "error"); }
+        }
+
+        // ============================================================
+        // TOPUP GAME GRID INTERAKTIF ALA DITZNESIA
+        // ============================================================
+        async function loadTpGames() {
+            const grid = document.getElementById('tp-game-grid');
+            grid.innerHTML = `<div class="col-span-3 fy-card p-5 text-center text-xs font-bold" style="color: var(--text-sub);">Memuat game...</div>`;
+            try {
+                const list = await requestFydz('tp-games', {}, true);
+                globalTpGamesCache = Array.isArray(list) ? list : [];
+                renderTpGameGrid();
+            } catch(e) {
+                grid.innerHTML = `<div class="col-span-3 fy-card p-5 text-center text-xs text-red-500 font-bold">Gagal memuat game.</div>`;
+            }
+        }
+
+        function renderTpGameGrid() {
+            const grid = document.getElementById('tp-game-grid');
+            if(globalTpGamesCache.length === 0) { grid.innerHTML = `<div class="col-span-3 fy-card p-5 text-center text-xs font-bold">Tidak ada game.</div>`; return; }
+            grid.innerHTML = globalTpGamesCache.map(g => `
+                <div onclick="selectTpGame('${g.game.replace(/'/g, "\\'")}')" class="fy-card p-3 text-center space-y-2 cursor-pointer hover:border-sky-500 transition">
+                    <div class="w-12 h-12 mx-auto rounded-2xl bg-sky-500/10 border-2 border-sky-500 text-sky-600 flex items-center justify-center font-black text-lg">🎮</div>
+                    <div>
+                        <h4 class="text-[11px] font-black uppercase truncate" style="color: var(--text-main);">${g.game}</h4>
+                        <p class="text-[9px] font-bold text-sky-500 mt-0.5">${g.products} nominal</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        async function selectTpGame(gameName) {
+            const gameObj = globalTpGamesCache.find(g => g.game === gameName);
+            if(!gameObj) return;
+
+            document.getElementById('tp-selected-game-title').innerText = gameObj.game;
+            document.getElementById('tp-game-container').classList.add('hidden');
+            document.getElementById('tp-detail-section').classList.remove('hidden');
+
+            const zoneWrap = document.getElementById('tp-zone-wrapper');
+            if(gameObj.need_zone) zoneWrap.classList.remove('hidden');
+            else zoneWrap.classList.add('hidden');
+
+            try {
+                const list = await requestFydz('tp-products', { game: gameName }, true);
+                globalTpProductsCache = Array.isArray(list) ? list : [];
+                const prodSel = document.getElementById('tp-sel-product');
+                prodSel.innerHTML = `<option value="">Pilih Nominal Produk</option>` + globalTpProductsCache.map(p => `<option value="${p.code}">${p.name} - Rp ${p.price.toLocaleString('id-ID')}</option>`).join('');
+                syncCustomTriggerLabel('tp-sel-product');
+            } catch(e) {}
+        }
+
+        function backToTpGameList() {
+            document.getElementById('tp-detail-section').classList.add('hidden');
+            document.getElementById('tp-game-container').classList.remove('hidden');
+        }
+
+        function onTpProductChange() {
+            const code = document.getElementById('tp-sel-product').value;
+            syncCustomTriggerLabel('tp-sel-product');
+            activeSelectedTpProduct = globalTpProductsCache.find(p => p.code === code) || null;
+            document.getElementById('tp-check-result-box').classList.add('hidden');
+        }
+
+        async function checkGameAccountName() {
+            if(!activeSelectedTpProduct) return showNotif("Pilih produk nominal dulu", "error");
+            const target = document.getElementById('tp-target').value.trim();
+            const zone = document.getElementById('tp-zone').value.trim();
+            if(!target) return showNotif("Masukkan User ID", "error");
+
+            try {
+                showNotif("Mengecek nama akun...", "info");
+                const params = { code: activeSelectedTpProduct.code, target: target };
+                if(activeSelectedTpProduct.need_zone) {
+                    if(!zone) return showNotif("Masukkan Zone ID", "error");
+                    params.zone = zone;
+                }
+                const res = await requestFydz('tp-check', params);
+                if(res && res.name) {
+                    document.getElementById('tp-checked-account-name').innerText = res.name;
+                    document.getElementById('tp-check-result-box').classList.remove('hidden');
+                    showNotif("Akun ditemukan: " + res.name, "success");
+                }
+            } catch(e) { showNotif("Gagal cek akun: " + e.message, "error"); }
+        }
+
+        async function orderTopupGame() {
+            if(!activeSelectedTpProduct) return showNotif("Pilih produk nominal dulu", "error");
+            const target = document.getElementById('tp-target').value.trim();
+            const zone = document.getElementById('tp-zone').value.trim();
+            if(!target) return showNotif("Masukkan User ID", "error");
+
+            let usersDB = JSON.parse(localStorage.getItem('fydz_user_db') || '{}');
+            let userData = usersDB[currentUser];
+            const price = Number(activeSelectedTpProduct.price) || 0;
+            if(!userData || (userData.balance || 0) < price) return showNotif(`Saldo tidak cukup! Rp ${price.toLocaleString('id-ID')}`, "error");
+
+            try {
+                showNotif("Memproses topup...", "info");
+                const params = { code: activeSelectedTpProduct.code, target: target };
+                if(activeSelectedTpProduct.need_zone) {
+                    if(!zone) return showNotif("Masukkan Zone ID", "error");
+                    params.zone = zone;
+                }
+                const res = await requestFydz('tp-order', params);
+                userData.balance -= price;
+                if(!userData.tpOrders) userData.tpOrders = [];
+                userData.tpOrders.unshift({ id: res.id || '-', service: activeSelectedTpProduct.name, product: activeSelectedTpProduct.game, target: `${target} ${zone ? '/' + zone : ''}`, price: price, status: res.status || 'processing', created_at: new Date().toLocaleTimeString() });
+                usersDB[currentUser] = userData;
+                localStorage.setItem('fydz_user_db', JSON.stringify(usersDB));
+                syncUserDataUI(); playNotificationSound();
+                showNotif("Topup berhasil diproses!", "success");
+            } catch(e) { showNotif("Gagal topup: " + e.message, "error"); }
+        }
+
+        // NOKOS & DEPOSIT
         async function onServerChange() {
             const server = document.getElementById('sel-server').value;
             document.getElementById('active-server-badge').innerText = `Server ${server}`;
             syncCustomTriggerLabel('sel-server');
-            const opWrapper = document.getElementById('operator-wrapper');
-            if(['1', '6', '7'].includes(server)) opWrapper.classList.remove('hidden');
-            else opWrapper.classList.add('hidden');
+            if(['1', '6', '7'].includes(server)) document.getElementById('operator-wrapper').classList.remove('hidden');
+            else document.getElementById('operator-wrapper').classList.add('hidden');
             loadCatalogServices();
         }
 
@@ -1046,15 +1200,6 @@
                 const countrySel = document.getElementById('sel-country');
                 countrySel.innerHTML = countries.map(c => `<option value="${c.code}">${c.flag || ''} ${c.name} (${c.code})</option>`).join('');
                 syncCustomTriggerLabel('sel-country');
-
-                if(['1', '6', '7'].includes(server)) {
-                    const countryCode = countrySel.value;
-                    const opRes = await requestFydz('operators', { server, country: countryCode }, true);
-                    const ops = opRes.operators || ['any'];
-                    const opSel = document.getElementById('sel-operator');
-                    opSel.innerHTML = ops.map(op => `<option value="${op}">${op.toUpperCase()}</option>`).join('');
-                    syncCustomTriggerLabel('sel-operator');
-                }
                 loadCatalogServices();
             } catch(e) {}
         }
@@ -1069,29 +1214,18 @@
                 const list = await requestFydz('services', { server, country }, true);
                 globalServicesCache = Array.isArray(list) ? list : [];
                 renderCatalogGrid();
-            } catch(e) {
-                grid.innerHTML = `<div class="fy-card p-4 text-center text-xs text-red-500 font-bold">Gagal memuat katalog.</div>`;
-            }
+            } catch(e) { grid.innerHTML = `<div class="fy-card p-4 text-center text-xs text-red-500 font-bold">Gagal memuat katalog.</div>`; }
         }
 
         function renderCatalogGrid() {
             const keyword = document.getElementById('search-catalog').value.toLowerCase();
             const grid = document.getElementById('catalog-grid');
-            const filtered = globalServicesCache.filter(item => {
-                const name = (item.service_name || item.name || item.produk || '').toLowerCase();
-                return name.includes(keyword);
-            });
-            if(filtered.length === 0) {
-                grid.innerHTML = `<div class="fy-card p-4 text-center text-xs font-bold" style="color: var(--text-sub);">Layanan tidak ditemukan.</div>`;
-                return;
-            }
+            const filtered = globalServicesCache.filter(item => (item.service_name || item.name || item.produk || '').toLowerCase().includes(keyword));
+            if(filtered.length === 0) { grid.innerHTML = `<div class="fy-card p-4 text-center text-xs font-bold">Tidak ditemukan.</div>`; return; }
             grid.innerHTML = filtered.slice(0, 40).map(item => {
-                const prodId = item.produk || item.id;
-                const provId = item.provider || '';
-                const price = Number(item.price || item.base_price || 0);
-                const stock = item.count ?? '-';
+                const prodId = item.produk || item.id, provId = item.provider || '';
+                const price = Number(item.price || item.base_price || 0), stock = item.count ?? '-';
                 const name = item.service_name || item.name || item.produk;
-                const safeName = String(name).replace(/'/g, "\\'");
                 return `
                     <div class="fy-card p-4 flex justify-between items-center gap-3">
                         <div class="space-y-0.5 min-w-0">
@@ -1099,150 +1233,97 @@
                             <p class="text-[10px] font-bold" style="color: var(--text-sub);">Stok: <b class="text-emerald-500">${stock}</b></p>
                             <p class="text-xs font-black text-amber-500">Rp ${price.toLocaleString('id-ID')}</p>
                         </div>
-                        <button onclick="buyNokosItem('${prodId}', '${provId}', 1, ${price}, '${safeName}')" class="fy-btn px-3 py-2 text-[10px] text-white font-black shrink-0" style="background-color: var(--accent);">Beli Nokos</button>
+                        <button onclick="buyNokosItem('${prodId}', '${provId}', 1, ${price}, '${String(name).replace(/'/g, "\\'")}')" class="fy-btn px-3 py-2 text-[10px] text-white font-black shrink-0" style="background-color: var(--accent);">Beli</button>
                     </div>
                 `;
             }).join('');
         }
 
-        // STRICT BALANCE LOCK & AUTO POLLING DENGAN SOUND NOTIFIKASI
         async function buyNokosItem(produk, provider, total, totalPrice, serviceName) {
             let usersDB = JSON.parse(localStorage.getItem('fydz_user_db') || '{}');
-            let activeUserKey = localStorage.getItem('fydz_active_user');
-
-            if(!activeUserKey || !usersDB[activeUserKey]) return showNotif("Silakan login terlebih dahulu!", "error");
-
-            let userData = usersDB[activeUserKey];
-            let currentBalance = Number(userData.balance) || 0;
-
-            if(currentBalance < totalPrice) {
-                showNotif(`GAGAL! Saldo Anda Rp ${currentBalance.toLocaleString('id-ID')} tidak cukup untuk membeli layanan seharga Rp ${totalPrice.toLocaleString('id-ID')}.`, "error");
-                return;
-            }
+            let userData = usersDB[currentUser];
+            if(!userData || (userData.balance || 0) < totalPrice) return showNotif(`Saldo tidak cukup!`, "error");
 
             const server = document.getElementById('sel-server').value;
             const country = document.getElementById('sel-country').value;
             const operator = document.getElementById('sel-operator').value;
             const params = { server, country, produk, total };
             if(provider) params.provider = provider;
-            if(operator && operator !== 'any' && ['1', '6', '7'].includes(server)) params.operator = operator;
+            if(operator && operator !== 'any') params.operator = operator;
             
             try {
-                showNotif("Memproses pesanan ke server...", "info");
+                showNotif("Memproses...", "info");
                 const data = await requestFydz('order', params);
-                
                 userData.balance -= totalPrice;
                 userData.totalOrder = (userData.totalOrder || 0) + 1;
-                
                 const orderObj = data.orders ? data.orders[0] : data;
                 if(!userData.orders) userData.orders = [];
-                userData.orders.unshift({
-                    id: orderObj.id || '-',
-                    number: orderObj.number || '-',
-                    service_name: serviceName,
-                    otp: orderObj.otp || 'Waiting',
-                    status: orderObj.status || 'pending',
-                    price: totalPrice,
-                    created_at: new Date().toLocaleTimeString()
-                });
-                
-                usersDB[activeUserKey] = userData;
+                userData.orders.unshift({ id: orderObj.id || '-', number: orderObj.number || '-', service_name: serviceName, otp: orderObj.otp || 'Waiting', status: orderObj.status || 'pending', price: totalPrice, created_at: new Date().toLocaleTimeString() });
+                usersDB[currentUser] = userData;
                 localStorage.setItem('fydz_user_db', JSON.stringify(usersDB));
-                
-                syncUserDataUI();
-                playNotificationSound();
-                showNotif("Pesanan berhasil dibuat!", "success");
-
+                syncUserDataUI(); playNotificationSound();
+                showNotif("Pesanan nokos berhasil!", "success");
                 if(orderObj && orderObj.id) {
                     document.getElementById('man-order-id').value = orderObj.id;
-                    renderActiveMonitor(orderObj);
-                    startAutoPolling(orderObj.id);
+                    renderActiveMonitor(orderObj); startAutoPolling(orderObj.id);
                     switchMainTab(3);
                 }
-            } catch(e) {
-                showNotif("Gagal order: " + e.message, "error");
-            }
+            } catch(e) { showNotif("Gagal order: " + e.message, "error"); }
         }
 
         async function createDepositQr() {
             const nominal = Number(document.getElementById('dep-nominal').value);
-            if(!nominal || nominal < 1000) return showNotif("Minimal deposit Rp 1.000", "error");
-
+            if(!nominal || nominal < 1000) return showNotif("Minimal Rp 1.000", "error");
             try {
-                showNotif("Membuat QRIS deposit otomatis...", "info");
+                showNotif("Membuat QRIS...", "info");
                 const res = await requestFydz('deposit/create', { nominal });
                 if(res && res.id) {
-                    activeDepositId = res.id;
-                    activeDepositNominal = res.total_diterima || nominal;
+                    activeDepositId = res.id; activeDepositNominal = res.total_diterima || nominal;
                     document.getElementById('modal-qris-box').classList.remove('hidden');
                     document.getElementById('qris-total').innerText = `Rp ${Number(res.total_bayar || nominal).toLocaleString('id-ID')}`;
                     document.getElementById('qris-dep-id').innerText = `ID: ${res.id}`;
-                    
                     const qrContainer = document.getElementById('qrcode-container');
                     qrContainer.innerHTML = "";
                     new QRCode(qrContainer, { text: res.qr_link || "https://www.ditznesia.com", width: 180, height: 180 });
-                    showNotif("QRIS berhasil dibuat!", "success");
+                    showNotif("QRIS dibuat!", "success");
                 }
-            } catch(e) {
-                showNotif("Gagal membuat deposit: " + e.message, "error");
-            }
+            } catch(e) { showNotif("Gagal: " + e.message, "error"); }
         }
 
         async function checkDepositStatus() {
-            if(!activeDepositId) return showNotif("Tidak ada deposit aktif", "error");
+            if(!activeDepositId) return;
             let usersDB = JSON.parse(localStorage.getItem('fydz_user_db') || '{}');
-            let activeUserKey = localStorage.getItem('fydz_active_user');
-            if(!activeUserKey || !usersDB[activeUserKey]) return;
-
+            let userData = usersDB[currentUser];
             try {
-                showNotif("Mengecek status pembayaran...", "info");
                 const res = await requestFydz('deposit/status', { id: activeDepositId });
                 if(res && res.status === 'berhasil') {
-                    let userData = usersDB[activeUserKey];
                     userData.balance = (userData.balance || 0) + Number(activeDepositNominal);
                     userData.totalDeposit = (userData.totalDeposit || 0) + Number(activeDepositNominal);
                     if(!userData.deposits) userData.deposits = [];
                     userData.deposits.unshift({ id: activeDepositId, nominal: Number(activeDepositNominal), status: 'berhasil', created_at: new Date().toLocaleTimeString() });
-
-                    usersDB[activeUserKey] = userData;
+                    usersDB[currentUser] = userData;
                     localStorage.setItem('fydz_user_db', JSON.stringify(usersDB));
-                    syncUserDataUI();
-                    playNotificationSound();
-                    showNotif(`SUKSES! Deposit Rp ${Number(activeDepositNominal).toLocaleString('id-ID')} masuk ke akun!`, "success");
-                    document.getElementById('modal-qris-box').classList.add('hidden');
-                    activeDepositId = null;
-                } else {
-                    showNotif(`Status deposit: ${(res.status || 'pending').toUpperCase()}`, "info");
-                }
-            } catch(e) {
-                showNotif("Gagal cek status: " + e.message, "error");
-            }
+                    syncUserDataUI(); playNotificationSound();
+                    showNotif(`Deposit Rp ${Number(activeDepositNominal).toLocaleString('id-ID')} masuk[span_0](start_span)[span_0](end_span)!`, "success");
+                    document.getElementById('modal-qris-box').classList.add('hidden'); activeDepositId = null;
+                } else { showNotif(`Status: ${(res.status || 'pending').toUpperCase()}`, "info"); }
+            } catch(e) { showNotif("Gagal cek", "error"); }
         }
 
         async function cancelActiveDeposit() {
             if(!activeDepositId) return;
-            try {
-                await requestFydz('deposit/cancel', { id: activeDepositId });
-                showNotif("Deposit dibatalkan", "success");
-                document.getElementById('modal-qris-box').classList.add('hidden');
-                activeDepositId = null;
-            } catch(e) { showNotif("Gagal membatalkan deposit", "error"); }
+            try { await requestFydz('deposit/cancel', { id: activeDepositId }); document.getElementById('modal-qris-box').classList.add('hidden'); activeDepositId = null; showNotif("Dibatalkan", "success"); } catch(e) {}
         }
 
         function renderActiveMonitor(obj) {
-            const card = document.getElementById('active-monitor-card');
-            card.classList.remove('hidden');
+            document.getElementById('active-monitor-card').classList.remove('hidden');
             document.getElementById('mon-status').innerText = obj.status || 'pending';
             document.getElementById('mon-server').innerText = `Server ${obj.server || '1'}`;
             document.getElementById('mon-number').innerText = obj.number || '-';
-            
-            const currentOtp = (obj.otp && obj.otp !== 'Waiting') ? obj.otp : 'Menunggu SMS...';
-            document.getElementById('mon-otp').innerText = currentOtp;
-
+            const curOtp = (obj.otp && obj.otp !== 'Waiting') ? obj.otp : 'Menunggu SMS...';
+            document.getElementById('mon-otp').innerText = curOtp;
             if(obj.otp && obj.otp !== 'Waiting' && obj.otp !== lastKnownOtp) {
-                lastKnownOtp = obj.otp;
-                playNotificationSound();
-                showNotif(`OTP Diterima: ${obj.otp}`, "success");
+                lastKnownOtp = obj.otp; playNotificationSound(); showNotif(`OTP: ${obj.otp}`, "success");
             }
         }
 
@@ -1259,83 +1340,59 @@
 
         async function checkOrderStatus(notify = false) {
             const id = document.getElementById('man-order-id').value.trim();
-            if(!id) return showNotif("Masukkan Order ID", "error");
-            try {
-                const st = await requestFydz('status', { id }, !notify);
-                renderActiveMonitor(st);
-                if(notify) showNotif(`Status: ${st.status}`, "info");
-            } catch(e) {}
+            if(!id) return showNotif("Masukkan ID", "error");
+            try { const st = await requestFydz('status', { id }, !notify); renderActiveMonitor(st); if(notify) showNotif(`Status: ${st.status}`, "info"); } catch(e) {}
         }
 
         async function resendSmsOtp() {
             const id = document.getElementById('man-order-id').value.trim();
-            if(!id) return showNotif("Masukkan Order ID", "error");
+            if(!id) return showNotif("Masukkan ID", "error");
             try { await requestFydz('resend', { id }); showNotif("SMS dikirim ulang", "success"); } catch(e) {}
         }
 
         async function reactivateOrderNum() {
             const id = document.getElementById('man-order-id').value.trim();
-            if(!id) return showNotif("Masukkan Order ID", "error");
-            try { await requestFydz('reactivate', { id }); showNotif("Nomor diperpanjang", "success"); } catch(e) {}
+            if(!id) return showNotif("Masukkan ID", "error");
+            try { await requestFydz('reactivate', { id }); showNotif("Diperpanjang", "success"); } catch(e) {}
         }
 
         async function cancelActiveOrder() {
             const id = document.getElementById('man-order-id').value.trim();
-            if(!id) return showNotif("Masukkan Order ID terlebih dahulu", "error");
+            if(!id) return showNotif("Masukkan ID", "error");
             try {
-                showNotif("Memproses pembatalan & refund...", "info");
                 await requestFydz('cancel', { id }); 
                 if(pollingTimer) clearInterval(pollingTimer);
-                
                 let usersDB = JSON.parse(localStorage.getItem('fydz_user_db') || '{}');
-                let activeUserKey = localStorage.getItem('fydz_active_user');
-                if(activeUserKey && usersDB[activeUserKey] && usersDB[activeUserKey].orders) {
-                    let targetOrder = usersDB[activeUserKey].orders.find(o => o.id === id);
+                let userData = usersDB[currentUser];
+                if(userData && userData.orders) {
+                    let targetOrder = userData.orders.find(o => o.id === id);
                     if(targetOrder && targetOrder.status !== 'refunded') {
-                        usersDB[activeUserKey].balance += targetOrder.price;
-                        targetOrder.status = 'refunded';
-                        localStorage.setItem('fydz_user_db', JSON.stringify(usersDB));
-                        syncUserDataUI();
+                        userData.balance += targetOrder.price; targetOrder.status = 'refunded';
+                        localStorage.setItem('fydz_user_db', JSON.stringify(usersDB)); syncUserDataUI();
                     }
                 }
-                showNotif("Pesanan dibatalkan & saldo dikembalikan!", "success"); 
-            } catch(e) { showNotif("Gagal membatalkan pesanan: " + e.message, "error"); }
+                showNotif("Dibatalkan & saldo dikembalikan!", "success"); 
+            } catch(e) { showNotif("Gagal", "error"); }
         }
 
         function fetchOrderHistory() {
-            let user = getActiveUserData();
-            let items = user && user.orders ? user.orders : [];
-            renderHistoryList("Riwayat Order Pribadi", items.map(i => `
-                <div class="fy-card p-3.5 flex justify-between items-center text-xs">
-                    <div>
-                        <p class="font-black" style="color: var(--text-main);">${i.number} (${i.service_name})</p>
-                        <p class="text-[10px] font-bold" style="color: var(--text-sub);">OTP: <b class="text-emerald-500">${i.otp}</b> • Rp ${i.price.toLocaleString('id-ID')} • ${i.created_at}</p>
-                    </div>
-                    <span class="px-2.5 py-1 rounded-lg text-[10px] font-black border border-black ${i.status === 'refunded' ? 'bg-red-400 text-black' : 'bg-emerald-400 text-black'}">${i.status.toUpperCase()}</span>
-                </div>
-            `));
+            let user = getActiveUserData(); let items = user && user.orders ? user.orders : [];
+            renderHistoryList("Riwayat Nokos", items.map(i => `<div class="fy-card p-3.5 flex justify-between items-center text-xs"><div><p class="font-black">${i.number} (${i.service_name})</p><p class="text-[10px] text-zinc-500 font-bold">OTP: <b>${i.otp}</b> • Rp ${i.price.toLocaleString('id-ID')}</p></div><span class="px-2 py-1 rounded text-[10px] font-black border border-black bg-emerald-400 text-black">${i.status.toUpperCase()}</span></div>`));
         }
-
+        function fetchSmmHistory() {
+            let user = getActiveUserData(); let items = user && user.smmOrders ? user.smmOrders : [];
+            renderHistoryList("Riwayat SMM", items.map(i => `<div class="fy-card p-3.5 flex justify-between items-center text-xs"><div><p class="font-black">${i.service}</p><p class="text-[10px] text-zinc-500 font-bold truncate max-w-[180px]">Target: ${i.target}</p><p class="text-[10px] text-amber-500 font-bold">Rp ${i.price.toLocaleString('id-ID')}</p></div><span class="px-2 py-1 rounded text-[10px] font-black border border-black bg-purple-400 text-black">${i.status.toUpperCase()}</span></div>`));
+        }
+        function fetchTpHistory() {
+            let user = getActiveUserData(); let items = user && user.tpOrders ? user.tpOrders : [];
+            renderHistoryList("Riwayat Topup", items.map(i => `<div class="fy-card p-3.5 flex justify-between items-center text-xs"><div><p class="font-black">${i.product} — ${i.service}</p><p class="text-[10px] text-zinc-500 font-bold">Target: ${i.target} • Rp ${i.price.toLocaleString('id-ID')}</p></div><span class="px-2 py-1 rounded text-[10px] font-black border border-black bg-emerald-400 text-black">${i.status.toUpperCase()}</span></div>`));
+        }
         function fetchDepositHistory() {
-            let user = getActiveUserData();
-            let items = user && user.deposits ? user.deposits : [];
-            renderHistoryList("Riwayat Saldo Pribadi", items.map(i => `
-                <div class="fy-card p-3.5 flex justify-between items-center text-xs">
-                    <div>
-                        <p class="font-black" style="color: var(--text-main);">Rp ${i.nominal.toLocaleString('id-ID')}</p>
-                        <p class="text-[10px] font-mono font-bold" style="color: var(--text-sub);">${i.id} • ${i.created_at}</p>
-                    </div>
-                    <span class="px-2.5 py-1 rounded-lg text-[10px] font-black border border-black bg-emerald-400 text-black">Berhasil</span>
-                </div>
-            `));
+            let user = getActiveUserData(); let items = user && user.deposits ? user.deposits : [];
+            renderHistoryList("Riwayat Saldo", items.map(i => `<div class="fy-card p-3.5 flex justify-between items-center text-xs"><div><p class="font-black">Rp ${i.nominal.toLocaleString('id-ID')}</p><p class="text-[10px] text-zinc-500 font-mono">${i.id}</p></div><span class="px-2 py-1 rounded text-[10px] font-black border border-black bg-emerald-400 text-black">BERHASIL</span></div>`));
         }
-
         function renderHistoryList(title, itemsHtml) {
-            const container = document.getElementById('history-result-container');
-            container.innerHTML = `
-                <h4 class="text-xs font-black uppercase tracking-wider px-0.5 pt-1" style="color: var(--text-sub);">${title}</h4>
-                <div class="space-y-2.5 pt-1">${itemsHtml.length ? itemsHtml.join('') : '<p class="text-xs font-bold p-3" style="color: var(--text-sub);">Belum ada riwayat.</p>'}</div>
-            `;
+            document.getElementById('history-result-container').innerHTML = `<h4 class="text-xs font-black uppercase tracking-wider px-0.5" style="color: var(--text-sub);">${title}</h4><div class="space-y-2.5 pt-1">${itemsHtml.length ? itemsHtml.join('') : '<p class="text-xs font-bold p-3">Belum ada riwayat.</p>'}</div>`;
         }
     </script>
 </body>
